@@ -1,13 +1,168 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+
+@layer base {
+  *:lang(en) {
+    font-family: "Roboto", sans-serif ;
+  }
+  *:lang(ar) {
+    font-family: "Cairo", sans-serif;
+  }
+  
+  /* input number */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* slider-transition  */
+  .slider-transition {
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  :root{
+    font-size: 14px;
+  }
+}
+ /* input checkbox */
+.authcheckbox {
+  accent-color: #821A4D;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+a {
+  @apply hover:text-current;
 }
+/*/////////////////////////////////// home clip path////////////////////////// */
+.home {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+.home::before{
+  position: absolute;
+  content: '';
+  top: 0;
+  width: 100%;
+  height: 450px;
+  background:#821A4D;
+  clip-path: polygon(100% 0%, 0% 0% , 0.00% 89.98%, 2.00% 92.12%, 4.00% 93.98%, 6.00% 95.55%, 8.00% 96.79%, 10.00% 97.68%, 12.00% 98.21%, 14.00% 98.38%, 16.00% 98.17%, 18.00% 97.60%, 20.00% 96.67%, 22.00% 95.39%, 24.00% 93.79%, 26.00% 91.89%, 28.00% 89.73%, 30.00% 87.33%, 32.00% 84.73%, 34.00% 81.97%, 36.00% 79.11%, 38.00% 76.18%, 40.00% 73.22%, 42.00% 70.30%, 44.00% 67.44%, 46.00% 64.71%, 48.00% 62.13%, 50.00% 59.75%, 52.00% 57.61%, 54.00% 55.75%, 56.00% 54.18%, 58.00% 52.94%, 60.00% 52.05%, 62.00% 51.52%, 64.00% 51.35%, 66.00% 51.56%, 68.00% 52.13%, 70.00% 53.06%, 72.00% 54.34%, 74.00% 55.94%, 76.00% 57.84%, 78.00% 60.00%, 80.00% 62.40%, 82.00% 65.00%, 84.00% 67.76%, 86.00% 70.62%, 88.00% 73.55%, 90.00% 76.51%, 92.00% 79.43%, 94.00% 82.29%, 96.00% 85.02%, 98.00% 87.60%, 100.00% 89.98%);
+}
+@media screen and (max-width: 850px) {
+.home::before{
+height: 280px;
+}
+}
+/* ///////////////////////////////////////////////////////////////////////////// */
+/* ///////////////////animate//////////////////////////// */
+.animate-in {
+  animation: fade-in 350ms ease-in-out forwards;
+  scroll-margin-block-start: 0;
+}
+
+.animate-out {
+  animation: fade-out 400ms ease-in-out forwards;
+  visibility: hidden;
+}
+
+.scale-in {
+  animation: scale-in 250ms ease-in-out forwards;
+  scroll-margin-block-start: 0;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98) ;
+  }
+}
+
+.state-button:lang(en){
+border-radius: 7px 1px 8px 1px !important;
+font-size: 0.5rem;
+}
+.state-button:lang(ar){
+border-radius: 1px 7px 1px 8px !important;
+font-size: 0.5rem;
+}
+.price-button:lang(en){
+border-radius: 16px 1px 16px 1px !important;
+}
+.price-button:lang(ar){
+border-radius: 1px 16px 1px 16px !important;
+}
+/* ///////////////////////////////////////////////////////////////////// */
+/*----------------------- edit-For-order-tabs ---------------------------*/
+.edit-For-o-auth-tabs .ui.secondary.pointing.menu {
+@apply border-primary h-0 !important;
+}
+.edit-For-o-auth-tabs .ui.secondary.pointing.menu .active.item {
+  @apply gap-x-5 py-1.5 px-10 font-normal text-xl rounded-t-xl  bg-white text-gray  !important;
+}
+.edit-For-o-auth-tabs .ui.secondary.pointing.menu .item {
+  @apply  border-primary bg-primary rounded-t-xl  font-normal text-xl py-1.5 px-10 text-white  !important;
+}
+/* ///////////////////////////////////////////////////////////////////// */
+/*----------------------- edit-For-order-tabs ---------------------------*/
+.edit-For-reset-password-page-tabs .ui.secondary.pointing.menu {
+@apply border-primary h-0  !important;
+}
+.edit-For-reset-password-page-tabs .ui.secondary.pointing.menu .item {
+  @apply gap-x-5 py-1.5 px-10 font-normal text-xl rounded-t-xl  bg-white text-gray  !important;
+}
+.edit-For-reset-password-page-tabs .ui.secondary.pointing.menu .active.item {
+  @apply  border-primary bg-primary rounded-t-xl  font-normal text-xl py-1.5 px-10 text-white  !important;
+}
+/* ///////////////////////////////////////////////////////////////////// */
+/*----------------------- Edit_Lang_Dropdown---------------------------*/
+.Edit_Lang_Dropdown.ui.inline.dropdown>.text{
+@apply font-normal
+}
+.Edit_Lang_Dropdown.ui.inline.dropdown .dropdown.icon{
+  @apply text-black mx-2
+}
+.Edit_Lang_Dropdown.ui.dropdown .menu>.item{
+  @apply font-normal text-base text-gray-dark 
+}
+/* ///////////////////////////////////////////////////////////////////// */
+/*----------------------- edit-search-Input---------------------------*/
+.edit-search-Input.ui.input>input{
+  @apply rounded-lg border-none focus:outline-none ltr:font-serifEN rtl:font-serifAR
+}
+/* ///////////////////////////////////////////////////////////////////// */
+/*----------------------- edit-For-order-tabs ---------------------------*/
+.edit-For-my-auctions-tabs  .ui.secondary.pointing.menu {
+  @apply border-primary h-0  !important;
+}
+.edit-For-my-auctions-tabs  .ui.secondary.pointing.menu .item {
+  @apply gap-x-5 py-2 px-12 font-normal text-base text-gray-dark !important;
+}
+.edit-For-my-auctions-tabs  .ui.secondary.pointing.menu .active.item {
+  @apply border-primary bg-primary rounded-t-xl font-normal text-base py-2 px-12 text-white !important;
+}
+/* ///////////////////////////////////////////////////////////////////// */
+.edit_pop.ui.top.left.popup{
+  @apply rounded-xl shadow-md border-none 
+}
+.edit_pop.ui.top.left.popup:before{
+  @apply border-none shadow
+}
+/* ///////////////////////////////////////////////////////////////////// */

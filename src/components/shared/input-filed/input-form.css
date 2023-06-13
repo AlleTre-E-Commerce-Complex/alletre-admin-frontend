@@ -1,0 +1,48 @@
+/** float container */
+
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+
+.float-container {
+  border: solid 1px #ccc;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  position: relative;
+  border: none;
+} 
+
+  .input_Input_Form {  
+    border: none;
+    font-size: 16px;
+    outline: 0;
+    width: 100%;
+    font: normal normal normal 16px/21px Roboto ;
+  }
+  
+  .label_Input_Form {
+    font-size: 12px;
+    position: absolute;
+    bottom: 46px;
+    padding: 0 5px;
+    background: white;
+    font: normal normal normal 16px/21px Roboto ;
+    color: #707070;
+  }
+
+.input_Input_Form:lang(ar)  {
+    font-family: "Cairo", sans-serif !important;
+  }
+
+.input_Input_Form:lang(en)  {
+    font-family: "Roboto", sans-serif !important;
+  }
+
+  .label_Input_Form:lang(ar) {
+    font-family: "Cairo", sans-serif !important;
+    right: 18px;
+  }
+
+  .label_Input_Form:lang(en) {
+    font-family: "Roboto", sans-serif !important;
+    left: 18px;
+  }

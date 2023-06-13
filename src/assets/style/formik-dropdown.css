@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.Edit_FormikMultiDropdown .field>.selection.dropdown{
+  @apply  h-[48px] rounded-lg  hover:border-[#ccc]/60 !important
+}
+
+.Edit_FormikMultiDropdown .field>label{
+  @apply absolute -top-[18px] bg-white z-[9] ltr:left-5 rtl:right-5 text-gray-dark text-lg font-normal px-1.5 !important
+}
+
+.Edit_FormikMultiDropdown .ui.search.dropdown.active>input.search, .ui.search.dropdown.visible>input.search{
+  @apply  h-[48px]
+}
+
+
+.Edit_FormikMultiDropdown .ui.selection.active.dropdown{
+  @apply  h-[48px] hover:border-primary border-primary  bg-transparent !important
+}
+
+.Edit_FormikMultiDropdown .ui.selection.active.dropdown .menu{
+  @apply border-primary hover:border-primary rounded-b-lg top-[90%] shadow-none mr-2  !important
+}
+

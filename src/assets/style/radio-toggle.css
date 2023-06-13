@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.Edit_Radio_Toggle .ui.toggle.checkbox input:checked~.box:before, .ui.toggle.checkbox input:checked~label:before{
+  @apply bg-secondary w-9 !important
+}
+
+.Edit_Radio_Toggle.ui.toggle.checkbox input:checked~label:before{
+  @apply bg-secondary w-9 !important
+}
+
+.Edit_Radio_Toggle .ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
+  @apply  w-9 h-6 bg-[#ABABAB] !important
+}
+
+.Edit_Radio_Toggle .ui.checkbox input:indeterminate~.box:after, .ui.checkbox input:indeterminate~label:after {
+@apply w-4 h-4 mt-1 ml-1 !important
+}
+.Edit_Radio_Toggle .ui.toggle.checkbox input:checked~.box:after, .ui.toggle.checkbox input:checked~label:after {
+@apply left-[15px] w-4 h-4 mt-1 !important
+}
+

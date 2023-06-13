@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Edit_checkboxRadioGroup input.hidden+label{
+@apply text-gray-dark font-normal text-base rtl:pr-8 ltr:pl-8 !important
+}
+.Edit_checkboxRadioGroup .ui.radio.checkbox .box::after, .ui.radio.checkbox label::before{
+@apply rtl:right-0 ltr:left-0 !important
+}
+
+.Edit_checkboxRadioGroup .ui.radio.checkbox .box:after, .ui.radio.checkbox label:after{
+  @apply bg-primary ltr:left-0 rtl:right-0 !important
+}
+.Edit_checkboxRadioGroup .ui.radio.checkbox .box:before, .ui.radio.checkbox label:before:active{
+  @apply  border-primary  !important
+}

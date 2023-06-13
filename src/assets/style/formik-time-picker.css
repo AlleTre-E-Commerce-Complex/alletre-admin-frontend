@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.Edit_FormikTimePicker .field>label{
+@apply absolute -top-[24px] bg-white z-[9] ltr:left-5 rtl:right-5 text-gray-dark text-lg font-normal px-1.5  !important
+}
+.Edit_FormikTimePicker .ui.input>input{
+@apply rounded-lg  focus:border-primary h-[48px] !important
+}

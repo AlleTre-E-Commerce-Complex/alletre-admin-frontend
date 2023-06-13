@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.Edit_Pagination_App.ui.pagination.menu .item{
+  @apply  hover:bg-[#A2547A0D] hover:text-primary  bg-white outline-[#E8E9EC] outline-1 outline text-gray-med/50 flex justify-center p-0 min-w-[35px] min-h-[35px]  rounded-md overflow-hidden !important
+}
+.Edit_Pagination_App.ui.secondary.menu .active.item{
+  @apply bg-[#A2547A0D] text-primary overflow-hidden !important
+}
+.Edit_Pagination_App.ui.menu>.item:first-child{
+  text-indent: -9999px !important;
+  display: inline-block !important;
+  background-size: cover !important ;
+  background-position: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.Edit_Pagination_App.ui.menu>.item:last-child{
+  text-indent: -9999px !important;
+  display: inline-block !important;
+  background-size: cover !important ;
+  background-position: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.Edit_Pagination_App.ui.menu>.item:first-child:lang(en){
+  background-image: url("../icons/angles-left-icon.png")  !important;
+}
+.Edit_Pagination_App.ui.menu>.item:first-child:lang(ar){
+  background-image: url("../icons/angles-right-icon.png") !important;
+}
+.Edit_Pagination_App.ui.menu>.item:last-child:lang(en){
+  background-image: url("../icons/angles-right-icon.png") !important;
+}
+.Edit_Pagination_App.ui.menu>.item:last-child:lang(ar){
+  background-image: url("../icons/angles-left-icon.png") !important;
+}
