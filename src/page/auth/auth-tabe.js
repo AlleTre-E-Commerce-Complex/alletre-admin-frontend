@@ -11,7 +11,6 @@ import { useLanguage } from "../../context/language-context";
 import content from "../../localization/content";
 import localizationKeys from "../../localization/localization-keys";
 import LogIn from "./log-in";
-import SignUp from "./sign-up";
 
 const AuthTabe = () => {
   const [lang, setLang] = useLanguage("");
@@ -24,18 +23,6 @@ const AuthTabe = () => {
         <div>
           <Tab.Pane className="border-none h-full animate-in md:pt-10 pt-0 flex justify-center">
             <LogIn />
-          </Tab.Pane>
-        </div>
-      ),
-    },
-
-    {
-      menuItem: `${selectedContent[localizationKeys.signup]}`,
-      route: routes.auth.signUp,
-      render: () => (
-        <div>
-          <Tab.Pane className="border-none h-full animate-in pt-2 flex justify-center ">
-            <SignUp />
           </Tab.Pane>
         </div>
       ),
