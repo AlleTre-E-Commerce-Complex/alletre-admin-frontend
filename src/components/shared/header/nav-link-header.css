@@ -1,0 +1,53 @@
+
+.w3rcontainer{
+  border: 1px solid #821A4D;
+  border-radius: 1px;
+} 
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: #707070;
+  cursor: pointer;
+}
+.active-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: #707070;
+  cursor: pointer;
+}
+
+.hover-underline-animation:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2.5px;
+  bottom: 0;
+  left: 0;
+  background-color: #821A4D;
+  transform-origin: bottom left;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.active-underline-animation:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(1);
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: #821A4D;
+  transform-origin: bottom left;
+  transition: transform 0.25s ease-out;
+}
+
+.active-underline-animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
