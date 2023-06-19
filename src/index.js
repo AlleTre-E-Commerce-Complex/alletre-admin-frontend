@@ -13,16 +13,16 @@ import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 
 import { LanguageProvider } from "./context/language-context";
-// import { AuthProvider } from "./context/auth-context";
+import { AuthProvider } from "./context/auth-context";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <LanguageProvider>
         {/* <Provider store={store}> */}
-        {/* <AuthProvider> */}
-        <App />
-        {/* </AuthProvider> */}
+        <AuthProvider>
+          <App />
+        </AuthProvider>
         {/* </Provider> */}
       </LanguageProvider>
     </BrowserRouter>

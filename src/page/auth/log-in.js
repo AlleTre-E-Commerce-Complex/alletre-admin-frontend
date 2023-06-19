@@ -18,6 +18,8 @@ import localizationKeys from "../../localization/localization-keys";
 import FormikInput from "../../components/shared/formik/formik-input";
 import useAxios from "../../hooks/use-axios";
 import { axios } from "../../config/axios-config";
+import api from "../../api";
+import auth from "../../utils/auth";
 
 const LogIn = ({ currentPAth, isAuthModel }) => {
   const history = useHistory();
@@ -31,62 +33,36 @@ const LogIn = ({ currentPAth, isAuthModel }) => {
   const { run, isLoading } = useAxios();
 
   const logIn = (values) => {
-    // setEmail(values.email);
-    // run(axios.post(api.auth.login, values))
-    //   .then((res) => {
-    //     const { accessToken, refreshToken } = res.data.data;
-    //     auth.setToken({
-    //       newAccessToken: accessToken,
-    //       newRefreshToken: refreshToken,
-    //     });
-    //     isAuthModel ? history.push(currentPAth) : history.push(routes.app.home);
-    //     window.location.reload();
-    //     dispatch(Close());
-    //   })
-    //   .catch((err) => {
-    //     if (err.message.en === "Verify your account") {
-    //       toast.error(
-    //         <p className="text-gray-dark text-sm py-2">
-    //           {
-    //             selectedContent[
-    //               localizationKeys
-    //                 .theEmailAddressForThisAccountHasNotYetBeenVerified
-    //             ]
-    //           }
-    //           <span
-    //             onClick={() =>
-    //               runforgetPassword(
-    //                 axios.post(api.auth.resendVerification, { email: email })
-    //               )
-    //                 .then((res) => {
-    //                   toast.loading(
-    //                     selectedContent[
-    //                       localizationKeys.aVerificationMailHasBeenSent
-    //                     ]
-    //                   );
-    //                   // history.push(routes.auth.logIn);
-    //                 })
-    //                 .catch((err) => {
-    //                   toast.error(
-    //                     lang === "en"
-    //                       ? err.message.en || err.message
-    //                       : err.message.ar || err.message
-    //                   );
-    //                 })
-    //             }
-    //             className="underline text-black cursor-pointer px-1"
-    //           >
-    //             {selectedContent[localizationKeys.resendMailAgain]}
-    //           </span>
-    //         </p>
-    //       );
-    //     } else
-    //       toast.error(
-    //         lang === "en"
-    //           ? err.message.en || err.message
-    //           : err.message.ar || err.message
-    //       );
-    //   });
+    setEmail(values.email);
+    run(axios.post(api.auth.login, values))
+      .then((res) => {
+        const { accessToken, refreshToken } = res.data.data;
+        auth.setToken({
+          newAccessToken: accessToken,
+          newRefreshToken: refreshToken,
+        });
+        history.push(routes.app.users.default);
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.message.en === "Verify your account") {
+          toast.error(
+            <p className="text-gray-dark text-sm py-2">
+              {
+                selectedContent[
+                  localizationKeys
+                    .theEmailAddressForThisAccountHasNotYetBeenVerified
+                ]
+              }
+            </p>
+          );
+        } else
+          toast.error(
+            lang === "en"
+              ? err.message.en || err.message
+              : err.message.ar || err.message
+          );
+      });
   };
 
   const logInSchema = Yup.object({
@@ -167,20 +143,16 @@ const LogIn = ({ currentPAth, isAuthModel }) => {
                         {selectedContent[localizationKeys.rememberPassword]}
                       </label>
                     </div>
-                    <Link
+                    {/* <Link
                       onClick={() => setIsHidden(true)}
-                      // to={routes.auth.enterEmail}
                       className="underline text-primary-dark text-sm font-normal pt-1"
                     >
                       {selectedContent[localizationKeys.forgetPassword]}
-                    </Link>
+                    </Link> */}
                   </div>
                   <div className="md:flex block justify-center ">
                     <Button
                       loading={isLoading}
-                      onClick={() => {
-                        history.push(routes.app.users.default);
-                      }}
                       className="bg-primary hover:bg-primary-dark opacity-100 sm:w-[304px] w-full h-[48px] rounded-lg text-white mt-5 font-normal text-base rtl:font-serifAR ltr:font-serifEN"
                     >
                       {selectedContent[localizationKeys.login]}

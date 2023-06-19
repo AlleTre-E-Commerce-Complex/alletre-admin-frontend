@@ -5,6 +5,7 @@ import routes from "../routes";
 import { useLocation } from "react-router-dom";
 import useAxios from "../hooks/use-axios";
 import { useSelector } from "react-redux";
+import LodingTestAllatre from "../components/shared/lotties-file/loding-test-allatre";
 
 const AuthContext = React.createContext();
 
@@ -32,13 +33,11 @@ function AuthProvider({ children }) {
     history.push(routes.app.home);
   };
 
-  const loginData = useSelector((state) => state?.loginDate?.loginDate);
-
   React.useEffect(() => {
     Auth.getUser().then((user) => {
       if (!user) {
         // if (WHITE_LIST.filter((w) => pathname.startsWith(w)).length === 0) {
-        //   history.push(routes.app.home);
+        history.push(routes.auth.logIn);
         // }
       }
       setUser(user);
@@ -64,7 +63,7 @@ function AuthProvider({ children }) {
       {isLoading ? (
         <div className="h-screen w-screen flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
-            <p>Authenticating...</p>
+            <LodingTestAllatre />
           </div>
         </div>
       ) : (

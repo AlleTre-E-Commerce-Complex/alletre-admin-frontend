@@ -17,6 +17,13 @@ const routes = {
     },
     auctions: {
       default: `/allatre-admin/all-auctions`,
+      active: `/allatre-admin/all-auctions/active`,
+      scheduled: `/allatre-admin/all-auctions/scheduled`,
+      drafts: `/allatre-admin/all-auctions/drafts`,
+      sold: `/allatre-admin/all-auctions/sold`,
+      pending: `/allatre-admin/all-auctions/pending`,
+      watingForPayment: `/allatre-admin/all-auctions/wating-for-payment`,
+      expired: `/allatre-admin/all-auctions/expired`,
     },
   },
 };

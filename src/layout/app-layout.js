@@ -10,8 +10,10 @@ const AppLayouts = () => {
   const [sid, SetSid] = useState(false);
   return (
     <div className=" p-0 m-0 border-none border-0 scrollbar-hide  ">
-      <Header SetSid={SetSid} sid={sid} />
-      <Sidebar SetSid={SetSid} sid={sid} />
+      <div>
+        <Header SetSid={SetSid} sid={sid} />
+        <Sidebar SetSid={SetSid} sid={sid} />
+      </div>
       <div className="p-0 m-0 border-none min-h-screen ml-[250px] px-8 mt-32 ">
         <Switch>
           <Route path={routes.app.auctions.default} component={AuctionsTabs} />

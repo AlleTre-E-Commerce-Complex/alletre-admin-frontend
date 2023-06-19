@@ -72,7 +72,7 @@ const Sidebar = ({ SetSid, sid }) => {
         {/* logo */}
         <div className="my-auto hidden md:block">
           <AllatreLogo
-            className="cursor-pointer hidden md:block mx-auto my-10"
+            className="cursor-pointer hidden md:block mx-auto my-20"
             onClick={() => history.push(routes.app.users.default)}
           />
         </div>

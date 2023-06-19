@@ -33,7 +33,7 @@ const Header = ({ SetSid }) => {
   }, 850);
 
   return (
-    <div className=" w-full fixed top-0 bg-white/30 backdrop-blur-md ">
+    <div className=" w-full fixed top-0  bg-white/30 backdrop-blur-md  ">
       <div className="flex justify-end  mx-14 pb-8 pt-3">
         <div className="w-[64px] h-12">
           <img
@@ -44,7 +44,7 @@ const Header = ({ SetSid }) => {
         </div>
         <div className="pt-1">
           <h1 className="text-base text-gray-dark font-medium ">
-            {"Admin name"}
+            {"Allatre Admin"}
           </h1>
           <p className="text-sm text-gray-med">{"Super Admin"}</p>
         </div>
