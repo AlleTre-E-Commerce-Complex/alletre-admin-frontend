@@ -77,7 +77,7 @@ const ExpiredAuctions = () => {
               totalBids={e?._count?.bids}
               endingTime={e?.expiryDate}
               price={e?.startBidAmount}
-              // goToDetails={routes.app.profile.myAuctions.expiredDetails(e?.id)}
+              goToDetails={routes.app.auctions.auctionsDetails(e?.id)}
             />
           ))}
           <div className="flex justify-end mt-7 ltr:mr-2 rtl:ml-2">

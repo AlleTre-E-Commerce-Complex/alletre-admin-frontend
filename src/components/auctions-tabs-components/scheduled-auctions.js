@@ -77,9 +77,7 @@ const ScheduledAuctions = () => {
               purchasePrice={e?.startBidAmount}
               startingDate={e?.startDate}
               startingPrice={e?.startBidAmount}
-              // goToDetails={routes.app.profile.myAuctions.scheduledDetails(
-              //   e?.id
-              // )}
+              goToDetails={routes.app.auctions.auctionsDetails(e?.id)}
             />
           ))}
           <div className="flex justify-end mt-7 ltr:mr-2 rtl:ml-2">

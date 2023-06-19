@@ -69,15 +69,8 @@ const Sidebar = ({ SetSid, sid }) => {
   return (
     <>
       <div className="h-screen fixed top-0 md:block hidden w-[250px] ">
-        {/* logo */}
-        <div className="my-auto hidden md:block">
-          <AllatreLogo
-            className="cursor-pointer hidden md:block mx-auto my-20"
-            onClick={() => history.push(routes.app.users.default)}
-          />
-        </div>
         {/* content */}
-        <div>
+        <div className="mt-40">
           <NavLink
             title="Users"
             isActive={

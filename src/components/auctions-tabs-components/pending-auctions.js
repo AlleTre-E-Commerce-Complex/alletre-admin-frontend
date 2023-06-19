@@ -77,7 +77,7 @@ const PendingAuctions = () => {
               img={e?.product?.images[0]?.imageLink}
               startingPrice={e?.startBidAmount}
               startingDate={e?.createdAt}
-              // goToDetails={routes.app.profile.myAuctions.pendingDetails(e?.id)}
+              goToDetails={routes.app.auctions.auctionsDetails(e?.id)}
             />
           ))}
           <div className="flex justify-end mt-7 ltr:mr-2 rtl:ml-2">

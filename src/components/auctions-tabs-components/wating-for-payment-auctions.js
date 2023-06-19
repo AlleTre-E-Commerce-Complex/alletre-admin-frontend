@@ -58,7 +58,7 @@ const WatingForPaymentAuctions = () => {
         <p className="pb-5 text-gray-med text-xs font-normal">
           {watingForPaymentAuctionsDataData?.length}{" "}
           {/* {selectedContent[localizationKeys.totalExpired]} */}
-          watingForPaymentAuctionsDataData
+          Wating For Payment Auctions
         </p>
       </div>
       {watingForPaymentAuctionsDataData?.length === 0 ? (
@@ -79,9 +79,7 @@ const WatingForPaymentAuctions = () => {
               totalBids={e?._count?.bids}
               endingTime={e?.expiryDate}
               price={e?.startBidAmount}
-              // goToDetails={routes.app.profile.myAuctions.watingForPaymentDetails(
-              //   e?.id
-              // )}
+              goToDetails={routes.app.auctions.auctionsDetails(e?.id)}
             />
           ))}
           <div className="flex justify-end mt-7 ltr:mr-2 rtl:ml-2">

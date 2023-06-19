@@ -76,8 +76,8 @@ const SoldAuctions = () => {
               img={e?.product?.images[0]?.imageLink}
               totalBids={e?._count?.bids}
               endingTime={e?.expiryDate}
-              price={e?.bids[0]?.amount}
-              // goToDetails={routes.app.profile.myAuctions.soldDetails(e?.id)}
+              price={e?.bids[0]?.amount || e?.acceptedAmount}
+              goToDetails={routes.app.auctions.auctionsDetails(e?.id)}
             />
           ))}
           <div className="flex justify-end mt-7 ltr:mr-2 rtl:ml-2">
