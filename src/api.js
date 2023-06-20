@@ -28,6 +28,8 @@ const api = {
     subCategory: {
       default: (categoryId) =>
         `/categories/sub-categories?categoryId=${categoryId}`,
+      uploadImages: (subcategoryId) =>
+        `/categories/sub-categories/${subcategoryId}/upload-images`,
     },
     brand: {
       default: (categoryId) => `/categories/brands?categoryId=${categoryId}`,

@@ -17,27 +17,14 @@ const SubCategoryUplodImgModel = ({ imageLink, text, id, onReload }) => {
     const formData = new FormData();
     formData.append("slider", fileOne);
     runUpload(
-      authAxios.put(api.app.category.uploadImages(id), formData).then((res) => {
-        onReload();
-      })
+      authAxios
+        .put(api.app.subCategory.uploadImages(id), formData)
+        .then((res) => {
+          onReload();
+        })
     );
     setFileSlider(fileOne);
   };
-
-  const handleChangeBanner = (fileTwo) => {
-    const formData = new FormData();
-    formData.append("banner", fileTwo);
-    runUpload(
-      authAxios.put(api.app.category.uploadImages(id), formData).then((res) => {
-        onReload();
-      })
-    );
-    setFileSlider(fileTwo);
-  };
-
-  console.log("====================================");
-  console.log(fileSlider);
-  console.log("====================================");
 
   return (
     <Modal

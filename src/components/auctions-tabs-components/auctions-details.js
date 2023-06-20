@@ -40,9 +40,6 @@ const AuctionsDetails = () => {
       );
     }
   }, [auctionId, run, user]);
-  console.log("====================================");
-  console.log(auctionsDetailsData);
-  console.log("====================================");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

@@ -30,20 +30,18 @@ function AuthProvider({ children }) {
 
   const logout = () => {
     Auth.setToken({ newAccessToken: "", newRefreshToken: "" });
-    history.push(routes.app.home);
+    history.push(routes.auth.logIn);
   };
 
   React.useEffect(() => {
     Auth.getUser().then((user) => {
       if (!user) {
-        // if (WHITE_LIST.filter((w) => pathname.startsWith(w)).length === 0) {
         history.push(routes.auth.logIn);
-        // }
       }
       setUser(user);
       setIsLoading(false);
     });
-  }, []);
+  }, [history]);
 
   React.useLayoutEffect(() => {
     if (isLoading) document.body.classList.add("bg-gray-100");

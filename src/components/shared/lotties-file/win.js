@@ -28,9 +28,6 @@ const Win = () => {
       });
       newSocket?.on("auction:winner", (data) => {
         setIsWinner(data);
-        console.log("====================================");
-        console.log(data);
-        console.log("====================================");
       });
 
       return () => {

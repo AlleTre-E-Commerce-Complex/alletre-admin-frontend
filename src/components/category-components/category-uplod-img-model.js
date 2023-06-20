@@ -43,10 +43,6 @@ const CategoryUplodImgModel = ({
     setFileBanner(fileTwo);
   };
 
-  console.log("====================================");
-  console.log(fileSlider, fileBanner);
-  console.log("====================================");
-
   return (
     <Modal
       className="w-[780px] h-[426px] rounded-2xl bg-white border-[1px] border-primary scale-in overflow-hidden"
