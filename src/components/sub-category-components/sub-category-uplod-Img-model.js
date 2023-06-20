@@ -15,7 +15,7 @@ const SubCategoryUplodImgModel = ({ imageLink, text, id, onReload }) => {
 
   const handleChangeSlider = (fileOne) => {
     const formData = new FormData();
-    formData.append("slider", fileOne);
+    formData.append("image", fileOne);
     runUpload(
       authAxios
         .put(api.app.subCategory.uploadImages(id), formData)
