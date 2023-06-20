@@ -1,5 +1,6 @@
 import React from "react";
 import CategoryUplodImgModel from "./category-uplod-img-model";
+import addimage from "../../../src/assets/icons/add-image-icon.png";
 
 const CategoryCard = ({ GatogryOptions, onReload }) => {
   return (
@@ -12,8 +13,8 @@ const CategoryCard = ({ GatogryOptions, onReload }) => {
                 hover:bg-gradient-to-t hover:from-[#25252562] absolute z-20 "
             >
               <CategoryUplodImgModel
-                bannerLink={e?.bannerLink}
-                sliderLink={e?.sliderLink}
+                bannerLink={e?.bannerLink || addimage}
+                sliderLink={e?.sliderLink || addimage}
                 text={e?.text}
                 id={e?.value}
                 onReload={onReload}
@@ -21,13 +22,13 @@ const CategoryCard = ({ GatogryOptions, onReload }) => {
             </div>
             <img
               className="w-full h-40 object-cover rounded-lg group-hover:scale-110 duration-300 ease-in-out transform"
-              src={e?.bannerLink}
+              src={e?.bannerLink || addimage}
               alt="bannerLink"
             />
             <div className="rounded-full w-32 h-32 absolute top-[100px] left-8 flex gap-x-5">
               <img
                 className="w-full h-full object-cover rounded-full group-hover:scale-110 duration-300 ease-in-out transform"
-                src={e?.sliderLink}
+                src={e?.sliderLink || addimage}
                 alt="sliderLink"
               />
               <h1 className="text-gray-dark mx-auto mt-[64px] font-semibold group-hover:scale-110 duration-300 ease-in-out transform">

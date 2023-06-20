@@ -34,6 +34,12 @@ const routes = {
     subGatogry: {
       default: "/allatre-admin/sub-gatogry",
     },
+    brands: {
+      default: "/allatre-admin/brands",
+    },
+    systemField: {
+      default: "/allatre-admin/system-field",
+    },
   },
 };
 

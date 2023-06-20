@@ -18,7 +18,7 @@ function FormikMultiDropdown({
       {({ form, field }) => {
         const { setFieldValue, setFieldTouched, errors, touched } = form;
         return (
-          <div className="flex flex-col mt-1.5 relative Edit_FormikMultiDropdown">
+          <div className="flex flex-col mt-1.5 relative z-40 Edit_FormikMultiDropdown">
             <Form.Dropdown
               id={name}
               label={label}

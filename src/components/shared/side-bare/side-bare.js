@@ -88,7 +88,7 @@ const Sidebar = ({ SetSid, sid }) => {
             onClick={() => history.push(routes.app.auctions.default)}
           />
           <NavLink
-            title="category"
+            title="Categories"
             isActive={
               pathname.length === 1 ||
               pathname.startsWith(routes.app.category.default)
@@ -96,12 +96,28 @@ const Sidebar = ({ SetSid, sid }) => {
             onClick={() => history.push(routes.app.category.default)}
           />
           <NavLink
-            title="Sub Category"
+            title="Sub Categories"
             isActive={
               pathname.length === 1 ||
               pathname.startsWith(routes.app.subGatogry.default)
             }
             onClick={() => history.push(routes.app.subGatogry.default)}
+          />
+          <NavLink
+            title="Brands"
+            isActive={
+              pathname.length === 1 ||
+              pathname.startsWith(routes.app.brands.default)
+            }
+            onClick={() => history.push(routes.app.brands.default)}
+          />
+          <NavLink
+            title="System Fields"
+            isActive={
+              pathname.length === 1 ||
+              pathname.startsWith(routes.app.systemField.default)
+            }
+            onClick={() => history.push(routes.app.systemField.default)}
           />
         </div>
         <div

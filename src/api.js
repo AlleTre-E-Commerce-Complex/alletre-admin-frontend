@@ -29,6 +29,13 @@ const api = {
       default: (categoryId) =>
         `/categories/sub-categories?categoryId=${categoryId}`,
     },
+    brand: {
+      default: (categoryId) => `/categories/brands?categoryId=${categoryId}`,
+      all: "/categories/brands",
+    },
+    systemField: {
+      default: `/categories/system-fields`,
+    },
   },
 };
 
