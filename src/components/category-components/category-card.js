@@ -3,6 +3,9 @@ import CategoryUplodImgModel from "./category-uplod-img-model";
 import addimage from "../../../src/assets/icons/add-image-icon.png";
 
 const CategoryCard = ({ GatogryOptions, onReload }) => {
+  console.log("====================================");
+  console.log({ GatogryOptions });
+  console.log("====================================");
   return (
     <div className="flex gap-10 flex-wrap py-4 ">
       {GatogryOptions?.map((e) => (

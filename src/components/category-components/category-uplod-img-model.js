@@ -17,9 +17,23 @@ const CategoryUplodImgModel = ({
   const [fileSlider, setFileSlider] = useState(null);
   const [fileBanner, setFileBanner] = useState(null);
   const fileTypes = ["PNG"];
-  const fileTypess = ["PNG", "JPG", "WEBP"];
 
   const { run: runUpload, isLoading: isloadingUpload } = useAxios([]);
+  const { run: runUpload2, isLoading: isloadingUpload2 } = useAxios([]);
+
+  const handleChangeBanner = (fileTwo) => {
+    const formData = new FormData();
+    formData.append("banner", fileTwo);
+    runUpload2(
+      authAxios.put(api.app.category.uploadImages(id), formData).then((res) => {
+        onReload();
+        setFileBanner(null);
+        setFileSlider(null);
+        setOpen(false);
+      })
+    );
+    setFileBanner(fileTwo);
+  };
 
   const handleChangeSlider = (fileOne) => {
     const formData = new FormData();
@@ -27,20 +41,12 @@ const CategoryUplodImgModel = ({
     runUpload(
       authAxios.put(api.app.category.uploadImages(id), formData).then((res) => {
         onReload();
+        setFileBanner(null);
+        setFileSlider(null);
+        setOpen(false);
       })
     );
     setFileSlider(fileOne);
-  };
-
-  const handleChangeBanner = (fileTwo) => {
-    const formData = new FormData();
-    formData.append("banner", fileTwo);
-    runUpload(
-      authAxios.put(api.app.category.uploadImages(id), formData).then((res) => {
-        onReload();
-      })
-    );
-    setFileBanner(fileTwo);
   };
 
   return (
@@ -49,6 +55,8 @@ const CategoryUplodImgModel = ({
       onClose={() => {
         setOpen(false);
         onReload();
+        setFileBanner(null);
+        setFileBanner(null);
       }}
       onOpen={() => setOpen(true)}
       open={open}
@@ -60,7 +68,7 @@ const CategoryUplodImgModel = ({
     >
       <Dimmer
         className="fixed w-full h-full top-0 bg-white/50"
-        active={isloadingUpload}
+        active={isloadingUpload || isloadingUpload2}
         inverted
       >
         <LodingTestAllatre />
@@ -78,10 +86,9 @@ const CategoryUplodImgModel = ({
           />
           <button className="bg-secondary-light text-secondary  w-[132px] h-[23px] p-0 text-sm font-normal rounded-lg mt-2 absolute right-2 top-[200px]">
             <FileUploader
-              maxSize={1}
+              // maxSize={1}
               handleChange={handleChangeBanner}
-              name="file"
-              types={fileTypess}
+              // types={fileTypess}
             >
               Upload banner Photo
             </FileUploader>
@@ -102,9 +109,8 @@ const CategoryUplodImgModel = ({
               </h1>
               <button className="bg-secondary-veryLight text-secondary opacity-100 w-[132px] h-[23px] p-0 text-sm font-normal rounded-lg mt-2 overflow-hidden">
                 <FileUploader
-                  maxSize={1}
+                  // maxSize={1}
                   handleChange={handleChangeSlider}
-                  name="file"
                   types={fileTypes}
                 >
                   Upload slider Photo
