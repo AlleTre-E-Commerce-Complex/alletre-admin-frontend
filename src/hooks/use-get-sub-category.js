@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useLanguage } from "../context/language-context";
 import useAxios from "./use-axios";
@@ -7,6 +7,8 @@ import useAxios from "./use-axios";
 const useGetSubGatogry = (categoryId) => {
   const [lang] = useLanguage();
   const [SubGatogryOptions, setSubGatogryOptions] = React.useState([]);
+  const [forceReload, setForceReload] = useState(false);
+  const onReload = React.useCallback(() => setForceReload((p) => !p), []);
 
   const { run, isLoading, error, isError } = useAxios();
 
@@ -22,16 +24,18 @@ const useGetSubGatogry = (categoryId) => {
               text: lang === "en" ? d?.nameEn : d?.nameAr,
               key: d?.id,
               value: d.id,
+              imageLink: d?.imageLink,
             })
           );
           setSubGatogryOptions(options);
         }
       );
     }
-  }, [categoryId]);
+  }, [forceReload, categoryId]);
 
   return {
     SubGatogryOptions,
+    onReload,
     loadingSubGatogry: isLoading,
     errorSubGatogry: error,
     isErrorSubGatogry: isError,

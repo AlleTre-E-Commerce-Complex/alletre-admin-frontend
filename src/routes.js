@@ -31,6 +31,9 @@ const routes = {
     category: {
       default: "/allatre-admin/category",
     },
+    subGatogry: {
+      default: "/allatre-admin/sub-gatogry",
+    },
   },
 };
 

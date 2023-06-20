@@ -95,6 +95,14 @@ const Sidebar = ({ SetSid, sid }) => {
             }
             onClick={() => history.push(routes.app.category.default)}
           />
+          <NavLink
+            title="Sub Category"
+            isActive={
+              pathname.length === 1 ||
+              pathname.startsWith(routes.app.subGatogry.default)
+            }
+            onClick={() => history.push(routes.app.subGatogry.default)}
+          />
         </div>
         <div
           onClick={onLogout}

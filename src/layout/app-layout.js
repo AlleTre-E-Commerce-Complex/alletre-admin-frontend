@@ -7,6 +7,7 @@ import Users from "../page/app/users/users";
 import AuctionsTabs from "../page/app/auctions/auctions-tabs";
 import AuctionsDetails from "../components/auctions-tabs-components/auctions-details";
 import Category from "../page/app/category/category";
+import SubCategory from "../page/app/sub-category/sub-category";
 
 const AppLayouts = () => {
   const [sid, SetSid] = useState(false);
@@ -18,6 +19,7 @@ const AppLayouts = () => {
       </div>
       <div className="p-0 m-0 border-none min-h-screen ml-[250px] px-8 mt-32 ">
         <Switch>
+          <Route path={routes.app.subGatogry.default} component={SubCategory} />
           <Route path={routes.app.category.default} component={Category} />
           <Route
             path={routes.app.auctions.auctionsDetails()}

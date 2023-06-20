@@ -1,7 +1,7 @@
 import React from "react";
 import CategoryUplodImgModel from "./category-uplod-img-model";
 
-const CategoryCard = ({ GatogryOptions, setOpenEditModel }) => {
+const CategoryCard = ({ GatogryOptions, onReload }) => {
   return (
     <div className="flex gap-10 flex-wrap py-4 ">
       {GatogryOptions?.map((e) => (
@@ -16,6 +16,7 @@ const CategoryCard = ({ GatogryOptions, setOpenEditModel }) => {
                 sliderLink={e?.sliderLink}
                 text={e?.text}
                 id={e?.value}
+                onReload={onReload}
               />
             </div>
             <img
