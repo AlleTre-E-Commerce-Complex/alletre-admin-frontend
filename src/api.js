@@ -20,6 +20,15 @@ const api = {
         `/categories/custom-fields?subCategoryId=${subCategoryId}`,
       systemField: `categories/system-fields`,
     },
+    //
+    category: {
+      default: "/categories/all",
+      uploadImages: (categoryId) => `/categories/${categoryId}/upload-images`,
+    },
+    subCategory: {
+      default: (categoryId) =>
+        `/categories/sub-categories?categoryId=${categoryId}`,
+    },
   },
 };
 

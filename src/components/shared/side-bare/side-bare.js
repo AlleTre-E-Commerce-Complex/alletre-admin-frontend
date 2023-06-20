@@ -87,6 +87,14 @@ const Sidebar = ({ SetSid, sid }) => {
             }
             onClick={() => history.push(routes.app.auctions.default)}
           />
+          <NavLink
+            title="category"
+            isActive={
+              pathname.length === 1 ||
+              pathname.startsWith(routes.app.category.default)
+            }
+            onClick={() => history.push(routes.app.category.default)}
+          />
         </div>
         <div
           onClick={onLogout}

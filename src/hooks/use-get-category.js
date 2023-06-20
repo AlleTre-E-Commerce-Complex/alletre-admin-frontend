@@ -20,6 +20,8 @@ const useGetGatogry = () => {
           text: lang === "en" ? d?.nameEn : d?.nameAr,
           key: d?.id,
           value: d.id,
+          sliderLink: d?.sliderLink,
+          bannerLink: d?.bannerLink,
           hasUsageCondition: d?.hasUsageCondition,
         })
       );

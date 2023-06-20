@@ -28,6 +28,9 @@ const routes = {
       auctionsDetails: (auctionId = ":auctionId") =>
         `/allatre-admin/all-auctions/${auctionId}/details`,
     },
+    category: {
+      default: "/allatre-admin/category",
+    },
   },
 };
 
