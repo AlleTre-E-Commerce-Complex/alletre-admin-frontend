@@ -21,6 +21,8 @@ const SubCategoryUplodImgModel = ({ imageLink, text, id, onReload }) => {
         .put(api.app.subCategory.uploadImages(id), formData)
         .then((res) => {
           onReload();
+          setOpen(false);
+          setFileSlider(null);
         })
     );
     setFileSlider(fileOne);
@@ -31,6 +33,7 @@ const SubCategoryUplodImgModel = ({ imageLink, text, id, onReload }) => {
       className="w-[380px] h-[226px] rounded-2xl bg-white border-[1px] border-primary scale-in overflow-hidden"
       onClose={() => {
         setOpen(false);
+        setFileSlider(null);
         onReload();
       }}
       onOpen={() => setOpen(true)}
