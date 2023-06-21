@@ -111,14 +111,14 @@ const Sidebar = ({ SetSid, sid }) => {
             }
             onClick={() => history.push(routes.app.brands.default)}
           />
-          <NavLink
+          {/* <NavLink
             title="System Fields"
             isActive={
               pathname.length === 1 ||
               pathname.startsWith(routes.app.systemField.default)
             }
             onClick={() => history.push(routes.app.systemField.default)}
-          />
+          /> */}
         </div>
         <div
           onClick={onLogout}
