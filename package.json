@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/",
   "dependencies": {
-    "@lottiefiles/react-lottie-player": "^3.5.2",
+    "@lottiefiles/react-lottie-player": "^3.5.4",
     "@reach/combobox": "0.16.1",
     "@reduxjs/toolkit": "^1.9.3",
     "@stripe/react-stripe-js": "^2.1.0",
