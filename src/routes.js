@@ -37,6 +37,9 @@ const routes = {
     brands: {
       default: "/allatre-admin/brands",
     },
+    deliveryRequests: {
+      default: "/allatre-admin/delivery-requests",
+    },
     withdrawalRequest: {
       default: "/allatre-admin/withdrawalRequest",
     },

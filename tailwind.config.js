@@ -33,7 +33,7 @@ module.exports = {
           profile: "#E5E5E51A",
         },
         primary: {
-           // DEFAULT: "#821A4D",
+          // DEFAULT: "#821A4D",
           DEFAULT: "#a91d3a",
           // dark: "#62143A",
           dark: "#5b0c1f",
@@ -42,7 +42,8 @@ module.exports = {
           veryLight: "#EAE2E6",
         },
         secondary: {
-          DEFAULT: "#00134F",
+          // DEFAULT: "#00134F",
+          DEFAULT: "#000000",
           light: "#B9BDCD",
           veryLight: "#00134F1A",
         },
