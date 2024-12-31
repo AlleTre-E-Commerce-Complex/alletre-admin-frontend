@@ -33,9 +33,12 @@ module.exports = {
           profile: "#E5E5E51A",
         },
         primary: {
-          DEFAULT: "#821A4D",
-          dark: "#62143A",
-          light: "#A2547A",
+           // DEFAULT: "#821A4D",
+          DEFAULT: "#a91d3a",
+          // dark: "#62143A",
+          dark: "#5b0c1f",
+          // light: "#A2547A",
+          light: "#c73659",
           veryLight: "#EAE2E6",
         },
         secondary: {
