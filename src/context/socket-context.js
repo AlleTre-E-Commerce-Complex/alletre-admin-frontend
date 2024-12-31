@@ -11,13 +11,14 @@ export function useSocket() {
 }
 
 export function SocketProvider({ children }) {
-  const auctionID = useSelector((state) => state.auctionDetails.auctionsId);
-  const { auctionId } = useParams();
+  // const auctionID = useSelector((state) => state.auctionDetails.auctionsId);
+  // const { auctionId } = useParams();
   const [socket, setSocket] = React.useState();
   const { user, logout } = useAuthState();
   useEffect(() => {
     auth.getToken().then((accessToken) => {
-      const URL = process.env.REACT_APP_DEV_WEB_SOCKET_URL;
+      const URL =  `${process.env.REACT_APP_DEV_WEB_SOCKET_URL}/admin`  
+      console.log('URL',URL)
       const newSocket = io(URL, {
         // query: { auctionId: auctionID || auctionId },
         extraHeaders: {
@@ -25,10 +26,7 @@ export function SocketProvider({ children }) {
         },
         path: "/socket.io",
       });
-      if (auctionID || auctionId) {
-        setSocket(newSocket);
-      }
-
+      setSocket(newSocket);
       return () => {
         newSocket.close();
         logout();

@@ -27,13 +27,12 @@ const Sidebar = ({ SetSid, sid }) => {
   const [forceReload, setForceReload] = useState(false);
   const onReload = React.useCallback(() => setForceReload((p) => !p), []);
   const { run: runPofile, isLoading: isLoadingPofile } = useAxios([]);
-  // useEffect(() => {
-  //   runPofile(
-  //     authAxios.get(api.app.profile.default).then((res) => {
-  //       setPofileData(res?.data?.data);
-  //     })
-  //   );
-  // }, [runPofile, forceReload]);
+  const { deliveryRequestsCount } = useSelector((state) => state.deliveryRequests);
+  console.log('deliveryRequestsCount',deliveryRequestsCount)
+  const [notifications, setNotifications] = useState(deliveryRequestsCount);
+  useEffect(() => {
+    setNotifications(deliveryRequestsCount)
+  }, [deliveryRequestsCount]);
 
   const sidebarVariants = {
     open: {
@@ -119,6 +118,12 @@ const Sidebar = ({ SetSid, sid }) => {
             }
             onClick={() => history.push(routes.app.withdrawalRequest.default)}
           />
+           <NavLink
+            title="Delivery Requests"
+            isActive={pathname.startsWith(routes.app.deliveryRequests.default)}
+            onClick={() => history.push(routes.app.deliveryRequests.default)}
+            notificationCount={notifications} // Pass notifications as a prop
+          />
           {/* <NavLink
             title="System Fields"
             isActive={
@@ -186,25 +191,30 @@ const Sidebar = ({ SetSid, sid }) => {
   );
 };
 
-export const NavLink = ({ title, onClick, isActive }) => {
+export const NavLink = ({ title, onClick, isActive, notificationCount }) => {
   return (
     <div>
       <p
         onClick={onClick}
         className={`${
           isActive
-            ? "bg-primary-light/10 text-primary mx-0 px-10 font-bold "
-            : "mx-10 px-4 border-b-gray-veryLight border-b-[1px] "
-        } text-base text-gray-dark font-normal py-5 cursor-pointer flex`}
+            ? "bg-primary-light/10 text-primary mx-0 px-10 font-bold"
+            : "mx-10 px-4 border-b-gray-veryLight border-b-[1px]"
+        } text-base text-gray-dark font-normal py-5 cursor-pointer flex items-center`}
       >
-        <p
+        <span
           className={`${
             isActive
               ? "bg-primary font-bold w-2 h-2 rounded-full mt-1.5 mx-4"
               : ""
-          } translate delay-150 duration-150 `}
-        ></p>
-        <p className={`${isActive ? "font-bold " : ""}`}>{title}</p>
+          }`}
+        ></span>
+        <span className={`${isActive ? "font-bold" : ""}`}>{title}</span>
+        {notificationCount > 0 && (
+          <span className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {notificationCount}
+          </span>
+        )}
       </p>
     </div>
   );

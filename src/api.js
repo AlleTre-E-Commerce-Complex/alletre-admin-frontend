@@ -38,6 +38,10 @@ const api = {
     systemField: {
       default: `/categories/system-fields`,
     },
+    deliveryRequests: {
+      getRequests : "/deliveryRequests/admin/get-delivery-request",
+      updateStatus: (requestId) => `/deliveryRequests/admin/update-delivery-request?requestId=${requestId}`,
+    },
     withdrawalsRequests: {
       get: "/withdrawalsRequests/admin/all",
       put: (auctionDetailsId) => {
