@@ -38,6 +38,12 @@ const api = {
     systemField: {
       default: `/categories/system-fields`,
     },
+    withdrawalsRequests: {
+      get: "/withdrawalsRequests/admin/all",
+      put: (auctionDetailsId) => {
+        return `/withdrawalsRequests/${auctionDetailsId}/approve`;
+      },
+    },
   },
 };
 

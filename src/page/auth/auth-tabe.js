@@ -4,9 +4,8 @@ import { Dropdown, Tab } from "semantic-ui-react";
 import useTab from "../../hooks/use-tab";
 import routes from "../../routes";
 
-import oAuthImg from "../../../src/assets/img/o-auth-img.png";
+import oAuthImg from "../../../src/assets/img/header f.png";
 import oAuthFooterImg from "../../../src/assets/img/o-auth-path-footer.svg";
-import allatreLogoWhite from "../../../src/assets/logo/allatre-logo-white.svg";
 import { useLanguage } from "../../context/language-context";
 import content from "../../localization/content";
 import localizationKeys from "../../localization/localization-keys";
@@ -38,11 +37,6 @@ const AuthTabe = () => {
               className="w-full h-64 md:h-full object-cover"
               src={oAuthImg}
               alt="oAuthImg"
-            />
-            <img
-              className="absolute z-50 md:top-1/3 top-1/4 ltr:md:ml-40 rtl:md:mr-40 ltr:ml-2 rtl:mr-2  mt-5 w-40 md:w-auto "
-              src={allatreLogoWhite}
-              alt="allatreLogoWhite"
             />
             <div className=" md:mx-10 mx-2 absolute top-2 rtl:left-0 ltr:right-0 ">
               <Dropdown

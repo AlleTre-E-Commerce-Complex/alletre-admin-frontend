@@ -10,7 +10,7 @@ import { useLanguage } from "../../../context/language-context";
 import content from "../../../localization/content";
 import localizationKeys from "../../../localization/localization-keys";
 import userProfileicon from "../../../../src/assets/icons/user-Profile-icon.png";
-import { ReactComponent as AllatreLogo } from "../../../../src/assets/logo/allatre-logo-color.svg";
+import { ReactComponent as AllatreLogo } from "../../../../src/assets/img/allatre-logo-color.svg";
 
 const Header = ({ SetSid }) => {
   const [lang] = useLanguage("");

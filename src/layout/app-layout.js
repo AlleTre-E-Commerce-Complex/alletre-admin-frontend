@@ -10,6 +10,7 @@ import Category from "../page/app/category/category";
 import SubCategory from "../page/app/sub-category/sub-category";
 import Brands from "../page/app/brands/brands";
 import SystemFields from "../page/app/system-fields/system-fields";
+import WithdrawalRequest from "../page/app/withdrawal-requests/withdrawalRequest";
 
 const AppLayouts = () => {
   const [sid, SetSid] = useState(false);
@@ -34,6 +35,10 @@ const AppLayouts = () => {
           />
           <Route path={routes.app.auctions.default} component={AuctionsTabs} />
           <Route path={routes.app.users.default} component={Users} />
+          <Route
+            path={routes.app.withdrawalRequest.default}
+            component={WithdrawalRequest}
+          />
         </Switch>
       </div>
     </div>

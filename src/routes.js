@@ -37,6 +37,9 @@ const routes = {
     brands: {
       default: "/allatre-admin/brands",
     },
+    withdrawalRequest: {
+      default: "/allatre-admin/withdrawalRequest",
+    },
     systemField: {
       default: "/allatre-admin/system-field",
     },

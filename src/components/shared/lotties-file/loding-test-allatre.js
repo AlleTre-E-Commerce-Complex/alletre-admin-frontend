@@ -1,5 +1,7 @@
 import Lottie from "react-lottie";
 import lodingTestAllatre from "./loding-test-allatre.json";
+import loadingTest from "../../../../src/assets/logo/lodingIcon.gif";
+
 
 const LodingTestAllatre = () => {
   const defaultOptions = {
@@ -13,11 +15,11 @@ const LodingTestAllatre = () => {
 
   return (
     <div className="mt-6 cursor-wait">
-      <Lottie
-        className="cursor-wait"
-        isClickToPauseDisabled={true}
-        options={defaultOptions}
-        width={500}
+     <img 
+      src={loadingTest} 
+      alt="loading" 
+      className="cursor-wait"
+      style={{ width: "550px", height: "auto" }}
       />
     </div>
   );

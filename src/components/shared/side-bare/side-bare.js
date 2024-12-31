@@ -111,6 +111,14 @@ const Sidebar = ({ SetSid, sid }) => {
             }
             onClick={() => history.push(routes.app.brands.default)}
           />
+          <NavLink
+            title="Withdrawal Requests"
+            isActive={
+              pathname.length === 1 ||
+              pathname.startsWith(routes.app.withdrawalRequest.default)
+            }
+            onClick={() => history.push(routes.app.withdrawalRequest.default)}
+          />
           {/* <NavLink
             title="System Fields"
             isActive={
