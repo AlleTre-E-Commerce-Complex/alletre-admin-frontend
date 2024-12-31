@@ -90,36 +90,43 @@ const WithdrawalRequest = () => {
             {withdrawalsRequests.length > 0 ? (
               withdrawalsRequests
                 .sort((a, b) => b.id - a.id)
-                .map((item, index) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>{item.user.userName}</Table.Cell>
-                    <Table.Cell>{item.user.phone}</Table.Cell>
-                    <Table.Cell>
-                      {new Date(item.createdAt).toLocaleString()}
-                    </Table.Cell>
-                    <Table.Cell>{item.amount}</Table.Cell>
-                    <Table.Cell>{item.bankAccount.accountNumber}</Table.Cell>
-                    <Table.Cell>{item.withdrawalStatus}</Table.Cell>
-                    <Table.Cell>
-                      <button
-                        onClick={() => handleApprove(item)}
-                        className={`px-4 py-2 rounded-md transition font-medium 
+                .map(
+                  (item, index) => (
+                    console.log(item),
+                    (
+                      <Table.Row key={index}>
+                        <Table.Cell>{item.user.userName}</Table.Cell>
+                        <Table.Cell>{item.user.phone}</Table.Cell>
+                        <Table.Cell>
+                          {new Date(item.user.createdAt).toLocaleString()}
+                        </Table.Cell>
+                        <Table.Cell>{item.amount}</Table.Cell>
+                        <Table.Cell>
+                          {item.bankAccount.accountNumber}
+                        </Table.Cell>
+                        <Table.Cell>{item.withdrawalStatus}</Table.Cell>
+                        <Table.Cell>
+                          <button
+                            onClick={() => handleApprove(item)}
+                            className={`px-4 py-2 rounded-md transition font-medium 
                         ${
                           item.withdrawalStatus === "SUCCESS"
-                          ? "bg-gray-med text-gray-700 cursor-not-allowed"
-                          : "bg-primary hover:bg-primary-dark text-white"
+                            ? "bg-gray-med text-gray-700 cursor-not-allowed"
+                            : "bg-primary hover:bg-primary-dark text-white"
                         }`}
-                        disabled={item.withdrawalStatus === "SUCCESS"}
-                      >
-                        {item.withdrawalStatus === "PENDING"
-                          ? "Approve"
-                          : item.withdrawalStatus === "IN_PROGRESS"
-                          ? "Complete"
-                          : "Processed"}
-                      </button>
-                    </Table.Cell>
-                  </Table.Row>
-                ))
+                            disabled={item.withdrawalStatus === "SUCCESS"}
+                          >
+                            {item.withdrawalStatus === "PENDING"
+                              ? "Approve"
+                              : item.withdrawalStatus === "IN_PROGRESS"
+                              ? "Complete"
+                              : "Processed"}
+                          </button>
+                        </Table.Cell>
+                      </Table.Row>
+                    )
+                  )
+                )
             ) : (
               <Table.Row>
                 <Table.Cell colSpan="7" className="text-center">
