@@ -95,7 +95,7 @@ const WithdrawalRequest = () => {
                     <Table.Cell>{item.user.userName}</Table.Cell>
                     <Table.Cell>{item.user.phone}</Table.Cell>
                     <Table.Cell>
-                      {new Date(item.createdAt).toLocaleString()}
+                      {new Date(item.user.createdAt).toLocaleString()}
                     </Table.Cell>
                     <Table.Cell>{item.amount}</Table.Cell>
                     <Table.Cell>{item.bankAccount.accountNumber}</Table.Cell>
@@ -106,8 +106,8 @@ const WithdrawalRequest = () => {
                         className={`px-4 py-2 rounded-md transition font-medium 
                         ${
                           item.withdrawalStatus === "SUCCESS"
-                          ? "bg-gray-med text-gray-700 cursor-not-allowed"
-                          : "bg-primary hover:bg-primary-dark text-white"
+                            ? "bg-gray-med text-gray-700 cursor-not-allowed"
+                            : "bg-primary hover:bg-primary-dark text-white"
                         }`}
                         disabled={item.withdrawalStatus === "SUCCESS"}
                       >

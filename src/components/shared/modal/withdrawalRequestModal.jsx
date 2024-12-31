@@ -56,7 +56,7 @@ const WithdrawalRequestModal = ({
           </p>
           <p>
             <span className="font-medium text-gray-700">Created At:</span>{" "}
-            {auctionDetails.user.createdAt}
+            {new Date(auctionDetails.user.createdAt).toLocaleString()}
           </p>
           <p>
             <span className="font-medium text-gray-700">Amount:</span>{" "}
