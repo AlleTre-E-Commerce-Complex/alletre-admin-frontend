@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env PUBLIC_URL=/admin/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -71,6 +71,7 @@
   "devDependencies": {
     "@types/react": "^18.0.9",
     "autoprefixer": "^10.4.7",
+    "cross-env": "^7.0.3",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.2.6"
   },
