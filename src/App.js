@@ -7,7 +7,7 @@ import AppLayouts from "./layout/app-layout";
 import routes from "./routes";
 
 function App() {
-  console.log('app')
+  console.log('app admin')
   return (
     <div className="App">
       <Switch>
