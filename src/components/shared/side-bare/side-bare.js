@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { ReactComponent as AllatreLogo } from "../../../../src/assets/logo/allatre-logo-color.svg";
@@ -16,23 +16,70 @@ import { authAxios } from "../../../config/axios-config";
 // import api from "../../../api";
 import content from "../../../localization/content";
 import localizationKeys from "../../../localization/localization-keys";
+import { setDeliveryRequests } from "../../../redux-store/delivery-requests-slice";
+import { useSocket } from "../../../context/socket-context";
+import api from "../../../api";
 
 const Sidebar = ({ SetSid, sid }) => {
   const [lang] = useLanguage("");
+  const socket = useSocket()
   const selectedContent = content[lang];
   const history = useHistory();
   const { pathname } = useLocation();
   const [pofileData, setPofileData] = useState();
-
+  const { run, isLoading } = useAxios();
   const [forceReload, setForceReload] = useState(false);
   const onReload = React.useCallback(() => setForceReload((p) => !p), []);
-  const { run: runPofile, isLoading: isLoadingPofile } = useAxios([]);
-  const { deliveryRequestsCount } = useSelector((state) => state.deliveryRequests);
-  console.log('deliveryRequestsCount',deliveryRequestsCount)
-  const [notifications, setNotifications] = useState(deliveryRequestsCount);
+  // const { run: runPofile, isLoading: isLoadingPofile } = useAxios([]);
+  // const { deliveryRequestsCount } = useSelector((state) => state.deliveryRequests);
+  const dispatch = useDispatch()
+  const [notifications, setNotifications] = useState(0);
+  // useEffect(() => {
+  //   setNotifications(deliveryRequestsCount)
+  // }, [deliveryRequestsCount]);
   useEffect(() => {
-    setNotifications(deliveryRequestsCount)
-  }, [deliveryRequestsCount]);
+    if (!socket) return;
+
+    // Listen for new notifications via socket
+    socket.on('delivery:newNotification', (newNotification) => {
+      console.log('delivery:newNotification',newNotification);
+      setNotifications(prev => prev + 1)
+      // Add the new notification to the existing requests
+      
+      // Dispatch the updated requests and the new count to the Redux store
+      dispatch(setDeliveryRequests({ deliveryRequests: (prevRequests) => {
+          const updatedRequests = [...prevRequests, newNotification];
+          dispatch(setDeliveryRequests({ deliveryRequestsCount: updatedRequests.length }));
+          return updatedRequests;
+        } }));
+
+    });
+
+    // Cleanup the socket listener on component unmount
+    return () => {
+      socket.off('delivery:newNotification');
+    };
+  }, [socket, dispatch]);
+
+  useEffect(() => {
+    run(
+      authAxios
+        .get(api.app.deliveryRequests.getRequests)
+        .then((res) => {
+          const requests = res.data.data;
+          console.log('delivery requests****>>>', requests);
+          const newDeliveryReq = requests.filter(req => req.auction.deliveryRequestsStatus !== 'DELIVERY_SUCCESS')
+          setNotifications(newDeliveryReq.length);
+          
+          // Dispatch once with both values
+          dispatch(setDeliveryRequests({
+            deliveryRequests: requests,
+            deliveryRequestsCount: requests.length
+          }));
+        })
+    );
+  }, [run, dispatch, socket]);
+  
 
   const sidebarVariants = {
     open: {
@@ -65,6 +112,11 @@ const Sidebar = ({ SetSid, sid }) => {
     auth.logout();
   };
 
+  const handleDeliveryRequest = ()=>{
+    setNotifications(0)
+    dispatch(setDeliveryRequests({ deliveryRequestsCount: 0 }))
+    history.push(routes.app.deliveryRequests.default)
+  }
   return (
     <>
       <div className="h-screen fixed top-0 md:block hidden w-[250px] ">
@@ -121,7 +173,7 @@ const Sidebar = ({ SetSid, sid }) => {
            <NavLink
             title="Delivery Requests"
             isActive={pathname.startsWith(routes.app.deliveryRequests.default)}
-            onClick={() => history.push(routes.app.deliveryRequests.default)}
+            onClick={handleDeliveryRequest}
             notificationCount={notifications} // Pass notifications as a prop
           />
           {/* <NavLink

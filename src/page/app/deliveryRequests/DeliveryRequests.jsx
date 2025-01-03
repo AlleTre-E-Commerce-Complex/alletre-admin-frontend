@@ -5,8 +5,9 @@ import api from "../../../api";
 import { Dimmer } from "semantic-ui-react";
 import LodingTestAllatre from "../../../components/shared/lotties-file/loding-test-allatre";
 import { useSocket } from "../../../context/socket-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDeliveryRequests } from "../../../redux-store/delivery-requests-slice";
+import { use } from "react";
 
 const DeliveryRequestsStatus = {
   DELIVERY_PENDING: "DELIVERY_PENDING",
@@ -18,35 +19,38 @@ const DeliveryRequestsStatus = {
 
 const DeliveryRequests = () => {
   const { run, isLoading } = useAxios();
-  const [requests, setRequests] = useState([]);
+  const deliveryRequests = useSelector((state) => state.deliveryRequests.deliveryRequests)
+  const [requests, setRequests] = useState(deliveryRequests);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const socket = useSocket()
-  const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (!socket) return;
+//   const socket = useSocket()
+//   const dispatch = useDispatch()
+//   useEffect(() => {
+//     if (!socket) return;
 
-    // Listen for new notifications via socket
-    socket.on('delivery:newNotification', (newNotification) => {
-      console.log('delivery:newNotification',newNotification);
+//     // Listen for new notifications via socket
+//     socket.on('delivery:newNotification', (newNotification) => {
+//       console.log('delivery:newNotification',newNotification);
 
-      // Add the new notification to the existing requests
-      setRequests((prevRequests) => {
-        const updatedRequests = [...prevRequests, newNotification];
+//       // Add the new notification to the existing requests
+//       setRequests((prevRequests) => {
+//         const updatedRequests = [...prevRequests, newNotification];
         
-        // Dispatch the updated requests and the new count to the Redux store
-        dispatch(setDeliveryRequests({ deliveryRequests: updatedRequests }));
-        dispatch(setDeliveryRequests({ deliveryRequestsCount: updatedRequests.length }));
+//         // Dispatch the updated requests and the new count to the Redux store
+//         dispatch(setDeliveryRequests({ deliveryRequests: updatedRequests }));
+//         dispatch(setDeliveryRequests({ deliveryRequestsCount: updatedRequests.length }));
 
-        return updatedRequests;
-      });
-    });
+//         return updatedRequests;
+//       });
+//     });
 
-    // Cleanup the socket listener on component unmount
-    return () => {
-      socket.off('delivery:newNotification');
-    };
-  }, [socket, dispatch]);
+//     // Cleanup the socket listener on component unmount
+//     return () => {
+//       socket.off('delivery:newNotification');
+//     };
+//   }, [socket, dispatch]);
+
+
   useEffect(() => {
     run(
       authAxios
@@ -54,11 +58,11 @@ const DeliveryRequests = () => {
         .then((res) => {
           console.log(res.data.data);
           setRequests(res.data.data);
-          dispatch(setDeliveryRequests({deliveryRequests:res.data.data}))
-          dispatch(setDeliveryRequests({deliveryRequestsCount:res.data.data.length}))
+        //   dispatch(setDeliveryRequests({deliveryRequests:res.data.data}))
+        //   dispatch(setDeliveryRequests({deliveryRequestsCount:res.data.data.length}))
         })
     );
-  }, [run,dispatch,socket]);
+  }, [run]);
 
   const getValidStatusOptions = (currentStatus) => {
     switch (currentStatus) {
@@ -147,7 +151,7 @@ const DeliveryRequests = () => {
           </tr>
         </thead>
         <tbody>
-          {requests.map((req) => (
+          { requests?.map((req) => (
             <tr key={req.id} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-4 py-2">
                 <div>{new Date(req.createdAt).toLocaleDateString()}</div>
