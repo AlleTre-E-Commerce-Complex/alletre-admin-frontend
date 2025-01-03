@@ -2,7 +2,7 @@
   "name": "allatre-front",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/",
+  "homepage": "/admin",
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@reach/combobox": "0.16.1",
