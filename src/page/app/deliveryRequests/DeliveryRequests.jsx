@@ -147,6 +147,7 @@ const DeliveryRequests = () => {
             <th className="border border-gray-300 px-4 py-2">Winner</th>
             <th className="border border-gray-300 px-4 py-2">Product</th>
             <th className="border border-gray-300 px-4 py-2">Status</th>
+            <th className="border border-gray-300 px-4 py-2">Delivery Type</th>
             <th className="border border-gray-300 px-4 py-2">Action</th>
           </tr>
         </thead>
@@ -178,6 +179,9 @@ const DeliveryRequests = () => {
                     </option>
                   ))}
                 </select>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {req.auction.deliveryType === "DELIVERY"? "DELIVERY BY COMPANY" : req.auction.deliveryType === 'PICKUP' ? "DELIVERY BY BUYER":"NOT-SPECIFIED" }
               </td>
               <td className="border border-gray-300 px-4 py-2 text-center">
                 <button

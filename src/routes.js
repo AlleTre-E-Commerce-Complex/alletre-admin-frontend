@@ -24,6 +24,8 @@ const routes = {
       pending: `/allatre-admin/all-auctions/pending`,
       watingForPayment: `/allatre-admin/all-auctions/wating-for-payment`,
       expired: `/allatre-admin/all-auctions/expired`,
+      cancelled: `/allatre-admin/all-auctions/cancelled`,
+      blocked: `/allatre-admin/all-auctions/blocked`,
 
       auctionsDetails: (auctionId = ":auctionId") =>
         `/allatre-admin/all-auctions/${auctionId}/details`,

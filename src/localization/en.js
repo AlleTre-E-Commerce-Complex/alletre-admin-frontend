@@ -96,6 +96,8 @@ const en = {
   [localizationKeys.sold]: "Sold",
   [localizationKeys.pending]: "Pending",
   [localizationKeys.expired]: "Expired",
+  [localizationKeys.cancelled]: "Cancelled",
+  [localizationKeys.blocked]: "Blocked",
   // Breadcrumb
   [localizationKeys.home]: "Home",
   [localizationKeys.productDetails]: "product Details",
@@ -244,6 +246,7 @@ const en = {
   [localizationKeys.totalPending]: "Total Pending Auctions..",
   [localizationKeys.opsPending]: "Ops, there are no sold pending yet.",
   [localizationKeys.totalExpired]: "Total Expired Auctions...",
+  [localizationKeys.totalCancelled]: "Total Cancelled Auctions...",
   [localizationKeys.opsExpired]: "Ops, there are no Expired auctions yet.",
   // details
   [localizationKeys.reviews]: "Reviews",
@@ -311,6 +314,9 @@ const en = {
     "your Auction is Created success",
   [localizationKeys.makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne]:
     "Make sure that you choose the auction location or create another one",
+    //messages
+    [localizationKeys.YouSuccessfullyCancelledTheAuction]:
+    "Succefully cancelled the auction..!",
 };
 
 export default en;
