@@ -90,6 +90,8 @@ const localizationKeys = {
   sold: "sold",
   pending: "pending",
   expired: "expired",
+  cancelled: "cancelled",
+  blocked: "blocked",
   // Breadcrumb
   home: "home",
   productDetails: "productDetails",
@@ -228,6 +230,7 @@ const localizationKeys = {
   totalPending: "totalPending",
   opsPending: "opsPending",
   totalExpired: "totalExpired",
+  totalCancelled:'totalCancelled',
   opsExpired: "opsExpired",
   //  details
   reviews: "reviews",
@@ -289,6 +292,9 @@ const localizationKeys = {
   yourAuctionIsCreatedSuccess: "yourAuctionIsCreatedSuccess",
   makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne:
     "makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne",
+    //messages
+  YouSuccessfullyCancelledTheAuction: "YouSuccessfullyCancelledTheAuction",
+
 };
 
 export default localizationKeys;

@@ -1,4 +1,4 @@
-const api = {
+const   api = {
   auth: {
     login: "/auth/admin/sign-in",
     refreshtoken: "/auth/admin/refresh-token",
@@ -6,13 +6,13 @@ const api = {
   app: {
     allUser: "/users/admin/all",
     auctions: "/auctions/admin/all",
+    cancell_auction: (auctionId,adminMessage) =>
+      `/auctions/admin/${auctionId}/cancel-auction?adminMessage=${adminMessage}`,
     auctionsById: (auctionsId) => `auctions/user/${auctionsId}`,
-
     //
     getUserAuctionsDetails: (auctionsId) =>
       `/auctions/user/${auctionsId}/details`,
     totalBids: (auctionsId) => `/auctions/user/${auctionsId}/total-bids`,
-    //
     customField: {
       ByCategoryId: (categoryId) =>
         `/categories/custom-fields?categoryId=${categoryId}`,

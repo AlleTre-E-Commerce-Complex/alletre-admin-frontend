@@ -11,6 +11,8 @@ import { useLanguage } from "../../context/language-context";
 import content from "../../localization/content";
 import localizationKeys from "../../localization/localization-keys";
 import routes from "../../routes";
+import WarningModal from "../shared/modal/WarningModal";
+import SuccessModal from "../shared/modal/SuccessModal";
 
 const ActionsRowTable = ({
   key,
@@ -38,6 +40,10 @@ const ActionsRowTable = ({
   const history = useHistory();
   const ending_Time = useCountdown(endingTime);
   const starting_Date = useCountdown(startingDate);
+  const [openCancelAuctionModal, setCancelAuctionModal] = useState(false);
+  const [openSuccessModal, setSuccessModal] = useState(false);
+  const [cancelWarningMessage, setCancelWarningMessage] = useState("");
+
   const startingDateLeft = `${starting_Date.days} ${
     selectedContent[localizationKeys.days]
   } : ${starting_Date.hours} ${selectedContent[localizationKeys.hrs]} : ${
@@ -307,14 +313,45 @@ const ActionsRowTable = ({
             </button>
           </div>
         ) : (
+          <div className="flex gap-3">
+          {status === 'ACTIVE' || status === 'IN_SCHEDULED' ? (
+            <button
+              className="bg-primary hover:bg-primary-dark text-white text-sm font-normal sm:w-[128px] w-full sm:h-8 h-10 rounded-lg sm:mt-14 mt-5"
+              onClick={() => {
+                setCancelAuctionModal(true);
+                setCancelWarningMessage('Do you really want to cancell this auction..?');
+              }}
+            >
+              {selectedContent[localizationKeys.cancel]}
+            </button>
+          ) : null}
+
           <button
             onClick={() => history.push(goToDetails)}
             className="bg-primary hover:bg-primary-dark text-white text-sm font-normal sm:w-[128px] w-full sm:h-8 h-10 rounded-lg sm:mt-14 mt-5 "
           >
             {selectedContent[localizationKeys.viewDetails]}
           </button>
+          
+          </div>
         )}
       </div>
+
+      <WarningModal
+        auctionId={auctionsId}
+        open={openCancelAuctionModal}
+        setOpen={setCancelAuctionModal}
+        setSuccessModal={setSuccessModal}
+        message={cancelWarningMessage}
+      />
+      <SuccessModal
+        open={openSuccessModal}
+        setOpen={setSuccessModal}
+        message={
+          selectedContent[localizationKeys.YouSuccessfullyCancelledTheAuction]
+        }
+        returnUrl={routes.app.auctions.cancelled}
+      />
     </div>
   );
 };

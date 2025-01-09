@@ -17,6 +17,7 @@ import localizationKeys from "../../localization/localization-keys";
 import LodingTestAllatre from "../shared/lotties-file/loding-test-allatre";
 
 const ActiveAuctions = () => {
+  
   const [lang] = useLanguage("");
   const selectedContent = content[lang];
   const [forceReload, setForceReload] = useState(false);
@@ -36,6 +37,7 @@ const ActiveAuctions = () => {
           .get(`${api.app.auctions}${search}&status=ACTIVE`)
           .then((res) => {
             setActiveAuctionData(res?.data?.data);
+            console.log('Acitove page :',res?.data?.data)
             setTotalPages(res?.data?.pagination?.totalPages);
           })
       );
@@ -72,6 +74,7 @@ const ActiveAuctions = () => {
               key={e?.id}
               status={e?.status}
               title={e?.product?.title}
+              auctionsId={e?.id}
               description={e?.product?.description}
               img={e?.product?.images[0]?.imageLink}
               totalBids={e?._count?.bids}

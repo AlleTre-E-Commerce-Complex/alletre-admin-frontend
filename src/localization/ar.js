@@ -94,6 +94,8 @@ const ar = {
   [localizationKeys.sold]: "مباع",
   [localizationKeys.pending]: "معلق",
   [localizationKeys.expired]: "منتهي",
+  [localizationKeys.cancelled]: "تم الغاء",
+  [localizationKeys.blocked]: "مسدود",
   // Breadcrumb
   [localizationKeys.home]: "الصفحة الرئيسية",
   [localizationKeys.productDetails]: "تفاصيل المنتج",
@@ -241,6 +243,7 @@ const ar = {
   [localizationKeys.totalPending]: "إجمالي المزادات المعلقة ..",
   [localizationKeys.opsPending]: "عفوًا ، لا توجد عمليات بيع معلقة حتى الآن.",
   [localizationKeys.totalExpired]: "إجمالي المزادات المنتهية الصلاحية ...",
+  [localizationKeys.totalCancelled]: "إجمالي المزادات الملغاة...",
   // details
   [localizationKeys.reviews]: "مراجعات",
   [localizationKeys.timeLeft]: "الوقت المتبقي",
@@ -299,6 +302,9 @@ const ar = {
   [localizationKeys.yourAuctionIsCreatedSuccess]: "تم إنشاء مزادك بنجاح",
   [localizationKeys.makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne]:
     "تأكد من اختيار موقع المزاد أو إنشاء موقع آخر",
+    //messages
+    [localizationKeys.YouSuccessfullyCancelledTheAuction]:
+    "تم إلغاء المزاد بنجاح..!",
 };
 
 export default ar;

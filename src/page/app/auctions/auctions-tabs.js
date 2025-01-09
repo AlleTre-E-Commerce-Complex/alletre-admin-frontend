@@ -12,6 +12,7 @@ import WatingForPaymentAuctions from "../../../components/auctions-tabs-componen
 import ExpiredAuctions from "../../../components/auctions-tabs-components/expired-auctions";
 import useTab from "../../../hooks/use-tab";
 import { useEffect } from "react";
+import CancelledAuction from "../../../components/auctions-tabs-components/cancelledAuction";
 
 const AuctionsTabs = () => {
   const [lang] = useLanguage("");
@@ -91,6 +92,17 @@ const AuctionsTabs = () => {
         <div>
           <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
             <ExpiredAuctions />
+          </Tab.Pane>
+        </div>
+      ),
+    },
+    {
+      menuItem: `${selectedContent[localizationKeys.cancelled]}`,
+      route: routes.app.auctions.cancelled,
+      render: () => (
+        <div>
+          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+            <CancelledAuction />
           </Tab.Pane>
         </div>
       ),
