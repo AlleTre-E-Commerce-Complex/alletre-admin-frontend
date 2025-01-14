@@ -5,6 +5,8 @@ const   api = {
   },
   app: {
     allUser: "/users/admin/all",
+    updateUserBlockStatus :(userId, currentStatus) => 
+      `users/admin/updateUserBlockStatus?userId=${userId}&currentStatus=${currentStatus}`,
     auctions: "/auctions/admin/all",
     cancell_auction: (auctionId,adminMessage) =>
       `/auctions/admin/${auctionId}/cancel-auction?adminMessage=${adminMessage}`,
