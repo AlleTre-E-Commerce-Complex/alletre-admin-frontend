@@ -42,6 +42,12 @@ const routes = {
     deliveryRequests: {
       default: "/allatre-admin/delivery-requests",
     },
+    bankTransfer: {
+      default: "/allatre-admin/bank-Transfer",
+    },
+    adminWallet: {
+      default: "/allatre-admin/get-wallet-details"
+    },
     withdrawalRequest: {
       default: "/allatre-admin/withdrawalRequest",
     },
