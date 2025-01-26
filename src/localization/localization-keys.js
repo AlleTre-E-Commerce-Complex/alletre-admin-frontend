@@ -294,6 +294,15 @@ const localizationKeys = {
     "makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne",
     //messages
   YouSuccessfullyCancelledTheAuction: "YouSuccessfullyCancelledTheAuction",
+  //wallet
+  WalletBalance: "WalletBalance",
+  AccountBalance:"AccountBalance",
+  Withdraw: "Withdraw",
+  Date: "Date",
+  Withdrawals: "Withdrawals",
+  Deposits: "Deposits",
+  Balance: "Balance",
+  Description: "Description",
 
 };
 

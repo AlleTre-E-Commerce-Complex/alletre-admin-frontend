@@ -13,6 +13,8 @@ import SystemFields from "../page/app/system-fields/system-fields";
 import WithdrawalRequest from "../page/app/withdrawal-requests/withdrawalRequest";
 import DeliveryRequests from "../page/app/deliveryRequests/DeliveryRequests";
 import { SocketProvider } from "../context/socket-context";
+import BankTransferRequests from "../page/app/bankTransfer/BankTransferRequests";
+import AdminWallet from "../page/app/AdminWallet/AdminWallet";
 const AppLayouts = () => {
   console.log('app layout')
   const [sid, SetSid] = useState(false);
@@ -31,6 +33,8 @@ const AppLayouts = () => {
             />
           <Route path={routes.app.brands.default} component={Brands} />
           <Route path={routes.app.deliveryRequests.default} component={DeliveryRequests} />
+          <Route path={routes.app.bankTransfer.default} component={BankTransferRequests} />
+          <Route path={routes.app.adminWallet.default} component={AdminWallet} />
           <Route path={routes.app.subGatogry.default} component={SubCategory} />
           <Route path={routes.app.category.default} component={Category} />
           <Route

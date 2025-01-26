@@ -50,6 +50,15 @@ const   api = {
         return `/withdrawalsRequests/${auctionDetailsId}/approve`;
       },
     },
+    bankTransferRequests:{
+      getRequests: "/auctions/admin/get-bankTransfer-request",
+      updateStatus: (requestId) => `/auctions/admin/update-bankTransfer-request?requestId=${requestId}`,
+    },
+    adminWallet:{
+      getAdminWalletDetails:"/wallet/get-admin-wallet-details",
+      getAdminWalletBalance:"/wallet/get-admin-wallet-balance",
+      getBankAccountBalance:"/wallet/get-account-balance",
+    }
   },
 };
 

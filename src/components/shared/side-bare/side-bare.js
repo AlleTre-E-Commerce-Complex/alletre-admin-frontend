@@ -34,6 +34,7 @@ const Sidebar = ({ SetSid, sid }) => {
   // const { deliveryRequestsCount } = useSelector((state) => state.deliveryRequests);
   const dispatch = useDispatch()
   const [notifications, setNotifications] = useState(0);
+  const [bankTransferNotifications, setBankTransferNotifications] = useState(0);
   // useEffect(() => {
   //   setNotifications(deliveryRequestsCount)
   // }, [deliveryRequestsCount]);
@@ -117,6 +118,9 @@ const Sidebar = ({ SetSid, sid }) => {
     dispatch(setDeliveryRequests({ deliveryRequestsCount: 0 }))
     history.push(routes.app.deliveryRequests.default)
   }
+  const handleBankTransfer = () => {
+    history.push(routes.app.bankTransfer.default)
+  }
   return (
     <>
       <div className="h-screen fixed top-0 md:block hidden w-[250px] ">
@@ -175,6 +179,18 @@ const Sidebar = ({ SetSid, sid }) => {
             isActive={pathname.startsWith(routes.app.deliveryRequests.default)}
             onClick={handleDeliveryRequest}
             notificationCount={notifications} // Pass notifications as a prop
+          />
+           <NavLink
+            title="Bank Transfer"
+            isActive={pathname.startsWith(routes.app.bankTransfer.default)}
+            onClick={handleBankTransfer}
+            notificationCount={bankTransferNotifications} // Pass notifications as a prop
+          />
+           <NavLink
+            title="Admin Wallet"
+            isActive={pathname.startsWith(routes.app.adminWallet.default)}
+            onClick={() => history.push(routes.app.adminWallet.default)}
+            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
           />
           {/* <NavLink
             title="System Fields"

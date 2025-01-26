@@ -305,6 +305,14 @@ const ar = {
     //messages
     [localizationKeys.YouSuccessfullyCancelledTheAuction]:
     "تم إلغاء المزاد بنجاح..!",
+        //wallet
+    [localizationKeys.WalletBalance]: "رصيد المحفظة",
+    [localizationKeys.AccountBalance]: "رصيد الحساب",
+    [localizationKeys.Withdraw]: "ينسحب",
+    [localizationKeys.Date]: "تاريخ",
+    [localizationKeys.Withdrawals]: "السحوبات",
+    [localizationKeys.Balance]: "توازن",
+    [localizationKeys.Description]: "وصف",
 };
 
 export default ar;

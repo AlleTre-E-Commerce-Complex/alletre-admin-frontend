@@ -317,6 +317,15 @@ const en = {
     //messages
     [localizationKeys.YouSuccessfullyCancelledTheAuction]:
     "Succefully cancelled the auction..!",
+    //wallet
+    [localizationKeys.WalletBalance]: "Wallet Balance",
+    [localizationKeys.AccountBalance]: "Account Balance",
+    [localizationKeys.Withdraw]: "Withdraw",
+    [localizationKeys.Date]: "Date",
+    [localizationKeys.Withdrawals]: "Withdrawals",
+    [localizationKeys.Balance]: "Balance",
+    [localizationKeys.Description]: "Description",
+
 };
 
 export default en;
