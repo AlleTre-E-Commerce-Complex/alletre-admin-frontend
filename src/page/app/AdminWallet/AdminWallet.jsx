@@ -18,7 +18,8 @@ const AdminWallet = () => {
   const selectedContent = content[lang];
   const {run : runWallet, isLoading: isLoadingWallet} = useAxios([])
   const [walletBalance, setWalletBalance] = useState(0);
-  const [accountBalance, setAccountBalance] = useState(0);
+  const [accountBalanceWithWelcomBonus, setAccountBalanceWithWelcomBonus] = useState(0);
+  const [accountBalanceWithOutWelcomBonus, setAccountBalanceWithOutWelcomBonus] = useState(0);
   const [walletHistory, setWalletHistory] = useState([]);
   const [withdrawalOpen,setWithdrawalOpen] = useState(false)
   const [successModalOpen,setSuccessModalOpen] = useState(false)
@@ -36,9 +37,10 @@ const AdminWallet = () => {
           runWallet(authAxios.get(`${api.app.adminWallet.getBankAccountBalance}`)),
         ]);
   
-        setWalletHistory(historyResponse.data);
-        setWalletBalance(balanceResponse.data);
-        setAccountBalance(accountResponse.data)
+        setWalletHistory(historyResponse?.data);
+        setWalletBalance(balanceResponse?.data);
+        setAccountBalanceWithWelcomBonus(accountResponse?.data?.accountBalanceWithWelcomeBonus)
+        setAccountBalanceWithOutWelcomBonus(accountResponse?.data?.accountBalanceWithOutWelcomeBonus)
       } catch (error) {
         console.error('Error fetching wallet data:', error);
       }
@@ -74,7 +76,10 @@ const AdminWallet = () => {
                      {selectedContent[localizationKeys.WalletBalance]}: AED<span> {walletBalance}</span>{" "}
                    </h1>
                    <h1 className="text-gray-500 border p-2 rounded border-primary">
-                     {selectedContent[localizationKeys.AccountBalance]}: AED<span> {accountBalance}</span>{" "}
+                   Account With Welcome Bonus: AED<span> {accountBalanceWithWelcomBonus}</span>{" "}
+                   </h1>
+                   <h1 className="text-gray-500 border p-2 rounded border-primary">
+                     Account Without Welcome Bonus: AED<span> {accountBalanceWithOutWelcomBonus}</span>{" "}
                    </h1>
                 {/* <button  
                     className="bg-primary text-white text-lg my-2 font-normal px-5 rounded-lg "
