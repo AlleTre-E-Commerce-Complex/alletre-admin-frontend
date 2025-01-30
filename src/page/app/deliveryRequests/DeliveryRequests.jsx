@@ -22,6 +22,7 @@ const DeliveryRequests = () => {
   const deliveryRequests = useSelector((state) => state.deliveryRequests.deliveryRequests)
   const [requests, setRequests] = useState(deliveryRequests);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [deliveryType, setDeliveryType] = useState('DELIVERY')
 
 //   const socket = useSocket()
 //   const dispatch = useDispatch()
@@ -50,19 +51,18 @@ const DeliveryRequests = () => {
 //     };
 //   }, [socket, dispatch]);
 
-
   useEffect(() => {
     run(
       authAxios
-        .get(api.app.deliveryRequests.getRequests)
+        .get(api.app.deliveryRequests.getRequests(deliveryType))
         .then((res) => {
-          console.log(res.data.data);
+          console.log('Delivery Request :',res.data.data);
           setRequests(res.data.data);
         //   dispatch(setDeliveryRequests({deliveryRequests:res.data.data}))
         //   dispatch(setDeliveryRequests({deliveryRequestsCount:res.data.data.length}))
         })
     );
-  }, [run]);
+  }, [run,deliveryType]);
 
   const getValidStatusOptions = (currentStatus) => {
     switch (currentStatus) {
@@ -139,6 +139,16 @@ const DeliveryRequests = () => {
         <LodingTestAllatre />
       </Dimmer>
       <h2 className="text-2xl font-bold mb-4">Delivery Requests</h2>
+      <div className="rounded mb-2 flex justify-between ">
+        <button 
+          onClick={()=>setDeliveryType('DELIVERY')} className={`w-full border p-2 rounded border-primary ${deliveryType === "DELIVERY" ? 'font-bold  text-primary shadow shadow-primary' : 'hover:bg-slate-200  ' } `}>
+           DELIVERY
+        </button>
+        <button 
+          onClick={()=>setDeliveryType('PICKUP')} className={`w-full border p-2 rounded border-primary ${deliveryType === "PICKUP" ?' font-bold  text-primary shadow shadow-primary' : 'hover:bg-slate-200 '} `}>
+          PICKUP
+        </button>
+      </div>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead className="bg-gray-100">
           <tr>
@@ -167,7 +177,7 @@ const DeliveryRequests = () => {
                   className="w-16 h-16 object-cover rounded"
                 />
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              {req.auction.deliveryType === "DELIVERY"?<td className="border border-gray-300 px-4 py-2">
                 <select
                   value={req.auction.deliveryRequestsStatus}
                   onChange={(e) => handleStatusChange(req.id, e.target.value)}
@@ -179,7 +189,10 @@ const DeliveryRequests = () => {
                     </option>
                   ))}
                 </select>
-              </td>
+              </td> : 
+              <td className="border border-gray-300 px-4 py-2">
+                {req.auction.deliveryRequestsStatus}
+              </td>}
               <td className="border border-gray-300 px-4 py-2">
                 {req.auction.deliveryType === "DELIVERY"? "DELIVERY BY COMPANY" : req.auction.deliveryType === 'PICKUP' ? "DELIVERY BY BUYER":"NOT-SPECIFIED" }
               </td>

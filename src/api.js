@@ -41,7 +41,7 @@ const   api = {
       default: `/categories/system-fields`,
     },
     deliveryRequests: {
-      getRequests : "/deliveryRequests/admin/get-delivery-request",
+      getRequests :(deliveryType)=> `/deliveryRequests/admin/get-delivery-request?deliveryType=${deliveryType}`,
       updateStatus: (requestId) => `/deliveryRequests/admin/update-delivery-request?requestId=${requestId}`,
     },
     withdrawalsRequests: {
