@@ -2,7 +2,7 @@ import React from "react";
 import CategoryUplodImgModel from "./category-uplod-img-model";
 import addimage from "../../../src/assets/icons/add-image-icon.png";
 
-const CategoryCard = ({ GatogryOptions, onReload }) => {
+const CategoryCard = ({ GatogryOptions, onReload, setCategoryId, setShowModal }) => {
   console.log("====================================");
   console.log({ GatogryOptions });
   console.log("====================================");
@@ -39,6 +39,15 @@ const CategoryCard = ({ GatogryOptions, onReload }) => {
               </h1>
             </div>
           </div>
+          <button
+       className="bg-primary text-white mb-2 mt-4 px-4 py-2 w-full rounded-md hover:bg-primary-dark"
+       onClick={()=>{
+        setShowModal(true)
+        setCategoryId(e?.key)
+       }}
+      >
+        Edit category
+      </button>
         </div>
       ))}
     </div>

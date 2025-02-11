@@ -15,6 +15,8 @@ import DeliveryRequests from "../page/app/deliveryRequests/DeliveryRequests";
 import { SocketProvider } from "../context/socket-context";
 import BankTransferRequests from "../page/app/bankTransfer/BankTransferRequests";
 import AdminWallet from "../page/app/AdminWallet/AdminWallet";
+import AdminMessageSender from "../page/app/SendMessages/SendMessages";
+import NonRegisteredUsers from "../page/app/unRegisteredUsers/NonRegisteredUsers";
 const AppLayouts = () => {
   console.log('app layout')
   const [sid, SetSid] = useState(false);
@@ -47,6 +49,9 @@ const AppLayouts = () => {
             path={routes.app.withdrawalRequest.default}
             component={WithdrawalRequest}
           />
+          <Route path={routes.app.sendMessages.default} component={AdminMessageSender} />
+          <Route path={routes.app.nonRegisteredUsers.default} component={NonRegisteredUsers} />
+
         </Switch>
       </div>
     </SocketProvider>

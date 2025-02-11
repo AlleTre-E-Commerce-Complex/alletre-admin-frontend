@@ -192,6 +192,18 @@ const Sidebar = ({ SetSid, sid }) => {
             onClick={() => history.push(routes.app.adminWallet.default)}
             // notificationCount={bankTransferNotifications} // Pass notifications as a prop
           />
+            <NavLink
+            title="Send Messages"
+            isActive={pathname.startsWith(routes.app.sendMessages.default)}
+            onClick={() => history.push(routes.app.sendMessages.default)}
+            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
+          />
+            <NavLink
+            title="Users - Not Registered"
+            isActive={pathname.startsWith(routes.app.nonRegisteredUsers.default)}
+            onClick={() => history.push(routes.app.nonRegisteredUsers.default)}
+            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
+          />
           {/* <NavLink
             title="System Fields"
             isActive={
