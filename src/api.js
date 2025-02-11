@@ -5,6 +5,8 @@ const   api = {
   },
   app: {
     allUser: "/users/admin/all",
+    nonRegisteredUsers:'/users/non-registered-users/upload-excel',
+    getAllNonRegisteredUsers:'/users/non-registered-users/get',
     updateUserBlockStatus :(userId, currentStatus) => 
       `users/admin/updateUserBlockStatus?userId=${userId}&currentStatus=${currentStatus}`,
     auctions: "/auctions/admin/all",
@@ -25,7 +27,11 @@ const   api = {
     //
     category: {
       default: "/categories/all",
+      getCategory: (categoryId)=> `/categories/getOne/${categoryId}`,
       uploadImages: (categoryId) => `/categories/${categoryId}/upload-images`,
+      createNewCategory:'/categories/createNewCategory',
+      editCategory: (categoryId)=> `/categories/editCategory/${categoryId}`,
+
     },
     subCategory: {
       default: (categoryId) =>
@@ -58,6 +64,9 @@ const   api = {
       getAdminWalletDetails:"/wallet/get-admin-wallet-details",
       getAdminWalletBalance:"/wallet/get-admin-wallet-balance",
       getBankAccountBalance:"/wallet/get-account-balance",
+    },
+    sendMessage:{
+      sendAuctionToAllUser:`/whatsapp/send-auction-bulk`
     }
   },
 };

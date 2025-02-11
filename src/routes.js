@@ -54,6 +54,12 @@ const routes = {
     systemField: {
       default: "/allatre-admin/system-field",
     },
+    sendMessages: {
+      default: "/allatre-admin/send-message",
+    },
+    nonRegisteredUsers: {
+      default: "/allatre-admin/non-registered-users",
+    },
   },
 };
 
