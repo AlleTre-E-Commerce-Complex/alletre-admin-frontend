@@ -18,9 +18,11 @@ class Auth {
   }
 
   setToken({ newAccessToken, newRefreshToken }) {
-    accessToken = newAccessToken;
-    refreshToken = newRefreshToken;
-    localStorage.setItem("token", newRefreshToken || "");
+    if (newAccessToken) accessToken = newAccessToken;
+    if (newRefreshToken) {
+      refreshToken = newRefreshToken;
+      localStorage.setItem("token", newRefreshToken);
+    }
   }
 
   logout() {
@@ -33,6 +35,7 @@ class Auth {
   }
 
   async refreshToken() {
+    if (!refreshToken) return false;
     if (!this.hasExpired()) return accessToken;
 
     try {
@@ -40,12 +43,16 @@ class Auth {
         refreshToken: refreshToken,
       });
       const data = res.data;
-      this.setToken({
-        newAccessToken: data?.data.accessToken,
-        newRefreshToken: refreshToken,
-      });
-      return data?.data?.accessToken;
+      if (data?.data?.accessToken) {
+        this.setToken({
+          newAccessToken: data.data.accessToken,
+          newRefreshToken: data.data.refreshToken || refreshToken,
+        });
+        return data.data.accessToken;
+      }
+      return false;
     } catch (e) {
+      this.logout();
       return false;
     }
   }

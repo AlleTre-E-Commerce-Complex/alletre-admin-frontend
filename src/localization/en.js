@@ -323,6 +323,7 @@ const en = {
     [localizationKeys.Withdraw]: "Withdraw",
     [localizationKeys.Date]: "Date",
     [localizationKeys.Withdrawals]: "Withdrawals",
+    [localizationKeys.Deposits]: "Deposite",
     [localizationKeys.Balance]: "Balance",
     [localizationKeys.Description]: "Description",
 
