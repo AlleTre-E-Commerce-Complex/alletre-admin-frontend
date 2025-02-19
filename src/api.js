@@ -66,7 +66,8 @@ const   api = {
       getBankAccountBalance:"/wallet/get-account-balance",
     },
     sendMessage:{
-      sendAuctionToAllUser:`/whatsapp/send-auction-bulk`
+      sendAuctionToAllUser:`/whatsapp/send-auction-bulk`,
+      sendAcutionToAllNonExistingUsers:`/whatsapp/send-auction-bulk-ToNonExistingUser`,
     }
   },
 };

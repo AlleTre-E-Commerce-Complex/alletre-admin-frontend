@@ -66,7 +66,7 @@ const AdminMessageSender = () => {
 
   const handleSendAuctionToAllNonExistingUsers = (auctionId) =>{
     sendAuctionToAll(
-       authAxios.post(`${api.app.sendMessage.sendAuctionToAllUser}`,{auctionId})
+       authAxios.post(`${api.app.sendMessage.sendAcutionToAllNonExistingUsers}`,{auctionId})
        .then((res)=>{
            toast.success('successfully send message')
        })
