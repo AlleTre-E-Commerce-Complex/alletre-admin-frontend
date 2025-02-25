@@ -11,7 +11,6 @@ const Users = () => {
       <h1 className="text-3xl text-black font-medium py-5 mx-5">Users</h1>
       <div className="bg-gray-light rounded-2xl p-2 shadow-md">
         <UsersTable />
-        <Upload_XL_file/>
       </div>
     </div>
   );

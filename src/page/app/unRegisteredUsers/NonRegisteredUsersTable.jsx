@@ -146,7 +146,7 @@ const NonRegisteredUsersTable = () => {
           ))}
         </Table>
         <div className="flex justify-end mt-7 mx-8">
-          <PaginationApp totalPages={totalPages} perPage={15} />
+          <PaginationApp totalPages={totalPages} perPage={25} />
         </div>
         <SuccessModal 
           open={openSuccessModal}
