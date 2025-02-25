@@ -15,7 +15,7 @@ const AdminMessageSender = () => {
   const [lang] = useLanguage("");
   const selectedContent = content[lang];
   const { run: sendMessage, isLoading } = useAxios([]);
-  const { run: fetchLiveAutions, isLoading: liveAuctionLoading } = useAxios([]);
+  const { run: fetchAutions, isLoading: liveAuctionLoading } = useAxios([]);
   const { run: sendAuctionToAll, isLoading: sendAuctionToAllLoading } = useAxios([]);
   
   const [phone, setPhone] = useState("");
@@ -28,14 +28,34 @@ const AdminMessageSender = () => {
 
   useEffect(() => {
     if (search.includes("page") && search.includes("perPage")) {
-      fetchLiveAutions(
-        authAxios.get(`${api.app.auctions}${search}&status=ACTIVE`).then((res) => {
-          setLiveAuctionData(res?.data?.data);
-          setTotalPages(res?.data?.pagination?.totalPages);
-        })
+      fetchAutions(
+        Promise.all([
+          authAxios.get(`${api.app.auctions}${search}&status=ACTIVE`),
+          authAxios.get(`${api.app.auctions}${search}&status=IN_SCHEDULED`)
+        ])
+          .then(([activeRes, scheduledRes]) => {
+            // Combine the results from both API calls
+            const combinedData = [
+              ...(activeRes?.data?.data || []),
+              ...(scheduledRes?.data?.data || [])
+            ];
+            
+            // Calculate total pages based on combined data
+            const maxTotalPages = Math.max(
+              activeRes?.data?.pagination?.totalPages || 0,
+              scheduledRes?.data?.pagination?.totalPages || 0
+            );
+
+            setLiveAuctionData(combinedData);
+            setTotalPages(maxTotalPages);
+          })
+          .catch((error) => {
+            console.error('Error fetching auctions:', error);
+            // Handle error appropriately (e.g., show error message to user)
+          })
       );
     }
-  }, [fetchLiveAutions, search]);
+  }, [fetchAutions, search]);
 
   const handleSubmit = async () => {
     if (sendToAll) {
@@ -124,7 +144,7 @@ const AdminMessageSender = () => {
 
       {/* Display Auctions */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-4">Expired Auctions</h2>
+        <h2 className="text-lg font-semibold mb-4">Auctions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {liveAuctionData.map((data, index) => (
             <div key={index} className="bg-white rounded-lg shadow-md p-4 flex items-center gap-4">
@@ -140,6 +160,7 @@ const AdminMessageSender = () => {
                 <h3 className="text-md font-bold">{data.product.title}</h3>
                 <p className="text-sm text-gray-600">{data.product.category.nameEn}</p>
                 <p className="text-lg font-semibold text-primary">AED {data.startBidAmount}</p>
+                <p className="text-sm  text-gray-600"> {data.status}</p>
               </div>
 
               {/* Share Button */}
