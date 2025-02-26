@@ -23,6 +23,7 @@ const AdminMessageSender = () => {
   const [sendToAll, setSendToAll] = useState(false);
   const [liveAuctionData, setLiveAuctionData] = useState([]);
   const [totalPages, setTotalPages] = useState();
+  
 
   const { search } = useLocation();
 
@@ -57,21 +58,40 @@ const AdminMessageSender = () => {
     }
   }, [fetchAutions, search]);
 
-  const handleSubmit = async () => {
-    if (sendToAll) {
-      try {
-        await sendMessage(authAxios.post(`${api.app.sendMessageToAll}`, { message }));
-      } catch (error) {
-        console.error("Error sending message to all users:", error);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent form submission
+    
+    if (!message) {
+      toast.error('Please enter a message');
+      return;
+    }
+    
+    if (!sendToAll && !phone) {
+      toast.error('Please enter a phone number');
+      return;
+    }
+
+    try {
+      if (sendToAll) {
+        await sendMessage(
+          authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { message })
+        );
+        toast.success('Message sent to all non-registered users');
+      } else {
+        await sendMessage(
+          authAxios.post(`${api.app.sendMessage}`, { phone, message })
+        );
+        toast.success('Message sent successfully');
       }
-    } else {
-      if (phone && message) {
-        try {
-          await sendMessage(authAxios.post(`${api.app.sendMessage}`, { phone, message }));
-        } catch (error) {
-          console.error("Error sending message to user:", error);
-        }
+      
+      // Clear form after successful send
+      setMessage('');
+      if (!sendToAll) {
+        setPhone('');
       }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error(error.response?.data?.message || 'Failed to send message');
     }
   };
 
@@ -104,11 +124,19 @@ const AdminMessageSender = () => {
 
         <Form onSubmit={handleSubmit}>
           <div className="flex gap-4 mb-4">
-            <Button className={`${!sendToAll ?'bg-primary text-white' : ""} `}  onClick={() => setSendToAll(false)}>
+            <Button 
+              type="button" 
+              className={`${!sendToAll ? 'bg-primary text-white' : 'bg-gray-200'} px-4 py-2 rounded`}  
+              onClick={() => setSendToAll(false)}
+            >
               Send To Individual
             </Button>
-            <Button className={`${sendToAll ?'bg-primary text-white' : ""} `}onClick={() => setSendToAll(true)}>
-              Send to All Users
+            <Button 
+              type="button" 
+              className={`${sendToAll ? 'bg-primary text-white' : 'bg-gray-200'} px-4 py-2 rounded`} 
+              onClick={() => setSendToAll(true)}
+            >
+              Send to All Non Registred Users
             </Button>
           </div>
 

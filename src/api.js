@@ -68,6 +68,7 @@ const   api = {
     sendMessage:{
       sendAuctionToAllUser:`/whatsapp/send-auction-bulk`,
       sendAcutionToAllNonExistingUsers:`/whatsapp/send-auction-bulk-ToNonExistingUser`,
+      commonMessageAllToNonExistingUser:`/whatsapp/send-commentMessage-ToNonExistingUser`
     }
   },
 };
