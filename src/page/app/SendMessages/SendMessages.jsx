@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Form, Dimmer } from "semantic-ui-react";
+import { Button, Input, Form, Dimmer, TextArea, Modal } from "semantic-ui-react";
 import api from "../../../api";
 import { useLanguage } from "../../../context/language-context";
 import content from "../../../localization/content";
@@ -11,6 +11,8 @@ import { useLocation } from "react-router-dom";
 import PaginationApp from "../../../components/shared/pagination/pagination-app";
 import toast from "react-hot-toast";
 
+const WHATSAPP_MAX_LENGTH = 4096; // WhatsApp maximum message length
+
 const AdminMessageSender = () => {
   const [lang] = useLanguage("");
   const selectedContent = content[lang];
@@ -18,13 +20,13 @@ const AdminMessageSender = () => {
   const { run: fetchAutions, isLoading: liveAuctionLoading } = useAxios([]);
   const { run: sendAuctionToAll, isLoading: sendAuctionToAllLoading } = useAxios([]);
   
-  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-  const [sendToAll, setSendToAll] = useState(false);
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [buttonUrl, setButtonUrl] = useState("");
+  const [showUrlConfirm, setShowUrlConfirm] = useState(false);
   const [liveAuctionData, setLiveAuctionData] = useState([]);
   const [totalPages, setTotalPages] = useState();
   
-
   const { search } = useLocation();
 
   useEffect(() => {
@@ -35,13 +37,11 @@ const AdminMessageSender = () => {
           authAxios.get(`${api.app.auctions}${search}&status=IN_SCHEDULED`)
         ])
           .then(([activeRes, scheduledRes]) => {
-            // Combine the results from both API calls
             const combinedData = [
               ...(activeRes?.data?.data || []),
               ...(scheduledRes?.data?.data || [])
             ];
             
-            // Calculate total pages based on combined data
             const maxTotalPages = Math.max(
               activeRes?.data?.pagination?.totalPages || 0,
               scheduledRes?.data?.pagination?.totalPages || 0
@@ -52,66 +52,67 @@ const AdminMessageSender = () => {
           })
           .catch((error) => {
             console.error('Error fetching auctions:', error);
-            // Handle error appropriately (e.g., show error message to user)
           })
       );
     }
   }, [fetchAutions, search]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     
-    if (!message) {
+    if (!message.trim()) {
       toast.error('Please enter a message');
       return;
     }
-    
-    if (!sendToAll && !phone) {
-      toast.error('Please enter a phone number');
+
+    if (message.length > WHATSAPP_MAX_LENGTH) {
+      toast.error(`Message exceeds WhatsApp limit of ${WHATSAPP_MAX_LENGTH} characters`);
+      return;
+    }
+
+    if ((!mediaUrl.trim() || !buttonUrl.trim()) && !showUrlConfirm) {
+      setShowUrlConfirm(true);
       return;
     }
 
     try {
-      if (sendToAll) {
-        await sendMessage(
-          authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { message })
-        );
-        toast.success('Message sent to all non-registered users');
-      } else {
-        await sendMessage(
-          authAxios.post(`${api.app.sendMessage}`, { phone, message })
-        );
-        toast.success('Message sent successfully');
-      }
+      await sendMessage(
+        authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { 
+          message,
+          mediaUrl: mediaUrl.trim() || null,
+          buttonUrl: buttonUrl.trim() || null
+        })
+      );
+      toast.success('Message sent to all non-registered users');
       
       // Clear form after successful send
       setMessage('');
-      if (!sendToAll) {
-        setPhone('');
-      }
+      setMediaUrl('');
+      setButtonUrl('');
+      setShowUrlConfirm(false);
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error(error.response?.data?.message || 'Failed to send message');
     }
   };
 
-  const handleSendAuctionToAll = (auctionId) =>{
-     sendAuctionToAll(
-        authAxios.post(`${api.app.sendMessage.sendAuctionToAllUser}`,{auctionId})
-        .then((res)=>{
-            toast.success('successfully send message')
-        })
-     )
+  const handleSendAuctionToAll = (auctionId) => {
+    sendAuctionToAll(
+      authAxios.post(`${api.app.sendMessage.sendAuctionToAllUser}`,{auctionId})
+      .then((res)=>{
+          toast.success('successfully send message')
+      })
+    )
   }
 
-  const handleSendAuctionToAllNonExistingUsers = (auctionId) =>{
+  const handleSendAuctionToAllNonExistingUsers = (auctionId) => {
     sendAuctionToAll(
-       authAxios.post(`${api.app.sendMessage.sendAcutionToAllNonExistingUsers}`,{auctionId})
-       .then((res)=>{
-           toast.success('successfully send message')
-       })
+      authAxios.post(`${api.app.sendMessage.sendAcutionToAllNonExistingUsers}`,{auctionId})
+      .then((res)=>{
+          toast.success('successfully send message')
+      })
     )
- }
+  }
 
   return (
     <div className="admin-message-sender p-6">
@@ -120,55 +121,85 @@ const AdminMessageSender = () => {
       </Dimmer>
 
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Send Message</h2>
+        <h2 className="text-xl font-semibold mb-4">Send Bulk Message to Non-Registered Users</h2>
 
         <Form onSubmit={handleSubmit}>
-          <div className="flex gap-4 mb-4">
-            <Button 
-              type="button" 
-              className={`${!sendToAll ? 'bg-primary text-white' : 'bg-gray-200'} px-4 py-2 rounded`}  
-              onClick={() => setSendToAll(false)}
-            >
-              Send To Individual
-            </Button>
-            <Button 
-              type="button" 
-              className={`${sendToAll ? 'bg-primary text-white' : 'bg-gray-200'} px-4 py-2 rounded`} 
-              onClick={() => setSendToAll(true)}
-            >
-              Send to All Non Registred Users
-            </Button>
-          </div>
-
-          {!sendToAll && (
-            <Form.Field>
-              <label className="block font-medium mb-1">Phone Number</label>
-              <Input
-                type="text"
-                placeholder="Enter Phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
-            </Form.Field>
-          )}
-
           <Form.Field>
-            <label className="block font-medium mb-1"> Message</label>
+            <label className="block font-medium mb-1">Media URL (Optional)</label>
             <Input
               type="text"
-              placeholder="Enter Message"
+              placeholder="Enter media URL (image or video)"
+              value={mediaUrl}
+              onChange={(e) => setMediaUrl(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+            <small className="text-gray-500">Supported formats: jpg, jpeg, png, mp4</small>
+          </Form.Field>
+
+          <Form.Field>
+            <label className="block font-medium mb-1">Button URL (Optional)</label>
+            <Input
+              type="text"
+              placeholder="Enter button URL"
+              value={buttonUrl}
+              onChange={(e) => setButtonUrl(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+            <small className="text-gray-500">URL for the button action in the message</small>
+          </Form.Field>
+
+          <Form.Field>
+            <label className="block font-medium mb-1">
+              Message ({message.length}/{WHATSAPP_MAX_LENGTH} characters)
+            </label>
+            <TextArea
+              placeholder="Enter your message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
+              style={{ minHeight: '120px' }}
+              maxLength={WHATSAPP_MAX_LENGTH}
             />
           </Form.Field>
 
-          <Button type="submit"  className="mt-4 w-full bg-primary hover:bg-primary-dark text-white">
-             Send Message
+          <Button 
+            type="submit"  
+            className="mt-4 w-full bg-primary hover:bg-primary-dark text-white"
+            disabled={!message.trim() || message.length > WHATSAPP_MAX_LENGTH}
+          >
+            Send Bulk Message
           </Button>
         </Form>
       </div>
+
+      {/* URL Confirmation Modal */}
+      <Modal
+        size="tiny"
+        open={showUrlConfirm}
+        onClose={() => setShowUrlConfirm(false)}
+      >
+        <Modal.Header>Missing URLs</Modal.Header>
+        <Modal.Content>
+          <p>
+            {!mediaUrl.trim() && !buttonUrl.trim() && "You haven't provided any media or button URLs."}
+            {!mediaUrl.trim() && buttonUrl.trim() && "You haven't provided a media URL."}
+            {mediaUrl.trim() && !buttonUrl.trim() && "You haven't provided a button URL."}
+            Do you want to continue?
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setShowUrlConfirm(false)}>Cancel</Button>
+          <Button 
+            primary 
+            onClick={(e) => {
+              setShowUrlConfirm(false);
+              handleSubmit(e);
+            }}
+          >
+            Continue Anyway
+          </Button>
+        </Modal.Actions>
+      </Modal>
 
       {/* Display Auctions */}
       <div className="mt-8">
