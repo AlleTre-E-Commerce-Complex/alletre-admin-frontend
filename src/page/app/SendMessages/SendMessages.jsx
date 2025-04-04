@@ -21,6 +21,8 @@ const AdminMessageSender = () => {
   const { run: sendAuctionToAll, isLoading: sendAuctionToAllLoading } = useAxios([]);
   
   const [message, setMessage] = useState("");
+  const [selectedInputs, setSelectedInputs] = useState(3); // Default to 2 inputs
+  const [messages, setMessages] = useState(['', '','']); // Initialize with 2 empty messages
   const [mediaUrl, setMediaUrl] = useState("");
   const [buttonUrl, setButtonUrl] = useState("");
   const [showUrlConfirm, setShowUrlConfirm] = useState(false);
@@ -57,36 +59,77 @@ const AdminMessageSender = () => {
     }
   }, [fetchAutions, search]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+    
+  //   if (!message.trim()) {
+  //     toast.error('Please enter a message');
+  //     return;
+  //   }
+
+  //   if (message.length > WHATSAPP_MAX_LENGTH) {
+  //     toast.error(`Message exceeds WhatsApp limit of ${WHATSAPP_MAX_LENGTH} characters`);
+  //     return;
+  //   }
+
+  //   if ((!mediaUrl.trim() || !buttonUrl.trim()) && !showUrlConfirm) {
+  //     setShowUrlConfirm(true);
+  //     return;
+  //   }
+
+  //   try {
+  //     await sendMessage(
+  //       authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { 
+  //         message,
+  //         mediaUrl: mediaUrl.trim() || null,
+  //         buttonUrl: buttonUrl.trim() || null
+  //       })
+  //     );
+  //     toast.success('Message sent to all non-registered users');
+      
+  //     // Clear form after successful send
+  //     setMessage('');
+  //     setMediaUrl('');
+  //     setButtonUrl('');
+  //     setShowUrlConfirm(false);
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
+  //     toast.error(error.response?.data?.message || 'Failed to send message');
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!message.trim()) {
-      toast.error('Please enter a message');
+    // Validate all messages
+    if (messages.some(msg => !msg.trim())) {
+      toast.error('Please enter all messages');
       return;
     }
-
-    if (message.length > WHATSAPP_MAX_LENGTH) {
-      toast.error(`Message exceeds WhatsApp limit of ${WHATSAPP_MAX_LENGTH} characters`);
+  
+    if (messages.some(msg => msg.length > WHATSAPP_MAX_LENGTH)) {
+      toast.error(`One or more messages exceed WhatsApp limit of ${WHATSAPP_MAX_LENGTH} characters`);
       return;
     }
-
+  
     if ((!mediaUrl.trim() || !buttonUrl.trim()) && !showUrlConfirm) {
       setShowUrlConfirm(true);
       return;
     }
-
+  
     try {
+      // Send all messages in a single request
       await sendMessage(
         authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { 
-          message,
+          messages: messages.filter(msg => msg.trim()), // Send only non-empty messages
           mediaUrl: mediaUrl.trim() || null,
           buttonUrl: buttonUrl.trim() || null
         })
       );
-      toast.success('Message sent to all non-registered users');
+      toast.success('Messages sent to all non-registered users');
       
       // Clear form after successful send
-      setMessage('');
+      setMessages(['', '', '', ''].slice(0, selectedInputs));
       setMediaUrl('');
       setButtonUrl('');
       setShowUrlConfirm(false);
@@ -95,7 +138,6 @@ const AdminMessageSender = () => {
       toast.error(error.response?.data?.message || 'Failed to send message');
     }
   };
-
   const handleSendAuctionToAll = (auctionId) => {
     sendAuctionToAll(
       authAxios.post(`${api.app.sendMessage.sendAuctionToAllUser}`,{auctionId})
@@ -119,6 +161,39 @@ const AdminMessageSender = () => {
       <Dimmer active={isLoading || liveAuctionLoading ||sendAuctionToAllLoading} inverted>
         <LodingTestAllatre />
       </Dimmer>
+         {/* Add selection buttons */}
+         <div className="mb-6">
+          <h3 className="text-lg font-medium mb-2">Select Number of Messages</h3>
+          <div className="flex gap-4">
+            {/* <Button
+              onClick={() => {
+                setSelectedInputs(2);
+                setMessages(['', '']);
+              }}
+              className={`px-4 ${selectedInputs === 2 ? 'bg-primary text-white' : 'bg-gray-200'}`}
+            >
+              2 Lines Messages
+            </Button> */}
+            <Button
+              onClick={() => {
+                setSelectedInputs(3);
+                setMessages(['', '', '']);
+              }}
+              className={`px-4 ${selectedInputs === 3 ? 'bg-primary text-white' : 'bg-gray-200'}`}
+            >
+              3 Lines Messages
+            </Button>
+            {/* <Button
+              onClick={() => {
+                setSelectedInputs(4);
+                setMessages(['', '', '', '']);
+              }}
+              className={`px-4 ${selectedInputs === 4 ? 'bg-primary text-white' : 'bg-gray-200'}`}
+            >
+              4 Lines Messages
+            </Button> */}
+          </div>
+        </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Send Bulk Message to Non-Registered Users</h2>
@@ -148,7 +223,7 @@ const AdminMessageSender = () => {
             <small className="text-gray-500">URL for the button action in the message</small>
           </Form.Field>
 
-          <Form.Field>
+          {/* <Form.Field>
             <label className="block font-medium mb-1">
               Message ({message.length}/{WHATSAPP_MAX_LENGTH} characters)
             </label>
@@ -160,12 +235,39 @@ const AdminMessageSender = () => {
               style={{ minHeight: '120px' }}
               maxLength={WHATSAPP_MAX_LENGTH}
             />
-          </Form.Field>
+          </Form.Field> */}
+                {/* Message fields */}
+                {messages.map((msg, index) => (
+            <Form.Field key={index}>
+              <label className="block font-medium mb-1">
+                Message {index + 1} ({msg.length}/{WHATSAPP_MAX_LENGTH} characters)
+              </label>
+              <TextArea
+                placeholder={`Enter message ${index + 1}`}
+                value={msg}
+                onChange={(e) => {
+                  const newMessages = [...messages];
+                  newMessages[index] = e.target.value;
+                  setMessages(newMessages);
+                }}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                style={{ minHeight: '120px' }}
+                maxLength={WHATSAPP_MAX_LENGTH}
+              />
+            </Form.Field>
+          ))}
 
-          <Button 
+          {/* <Button 
             type="submit"  
             className="mt-4 w-full bg-primary hover:bg-primary-dark text-white"
             disabled={!message.trim() || message.length > WHATSAPP_MAX_LENGTH}
+          >
+            Send Bulk Message
+          </Button> */}
+           <Button 
+            type="submit"  
+            className="mt-4 w-full bg-primary hover:bg-primary-dark text-white"
+            disabled={messages.some(msg => !msg.trim()) || messages.some(msg => msg.length > WHATSAPP_MAX_LENGTH)}
           >
             Send Bulk Message
           </Button>
