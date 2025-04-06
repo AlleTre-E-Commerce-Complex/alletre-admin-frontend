@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Form, Dimmer, TextArea, Modal } from "semantic-ui-react";
+import { Button, Input, Form, Dimmer, TextArea, Modal, Label, Dropdown } from "semantic-ui-react";
 import api from "../../../api";
 import { useLanguage } from "../../../context/language-context";
 import content from "../../../localization/content";
@@ -10,10 +10,12 @@ import LodingTestAllatre from "../../../components/shared/lotties-file/loding-te
 import { useLocation } from "react-router-dom";
 import PaginationApp from "../../../components/shared/pagination/pagination-app";
 import toast from "react-hot-toast";
+import useGetGatogry from "../../../hooks/use-get-category";
 
 const WHATSAPP_MAX_LENGTH = 4096; // WhatsApp maximum message length
 
 const AdminMessageSender = () => {
+  const { GatogryOptions, loadingGatogry, onReload } = useGetGatogry();
   const [lang] = useLanguage("");
   const selectedContent = content[lang];
   const { run: sendMessage, isLoading } = useAxios([]);
@@ -28,7 +30,10 @@ const AdminMessageSender = () => {
   const [showUrlConfirm, setShowUrlConfirm] = useState(false);
   const [liveAuctionData, setLiveAuctionData] = useState([]);
   const [totalPages, setTotalPages] = useState();
-  
+  const [limit, setLimit] = useState()
+  const [skip , setSkip] = useState()
+  const [categoryId, setCategoryId] = useState()
+   
   const { search } = useLocation();
 
   useEffect(() => {
@@ -119,23 +124,33 @@ const AdminMessageSender = () => {
   
     try {
       // Send all messages in a single request
+      console.log('categoryId:',categoryId)
       await sendMessage(
         authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { 
           messages: messages.filter(msg => msg.trim()), // Send only non-empty messages
           mediaUrl: mediaUrl.trim() || null,
-          buttonUrl: buttonUrl.trim() || null
+          buttonUrl: buttonUrl.trim() || null,
+          limit,
+          skip, 
+          categoryId,
+        })
+        .then((res)=>{
+          console.log(res.data.allUsersList)
+        }).catch((error)=>{
+          console.error("Error sending message:", error);
+          toast.error(error?.response?.data?.message || 'Failed to send message');
         })
       );
       toast.success('Messages sent to all non-registered users');
       
       // Clear form after successful send
-      setMessages(['', '', '', ''].slice(0, selectedInputs));
-      setMediaUrl('');
-      setButtonUrl('');
+      // setMessages(['', '', '', ''].slice(0, selectedInputs));
+      // setMediaUrl('');
+      // setButtonUrl('');
       setShowUrlConfirm(false);
     } catch (error) {
       console.error("Error sending message:", error);
-      toast.error(error.response?.data?.message || 'Failed to send message');
+      toast.error(error?.response?.data?.message || 'Failed to send message');
     }
   };
   const handleSendAuctionToAll = (auctionId) => {
@@ -256,14 +271,37 @@ const AdminMessageSender = () => {
               />
             </Form.Field>
           ))}
+             <label htmlFor="">Enter the number of users which you want to skip (If you enter 4 it will skip first 4 users)</label>
+            <Input
+                type="number"
+                placeholder="Skip"
+                value={skip}
+                onChange={(e) => setSkip(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
 
-          {/* <Button 
-            type="submit"  
-            className="mt-4 w-full bg-primary hover:bg-primary-dark text-white"
-            disabled={!message.trim() || message.length > WHATSAPP_MAX_LENGTH}
-          >
-            Send Bulk Message
-          </Button> */}
+            <label>Enter the limit of the users (If you enter 6, it will select 6 users after skip)</label>
+            <Input
+              type="number"
+              placeholder="Limit"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+           
+              <label htmlFor="">Select category</label>
+
+                    <Dropdown
+                        name="category"
+                        label={selectedContent[localizationKeys.category]}
+                        placeholder={selectedContent[localizationKeys.category]}
+                        options={GatogryOptions}
+                        loading={loadingGatogry}
+                        onChange={(_, data) => {
+                          setCategoryId(data.value);
+                        }}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      />
            <Button 
             type="submit"  
             className="mt-4 w-full bg-primary hover:bg-primary-dark text-white"
