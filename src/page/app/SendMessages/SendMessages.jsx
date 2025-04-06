@@ -135,19 +135,17 @@ const AdminMessageSender = () => {
           categoryId,
         })
         .then((res)=>{
-          console.log(res.data.allUsersList)
+          toast.success(`Messages sent to ${res?.data?.allUsersList?.length} non-registered users`);
+          // Clear form after successful send
+          setMessages(['', '', '', ''].slice(0, selectedInputs));
+          setMediaUrl('');
+          setButtonUrl('');
+          setShowUrlConfirm(false);
         }).catch((error)=>{
           console.error("Error sending message:", error);
           toast.error(error?.response?.data?.message || 'Failed to send message');
         })
       );
-      toast.success('Messages sent to all non-registered users');
-      
-      // Clear form after successful send
-      // setMessages(['', '', '', ''].slice(0, selectedInputs));
-      // setMediaUrl('');
-      // setButtonUrl('');
-      setShowUrlConfirm(false);
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error(error?.response?.data?.message || 'Failed to send message');
