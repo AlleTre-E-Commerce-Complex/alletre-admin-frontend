@@ -9,7 +9,7 @@ import { useLanguage } from "../../../context/language-context";
 import content from "../../../localization/content";
 import useAxios from "../../../hooks/use-axios";
 import { authAxios } from "../../../config/axios-config";
-import { Dimmer } from "semantic-ui-react";
+import { Dimmer, Icon } from "semantic-ui-react";
 import LodingTestAllatre from "../../../components/shared/lotties-file/loding-test-allatre";
 import localizationKeys from "../../../localization/localization-keys";
 const AdminWallet = () => {
@@ -69,106 +69,165 @@ const AdminWallet = () => {
         <LodingTestAllatre />
       </Dimmer>
          <div className="">
-         <div className="walletBalance  font-bold md:text-2xl text-xl px-2 fixed md:top-[70px] top-[110px] py-5 bg-[#FEFEFE] w-full md:w-4/5 z-10">
-         <div className="flex gap-10">
-            <h1 className="text-gray-500 border p-2 rounded border-primary">
-              {selectedContent[localizationKeys.WalletBalance]}: AED
-              <span> {(Number(walletBalance) || 0).toFixed(3)} </span>
-            </h1>
-            <h1 className="text-gray-500 border p-2 rounded border-primary">
-              Account With Welcome Bonus: AED
-              <span> {(Number(accountBalanceWithWelcomBonus) || 0).toFixed(3)} </span>
-            </h1>
-            <h1 className="text-gray-500 border p-2 rounded border-primary">
-              Account Without Welcome Bonus: AED
-              <span> {(Number(accountBalanceWithOutWelcomBonus) || 0).toFixed(3)} </span>
-            </h1>
-          </div>
-
-
-         </div>
-         <div className="transactions ">
-           <div className="relative overflow-x-auto ">
-             <table className="w-full mt-14 text-left rtl:text-right text-gray-500 dark:text-gray-400">
-               <thead className="text-md  w-full text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
-                 <tr className=" ">
-                   <th scope="col" className="px-6 py-3">
-                   {selectedContent[localizationKeys.Date]}
-                   </th>
-                   <th scope="col" className="px-6 py-3">
-                   {selectedContent[localizationKeys.Description]}
-                   </th>
-                   <th scope="col" className="px-6 py-3">
-                   {selectedContent[localizationKeys.Withdrawals]}
-                   </th>
-                   <th scope="col" className="px-6 py-3">
-                   {selectedContent[localizationKeys.Deposits]}
-                   </th>
-                   <th scope="col" className="px-6 py-3">
-                   {selectedContent[localizationKeys.Balance]}
-                   </th>
-                 </tr>
-               </thead>
-                 {walletHistory.length > 0 ?  
-               <tbody className="">
-                 {[...walletHistory].reverse().map((data, index) => (
-                   <tr
-                   key={index}
-                   className={`bg-white border-b ${
-                     index % 2 !== 0 ? "bg-gray-200" : ""
-                     } `}
-                   >
-                     <th scope="row" className="px-6 py-4 ">{formatDate(data.date)}</th>
-                     <td className="px-6 py-4">{data.description}</td>
-                     <td className="px-6 py-4 ">{data.status === "WITHDRAWAL" ? 'AED '+ data.amount:"--------------------------"}</td>
-                     <td className="px-6 py-4">{data.status === "DEPOSIT" ? 'AED ' + data.amount:"-------------------"}</td>
-                     <td className="px-6 py-4">AED {(Number(data.balance) || 0).toFixed(3)}</td>
-                   </tr>
-                 ))}
-               </tbody>
-             :
-             <div className="flex justify-center items-center pt-56 ">
-                   <div>
-                     {/* <img
-                       className="w-28 mx-auto"
-                       // src={EmtyWatchlist}
-                       alt="EmtyWatchlist"
-                     /> */}
-                     <h1 className="text-gray-dark pt-10">
-                       {selectedContent[localizationKeys.ThereAreNoTransactionYet]}
-                     </h1>
+         <div className="sticky top-16 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+           <div className=" mx-auto py-6 px-4 sm:px-6 lg:px-8">
+             <h1 className="text-2xl font-bold text-gray-900 mb-6">Wallet Overview</h1>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               {/* Total Balance Card */}
+               <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 relative overflow-hidden group">
+                 <div className="absolute right-0 top-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-blue-400/10 group-hover:scale-110 transition-transform duration-200"></div>
+                 <div className="flex items-center gap-3 mb-3 relative">
+                   <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                     <Icon name="money bill alternate outline" className="text-blue-600 text-xl" />
                    </div>
+                   <h2 className="text-sm font-semibold text-blue-900/90 uppercase tracking-wider">
+                     {selectedContent[localizationKeys.WalletBalance]}
+                   </h2>
                  </div>
-                 }
-             </table>
+                 <div className="flex items-baseline gap-1 relative">
+                   <span className="text-xl font-semibold text-blue-900/75">AED</span>
+                   <span className="text-3xl font-bold text-blue-900">{(Number(walletBalance) || 0).toFixed(2)}</span>
+                 </div>
+               </div>
+
+               {/* Account With Welcome Bonus Card */}
+               <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 relative overflow-hidden group">
+                 <div className="absolute right-0 top-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-green-400/10 group-hover:scale-110 transition-transform duration-200"></div>
+                 <div className="flex items-center gap-3 mb-3 relative">
+                   <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                     <Icon name="gift" className="text-green-600 text-xl" />
+                   </div>
+                   <h2 className="text-sm font-semibold text-green-900/90 uppercase tracking-wider">
+                     Account With Bonus
+                   </h2>
+                 </div>
+                 <div className="flex items-baseline gap-1 relative">
+                   <span className="text-xl font-semibold text-green-900/75">AED</span>
+                   <span className="text-3xl font-bold text-green-900">{(Number(accountBalanceWithWelcomBonus) || 0).toFixed(2)}</span>
+                 </div>
+               </div>
+
+               {/* Account Without Welcome Bonus Card */}
+               <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 relative overflow-hidden group">
+                 <div className="absolute right-0 top-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-purple-400/10 group-hover:scale-110 transition-transform duration-200"></div>
+                 <div className="flex items-center gap-3 mb-3 relative">
+                   <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                     <Icon name="id badge outline" className="text-purple-600 text-xl" />
+                   </div>
+                   <h2 className="text-sm font-semibold text-purple-900/90 uppercase tracking-wider">
+                     Account Without Bonus
+                   </h2>
+                 </div>
+                 <div className="flex items-baseline gap-1 relative">
+                   <span className="text-xl font-semibold text-purple-900/75">AED</span>
+                   <span className="text-3xl font-bold text-purple-900">{(Number(accountBalanceWithOutWelcomBonus) || 0).toFixed(2)}</span>
+                 </div>
+               </div>
+             </div>
            </div>
          </div>
-       </div>
-        
-          {/* { withdrawalOpen &&
+         <div className="transactions mx-auto px-4 sm:px-6 lg:px-8 py-6">
+           <div className="relative overflow-hidden bg-white rounded-xl border border-gray-200 shadow-sm">
+             <div className="overflow-x-auto max-h-[600px]">
+               <table className="w-full text-left text-gray-500">
+                 <thead className="text-xs text-white uppercase bg-primary sticky top-0 z-10">
+                   <tr>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary first:rounded-tl-xl">
+                       {selectedContent[localizationKeys.Date]}
+                     </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary">
+                       User
+                     </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary">
+                       {selectedContent[localizationKeys.Description]}
+                     </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary text-center">
+                       Amount
+                     </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary text-right last:rounded-tr-xl">
+                       {selectedContent[localizationKeys.Balance]}
+                     </th>
+                   </tr>
+                 </thead>
+                 {walletHistory.length > 0 ? (
+                   <tbody>
+                     {[...walletHistory].reverse().map((data, index) => (
+                       <tr
+                         key={index}
+                         className={`bg-white border-b hover:bg-gray-50 ${index % 2 !== 0 ? "bg-gray-50" : ""}`}
+                       >
+                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                           {formatDate(data.date)}
+                         </td>
+                         <td className="px-6 py-4">
+                           <div className="flex items-center gap-3">
+                             <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                               <Icon name="user" className="text-blue-600" />
+                             </div>
+                             <div className="flex flex-col">
+                               <span className="text-sm font-medium text-gray-900">{data.user?.userName || 'Unknown User'}</span>
+                               <span className="text-xs text-gray-500">{data.user?.email || ''}</span>
+                             </div>
+                           </div>
+                         </td>
+                         <td className="px-6 py-4 text-sm text-gray-600">{data.description}</td>
+                         <td className="px-6 py-4">
+                           <div className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                             ${data.status === "WITHDRAWAL" 
+                               ? 'bg-red-50 text-red-700' 
+                               : 'bg-green-50 text-green-700'}`
+                           }>
+                             <Icon 
+                               name={data.status === "WITHDRAWAL" ? 'arrow up' : 'arrow down'} 
+                               className={data.status === "WITHDRAWAL" ? 'text-red-600' : 'text-green-600'} 
+                             />
+                             AED {(Number(data.amount) || 0).toFixed(2)}
+                           </div>
+                         </td>
+                         <td className="px-6 py-4 text-right whitespace-nowrap">
+                           <span className="font-medium text-gray-900">AED {(Number(data.balance) || 0).toFixed(2)}</span>
+                         </td>
+                       </tr>
+                     ))}
+                   </tbody>
+                 ) : (
+                   <tbody>
+                     <tr>
+                       <td colSpan="5" className="px-6 py-24 text-center">
+                         <div className="flex flex-col items-center justify-center">
+                           <Icon name="file outline" className="text-4xl text-gray-400 mb-3" />
+                           <h3 className="text-gray-500 font-medium">
+                             {selectedContent[localizationKeys.ThereAreNoTransactionYet]}
+                           </h3>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 )}
+               </table>
+             </div>
+           </div>
+         </div>
+         {/* {withdrawalOpen && (
            <ShowBankDetailsModal
-           open={withdrawalOpen}
-           setOpen={setWithdrawalOpen}
-           setSuccessModal={setSuccessModalOpen}
-           accountBalance={walletBalance}
-          />
-           
-          }
-
-         
-          {successModalOpen && <SuccessModal
-          open={successModalOpen}
-          setOpen={setSuccessModalOpen}
-          returnUrl={routes.app.profile.wallet}
-          message={'Success! Your withdrawal request has been processed successfully. Your funds are on their way, and you’ll receive them shortly. Thank you for using our service!'}
-          isWithdrawal={true}
-          />
-          
-          } */}
-
-
-        
-   </div>
+             open={withdrawalOpen}
+             setOpen={setWithdrawalOpen}
+             setWithdrawalAmount={setWithdrawalAmount}
+             accountBalance={walletBalance}
+           />
+         )} */}
+         {/* {successModalOpen && (
+           <SuccessModal
+             open={successModalOpen}
+             setOpen={setSuccessModalOpen}
+             returnUrl={routes.app.profile.wallet}
+             message={'Success! Your withdrawal request has been processed successfully. Your funds are on their way, and you’ll receive them shortly. Thank you for using our service!'}
+             isWithdrawal={true}
+           />
+         )} */}
+       </div>
+     </div>
+  
   );
 };
 
