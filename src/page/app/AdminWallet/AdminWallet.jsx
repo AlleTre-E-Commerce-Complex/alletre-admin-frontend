@@ -38,6 +38,7 @@ const AdminWallet = () => {
         ]);
   
         setWalletHistory(historyResponse?.data);
+        console.log('wallet history* :',historyResponse?.data)
         setWalletBalance(balanceResponse?.data);
         setAccountBalanceWithWelcomBonus(accountResponse?.data?.accountBalanceWithWelcomeBonus)
         setAccountBalanceWithOutWelcomBonus(accountResponse?.data?.accountBalanceWithOutWelcomeBonus)
@@ -51,7 +52,15 @@ const AdminWallet = () => {
   
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: "numeric", // optional
+      hour12: true, // set to false if you prefer 24-hour time
+    };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -141,6 +150,12 @@ const AdminWallet = () => {
                      <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary">
                        {selectedContent[localizationKeys.Description]}
                      </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary">
+                       Auction Product
+                     </th>
+                     <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary">
+                       Image
+                     </th>
                      <th scope="col" className="px-6 py-4 font-semibold tracking-wider bg-primary text-center">
                        Amount
                      </th>
@@ -171,6 +186,10 @@ const AdminWallet = () => {
                            </div>
                          </td>
                          <td className="px-6 py-4 text-sm text-gray-600">{data.description}</td>
+                         <td className="px-6 py-4 text-sm text-gray-600">{data?.auction?.product?.title}</td>
+                         <td className="px-6 py-4 text-sm text-gray-600">
+                          <img  className="w-52 h-20 object-cover rounded-lg "  src={data?.auction?.product?.images[0]?.imageLink} alt="img" />
+                         </td>
                          <td className="px-6 py-4">
                            <div className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium
                              ${data.status === "WITHDRAWAL" 
