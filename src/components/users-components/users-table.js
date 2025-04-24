@@ -238,7 +238,7 @@ const UsersTable = () => {
           </div>
 
           <div className="flex justify-end mt-6">
-            <PaginationApp totalPages={totalPages} perPage={15} />
+            <PaginationApp totalPages={totalPages} perPage={1000} />
           </div>
           <SuccessModal
             open={openSuccessModal}
