@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimmer, Table, Input, Icon } from "semantic-ui-react";
+import { Dimmer, Table, Input, Icon, Button } from "semantic-ui-react";
 import useAxios from "../../hooks/use-axios";
 import { useLanguage } from "../../context/language-context";
 import content from "../../localization/content";
@@ -13,9 +13,12 @@ import SuccessModal from "../shared/modal/SuccessModal";
 import ConfirmationModal from "../shared/modal/ConfirmationModal";
 import routes from "../../routes";
 import toast from "react-hot-toast";
+import WalletManagementModal from './WalletManagementModal';
 
 const UsersTable = () => {
   const [lang] = useLanguage("");
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const selectedContent = content[lang];
   const [forceReload, setForceReload] = useState(false);
   const onReload = React.useCallback(() => setForceReload((p) => !p), []);
@@ -203,9 +206,23 @@ const UsersTable = () => {
                     </Table.Cell>
                     <Table.Cell className="hidden sm:table-cell text-gray-600 text-md p-5">
                       <div>
-                          <button>
-                              Manage Wallet
-                          </button>
+                        <Button
+                          className="bg-primary hover:bg-primary-dark transition-colors duration-200 !px-3 !py-1.5 text-xs"
+                          primary
+                          size="tiny"
+                          onClick={() => {
+                            setSelectedUser(e);
+                            setIsWalletModalOpen(true);
+                          }}
+                        >
+                          Manage Wallet
+                        </Button>
+
+                        <WalletManagementModal
+                          open={isWalletModalOpen}
+                          onClose={() => setIsWalletModalOpen(false)}
+                          userBalance={selectedUser?.wallet?.[selectedUser?.wallet?.length - 1]?.balance || 0}
+                        />
                       </div>
                     </Table.Cell>
                     <Table.Cell className="hidden sm:table-cell text-gray-600 text-md p-5">
