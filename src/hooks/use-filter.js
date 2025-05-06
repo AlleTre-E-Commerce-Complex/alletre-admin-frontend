@@ -13,12 +13,16 @@ const useFilter = (name, value = "") => {
   const { search } = useLocation();
 
   const onFilterChange = (newVal) => {
-    const parsed = queryString.parse(search, { arrayFormat: "bracket" });
+    try {
+      const parsed = queryString.parse(search, { arrayFormat: "bracket" });
     parsed[name] = newVal;
 
     history.replace(
       `?${queryString.stringify(parsed, { arrayFormat: "bracket" })}`
     );
+    } catch (error) {
+      console.log('onFilterChange error :',error)
+    }
   };
 
   React.useEffect(() => {

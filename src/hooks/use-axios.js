@@ -53,6 +53,12 @@ function useAxios(initialState) {
           return response;
         },
         (error) => {
+          console.log("useAxios Error:", error);
+
+          // ✅ This gives you the actual requested URL
+          const url = error?.config?.url;
+          const method = error?.config?.method;
+          console.log(`Axios error occurred on ${method?.toUpperCase()} ${url}`);
           const errorMessage = error?.response?.data;
           if (config.throwOnError) throw new Error(errorMessage);
           setError(errorMessage);

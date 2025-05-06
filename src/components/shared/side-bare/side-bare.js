@@ -65,7 +65,7 @@ const Sidebar = ({ SetSid, sid }) => {
   useEffect(() => {
     run(
       authAxios
-        .get(api.app.deliveryRequests.getRequests)
+        .get(api.app.deliveryRequests.getRequests('DELIVERY'))
         .then((res) => {
           const requests = res.data.data;
           console.log('delivery requests****>>>', requests);
