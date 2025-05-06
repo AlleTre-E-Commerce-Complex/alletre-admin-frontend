@@ -26,9 +26,12 @@ const NonRegisteredUsersTable = () => {
 
   const history = useHistory();
   const { search } = useLocation();
-
+  const params = new URLSearchParams(search);
+  const page = parseInt(params.get("page"), 10);
+  const perPage = parseInt(params.get("perPage"), 10);
   const { run, isLoading } = useAxios([]);
   useEffect(() => {
+    console.log('search', search)
     if (search.includes("page") && search.includes("perPage"))
     {
       try {
@@ -104,7 +107,7 @@ const NonRegisteredUsersTable = () => {
               <div className="my-3"></div>
               <Table.Row className="bg-background border-none shadow rounded-lg ">
               <Table.Cell className="border-none text-gray-dark text-sm font-normal text-left">
-                  {index +1 }
+                  {((page-1)*perPage) +index +1 }
                 </Table.Cell>
                 <Table.Cell className="border-none text-gray-dark text-sm font-normal text-left rounded-l-lg ">
                   <div className="flex">
