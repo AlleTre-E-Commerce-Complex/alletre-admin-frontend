@@ -135,17 +135,19 @@ const AdminMessageSender = () => {
           categoryId,
         })
         .then((res)=>{
-          toast.success(`Messages sent to ${res?.data?.allUsersList?.length} non-registered users`);
-          // Clear form after successful send
-          setMessages(['', '', '', ''].slice(0, selectedInputs));
-          setMediaUrl('');
-          setButtonUrl('');
-          setShowUrlConfirm(false);
+          console.log(res.data.allUsersList)
         }).catch((error)=>{
           console.error("Error sending message:", error);
           toast.error(error?.response?.data?.message || 'Failed to send message');
         })
       );
+      toast.success('Messages sent to all non-registered users');
+      
+      // Clear form after successful send
+      // setMessages(['', '', '', ''].slice(0, selectedInputs));
+      // setMediaUrl('');
+      // setButtonUrl('');
+      setShowUrlConfirm(false);
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error(error?.response?.data?.message || 'Failed to send message');
@@ -160,9 +162,9 @@ const AdminMessageSender = () => {
     )
   }
 
-  const handleSendAuctionToAllNonExistingUsers = (auctionId) => {
+  const handleSendAuctionEmail = (auctionId) => {
     sendAuctionToAll(
-      authAxios.post(`${api.app.sendMessage.sendAcutionToAllNonExistingUsers}`,{auctionId})
+      authAxios.post(`${api.app.sendMessage.sendAuctionToalluserByEmail}`,{auctionId})
       .then((res)=>{
           toast.success('successfully send message')
       })
@@ -366,13 +368,13 @@ const AdminMessageSender = () => {
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
               onClick={()=>handleSendAuctionToAll(data.id)}
               >
-                 To Existing Users
+                Send auction WhatsApp
               </button>
               <button 
               className="bg-secondary-light text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
-              onClick={()=>handleSendAuctionToAllNonExistingUsers(data.id)}
+              onClick={()=>handleSendAuctionEmail(data.id)}
               >
-                 To Non Existing Users
+                 Send auction Email
               </button>
            </div>
             </div>
