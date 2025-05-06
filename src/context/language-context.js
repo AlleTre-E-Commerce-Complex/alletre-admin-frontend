@@ -48,12 +48,16 @@ LanguageProvider.propTypes = {
 };
 
 function useLanguage() {
+ try {
   const context = React.useContext(LanguageContext);
   if (!context) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
 
   return context;
+ } catch (error) {
+  console.log(error)
+ }
 }
 
 export { LanguageProvider, useLanguage };

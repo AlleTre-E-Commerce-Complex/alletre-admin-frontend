@@ -34,13 +34,17 @@ function AuthProvider({ children }) {
   };
 
   React.useEffect(() => {
-    Auth.getUser().then((user) => {
-      if (!user) {
-        history.push(routes.auth.logIn);
-      }
-      setUser(user);
-      setIsLoading(false);
-    });
+    try {
+      Auth.getUser().then((user) => {
+        if (!user) {
+          history.push(routes.auth.logIn);
+        }
+        setUser(user);
+        setIsLoading(false);
+      });
+    } catch (error) {
+      console.log('auth context error :',error)
+    }
   }, [history]);
 
   React.useLayoutEffect(() => {

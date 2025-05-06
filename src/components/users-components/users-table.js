@@ -54,13 +54,17 @@ const UsersTable = () => {
   }, [run, forceReload, search]);
 
   useEffect(() => {
-    if (activeAuctionData) {
-      const filtered = activeAuctionData.filter(user =>
-        user.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.phone?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredData(filtered);
+    try {
+      if (activeAuctionData) {
+        const filtered = activeAuctionData.filter(user =>
+          user.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.phone?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredData(filtered);
+      }
+    } catch (error) {
+      console.log(error)
     }
   }, [searchQuery, activeAuctionData]);
 
@@ -137,6 +141,9 @@ const UsersTable = () => {
                     User Info
                   </Table.HeaderCell>
                   <Table.HeaderCell className="hidden sm:table-cell font-semibold text-md text-gray-700 text-left p-5">
+                    Manage Wallet
+                  </Table.HeaderCell>
+                  <Table.HeaderCell className="hidden sm:table-cell font-semibold text-md text-gray-700 text-left p-5">
                     Wallet Balance
                   </Table.HeaderCell>
                   <Table.HeaderCell className="hidden md:table-cell font-semibold text-md text-gray-700 text-left p-5">
@@ -192,6 +199,13 @@ const UsersTable = () => {
                             </p>
                           </div>
                         </div>
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell className="hidden sm:table-cell text-gray-600 text-md p-5">
+                      <div>
+                          <button>
+                              Manage Wallet
+                          </button>
                       </div>
                     </Table.Cell>
                     <Table.Cell className="hidden sm:table-cell text-gray-600 text-md p-5">
