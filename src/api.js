@@ -64,6 +64,8 @@ const   api = {
       getAdminWalletDetails:"/wallet/get-admin-wallet-details",
       getAdminWalletBalance:"/wallet/get-admin-wallet-balance",
       getBankAccountBalance:"/wallet/get-account-balance",
+      addToAminWallet:"/wallet/admin/add-to-alletre-wallet",
+      addToUserWalletByAdmin:"/wallet/admin/add-to-user-wallet",
     },
     sendMessage:{
       sendAuctionToAllUser:`/whatsapp/send-auction-bulk`,
