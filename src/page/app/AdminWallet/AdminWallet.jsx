@@ -149,7 +149,7 @@ const AdminWallet = () => {
             </div>
           </div>
         </div>
-        <div className="transactions mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="transactions py-6">
           <div className="relative overflow-hidden bg-white rounded-xl border border-gray-200 shadow-sm">
             <div className="overflow-x-auto max-h-[600px]">
               <table className="w-full text-left text-gray-500">

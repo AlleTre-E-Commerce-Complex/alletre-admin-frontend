@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import UsersTable from "../../../components/users-components/users-table";
-import Upload_XL_file from "../unRegisteredUsers/Upload_XL_file";
 
 const Users = () => {
   useEffect(() => {
@@ -8,7 +7,7 @@ const Users = () => {
   }, []);
   return (
     <div>
-      <div className="bg-gray-light rounded-2xl p-2 shadow-md">
+      <div className="">
         <UsersTable />
       </div>
     </div>

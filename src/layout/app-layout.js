@@ -27,7 +27,7 @@ const AppLayouts = () => {
         <Header SetSid={SetSid} sid={sid} />
         <Sidebar SetSid={SetSid} sid={sid} />
       </div>
-      <div className="p-0 m-0 border-none min-h-screen ml-[250px] px-8 mt-32 ">
+      <div className="p-0 m-0 border-none  px-4 md:px-8 mt-20 md:mt-32">
         <Switch>
           <Route
             path={routes.app.systemField.default}

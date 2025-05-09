@@ -34,37 +34,64 @@ const DraftsAuctions = () => {
     );
   }, [run, forceReload]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
   return (
-    <div className="">
-      <Dimmer
-        className="fixed w-full h-full top-0 bg-white/50"
-        active={isLoading}
-        inverted
-      >
-        {/* <Loader active /> */}
-        <LodingTestAllatre />
-      </Dimmer>
-      <div>
-        <p className="pb-5 text-gray-med text-xs font-normal">
-          {draftAuctionData?.length}{" "}
-          {selectedContent[localizationKeys.totalDraft]}
-        </p>
+    <div className="relative min-h-[400px]">
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
+          <div className="transform -translate-y-8">
+            <LodingTestAllatre />
+          </div>
+        </div>
+      )}
+
+      {/* Header Stats */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
+            <AuctionIcon className="w-5 h-5 text-primary" />
+          </span>
+          <div>
+            <h2 className="text-lg font-medium text-gray-900">
+              Draft Auctions
+            </h2>
+            <p className="text-sm text-gray-500">
+              {draftAuctionData?.length || 0} {selectedContent[localizationKeys.totalDraft]}
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* Empty State */}
       {draftAuctionData?.length === 0 ? (
-        <div className="flex justify-center mt-32">
-          <AuctionIcon className="mx-auto" />
+        <div className="flex flex-col items-center justify-center h-[300px] rounded-lg border-2 border-dashed border-gray-200">
+          <AuctionIcon className="w-12 h-12 text-gray-400 mb-3" />
+          <h3 className="text-lg font-medium text-gray-900 mb-1">
+            No draft auctions
+          </h3>
+          <p className="text-sm text-gray-500">
+            There are currently no draft auctions available.
+          </p>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-7 md:grid-cols-4 grid-cols-2 animate-in">
-          {draftAuctionData?.map((e) => (
-            <DraftsItem
-              auctionId={e?.id}
-              img={e && e?.product?.images[0]?.imageLink}
-              itemName={e?.product?.title}
-              date={e?.createdAt}
-              onReload={onReload}
-            />
-          ))}
+        <div className="space-y-4">
+          {/* Draft Items Grid */}
+          <div className="grid gap-4 sm:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7">
+            {draftAuctionData?.map((e) => (
+              <DraftsItem
+                key={e?.id}
+                auctionId={e?.id}
+                img={e && e?.product?.images[0]?.imageLink}
+                itemName={e?.product?.title}
+                date={e?.createdAt}
+                onReload={onReload}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

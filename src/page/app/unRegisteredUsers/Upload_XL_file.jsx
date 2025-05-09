@@ -55,7 +55,7 @@ const Upload_XL_file = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="">
       <Dimmer
         className="fixed w-full h-full top-0 bg-white/50"
         active={isLoading}
@@ -82,7 +82,7 @@ const Upload_XL_file = () => {
           <input type="file" onChange={handleFileChange} accept=".xlsx,.xls,.csv" />
         </Form.Field>
 
-        <Button primary onClick={handleUpload} disabled={!file || !selectedCategory}>
+        <Button className='bg-primary hover:bg-primary-dark text-white' onClick={handleUpload} disabled={!file || !selectedCategory}>
           Upload
         </Button>
       </Form>

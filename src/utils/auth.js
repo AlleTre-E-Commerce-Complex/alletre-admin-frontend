@@ -27,6 +27,7 @@ class Auth {
 
   logout() {
     this.setToken({ newAccessToken: "", newRefreshToken: "" });
+    localStorage.removeItem("token");
   }
 
   async getToken() {
