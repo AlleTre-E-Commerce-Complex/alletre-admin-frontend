@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { Modal, Form, Button, Radio, Input, TextArea, Checkbox } from 'semantic-ui-react';
+import useAxios from '../../hooks/use-axios';
+import { authAxios } from '../../config/axios-config';
+import api from '../../api';
+import toast from 'react-hot-toast';
 
-const WalletManagementModal = ({ open, onClose, userBalance, isAdmin }) => {
+
+const WalletManagementModal = ({ open, onClose, userBalance, isAdmin, userId }) => {
+  console.log(userId)
   const modalStyle = {
     backgroundColor: '#FEFEFE',
   };
@@ -36,6 +42,9 @@ const WalletManagementModal = ({ open, onClose, userBalance, isAdmin }) => {
   const [description, setDescription] = useState('');
   const [auctionId, setAuctionId] = useState('');
   const [adminChanges, setAdminChanges] = useState(false);
+  const { run, isLoading } = useAxios()
+
+  
 
   const handleSubmit = () => {
     // Handle the form submission here
@@ -46,6 +55,22 @@ const WalletManagementModal = ({ open, onClose, userBalance, isAdmin }) => {
       auctionId: Number(auctionId) || 0,
       adminChanges
     });
+    const submitBody = {
+      status:transactionType,
+      amount: Number(amount),
+      description,
+      auctionId: Number(auctionId) ,
+      adminChanges,
+      userId,
+    }
+    const url = isAdmin ? api.app.adminWallet.addToAminWallet : api.app.adminWallet.addToUserWalletByAdmin
+    run(authAxios.post(url,submitBody)
+    .then((res)=>{
+      toast.success('you have successfully created new transaction')
+    })
+    .catch((error)=>{
+      console.log('create alletre wallet error : ', error )
+    }))
     onClose();
   };
 
@@ -81,17 +106,17 @@ const WalletManagementModal = ({ open, onClose, userBalance, isAdmin }) => {
             <Form.Group inline>
               <Form.Field>
                 <Radio
-                  label="Deposit"
-                  value="deposit"
-                  checked={transactionType === 'deposit'}
+                  label="DEPOSIT"
+                  value="DEPOSIT"
+                  checked={transactionType === 'DEPOSIT'}
                   onChange={(e, { value }) => setTransactionType(value)}
                 />
               </Form.Field>
               <Form.Field>
                 <Radio
-                  label="Withdrawal"
-                  value="withdrawal"
-                  checked={transactionType === 'withdrawal'}
+                  label="WITHDRAWAL"
+                  value="WITHDRAWAL"
+                  checked={transactionType === 'WITHDRAWAL'}
                   onChange={(e, { value }) => setTransactionType(value)}
                 />
               </Form.Field>

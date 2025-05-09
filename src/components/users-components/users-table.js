@@ -26,6 +26,7 @@ const UsersTable = () => {
   const [SuccessModalMessage, setSuccessModalMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [userId, setUserId] = useState()
   const [confirmationModal, setConfirmationModal] = useState({
     open: false,
     userId: null,
@@ -213,6 +214,7 @@ const UsersTable = () => {
                           onClick={() => {
                             setSelectedUser(e);
                             setIsWalletModalOpen(true);
+                            setUserId(e?.id)
                           }}
                         >
                           Manage Wallet
@@ -222,6 +224,7 @@ const UsersTable = () => {
                           open={isWalletModalOpen}
                           onClose={() => setIsWalletModalOpen(false)}
                           userBalance={selectedUser?.wallet?.[selectedUser?.wallet?.length - 1]?.balance || 0}
+                          userId={userId}
                         />
                       </div>
                     </Table.Cell>
