@@ -29,6 +29,8 @@ const AdminMessageSender = () => {
   const [buttonUrl, setButtonUrl] = useState("");
   const [showUrlConfirm, setShowUrlConfirm] = useState(false);
   const [liveAuctionData, setLiveAuctionData] = useState([]);
+  const [listedProduct, setListedProduct] = useState([]);
+  const [listedTotalCount, setListedTotalCount] = useState()
   const [totalPages, setTotalPages] = useState();
   const [limit, setLimit] = useState()
   const [skip , setSkip] = useState()
@@ -64,44 +66,20 @@ const AdminMessageSender = () => {
     }
   }, [fetchAutions, search]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-    
-  //   if (!message.trim()) {
-  //     toast.error('Please enter a message');
-  //     return;
-  //   }
-
-  //   if (message.length > WHATSAPP_MAX_LENGTH) {
-  //     toast.error(`Message exceeds WhatsApp limit of ${WHATSAPP_MAX_LENGTH} characters`);
-  //     return;
-  //   }
-
-  //   if ((!mediaUrl.trim() || !buttonUrl.trim()) && !showUrlConfirm) {
-  //     setShowUrlConfirm(true);
-  //     return;
-  //   }
-
-  //   try {
-  //     await sendMessage(
-  //       authAxios.post(`${api.app.sendMessage.commonMessageAllToNonExistingUser}`, { 
-  //         message,
-  //         mediaUrl: mediaUrl.trim() || null,
-  //         buttonUrl: buttonUrl.trim() || null
-  //       })
-  //     );
-  //     toast.success('Message sent to all non-registered users');
-      
-  //     // Clear form after successful send
-  //     setMessage('');
-  //     setMediaUrl('');
-  //     setButtonUrl('');
-  //     setShowUrlConfirm(false);
-  //   } catch (error) {
-  //     console.error("Error sending message:", error);
-  //     toast.error(error.response?.data?.message || 'Failed to send message');
-  //   }
-  // };
+  useEffect(() => {
+    if (search.includes("page") && search.includes("perPage")) {
+      fetchAutions(authAxios.get(`${api.app.productListing.getAllListedProducts}${search}`)
+          .then((res) => {
+            console.log('res....listed',res.data)
+            setListedProduct(res?.data?.data);
+            setListedTotalCount(res?.data?.pagination?.totalPages);
+          })
+          .catch((error) => {
+            console.error('Error fetching auctions:', error);
+          })
+      );
+    }
+  }, [fetchAutions, search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -384,6 +362,51 @@ const AdminMessageSender = () => {
         {/* Pagination */}
         <div className="flex justify-end mt-7">
           <PaginationApp totalPages={totalPages} perPage={5} />
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-lg font-semibold mb-4">Products</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {listedProduct.map((data, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md p-4 flex items-center gap-4">
+              {/* Image */}
+              <img
+                src={data.product.images[0].imageLink}
+                alt="Auction"
+                className="w-24 h-24 object-cover rounded-md"
+              />
+
+              {/* Auction Details */}
+              <div className="flex-1">
+                <h3 className="text-md font-bold">{data.product.title}</h3>
+                <p className="text-sm text-gray-600">{data.product.category.nameEn}</p>
+                <p className="text-lg font-semibold text-primary">AED {data.ProductListingPrice}</p>
+                <p className="text-sm  text-gray-600"> {data.status}</p>
+              </div>
+
+              {/* Share Button */}
+           <div className="flex flex-col gap-2"> 
+           <button 
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
+              onClick={()=>handleSendAuctionToAll(data.id)}
+              >
+                Send auction WhatsApp
+              </button>
+              <button 
+              className="bg-secondary-light text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
+              onClick={()=>handleSendAuctionEmail(data.id)}
+              >
+                 Send auction Email
+              </button>
+           </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="flex justify-end mt-7">
+          <PaginationApp totalPages={listedTotalCount} perPage={5} />
         </div>
       </div>
     </div>
