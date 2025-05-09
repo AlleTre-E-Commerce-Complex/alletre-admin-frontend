@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { ReactComponent as AllatreLogo } from "../../../../src/assets/logo/allatre-logo-color.svg";
+import { ReactComponent as AllatreLogo } from "../../../../src/assets/img/allatre-logo-color.svg";
 import logOut from "../../../../src/assets/icons/log_out_icon.png";
 
 import auth from "../../../utils/auth";
@@ -108,9 +108,9 @@ const Sidebar = ({ SetSid, sid }) => {
   };
 
   const onLogout = () => {
-    window.location.reload();
-    history.push(routes.app.home);
     auth.logout();
+    history.push(routes.app.home);
+    window.location.reload();
   };
 
   const handleDeliveryRequest = ()=>{
@@ -123,146 +123,138 @@ const Sidebar = ({ SetSid, sid }) => {
   }
   return (
     <>
-      <div className="h-screen fixed top-0 md:block hidden w-[250px] ">
-        {/* content */}
-        <div className="mt-40">
-          <NavLink
-            title="Users"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.users.default)
-            }
-            onClick={() => history.push(routes.app.users.default)}
-          />
-          <NavLink
-            title="Auctions"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.auctions.default)
-            }
-            onClick={() => history.push(routes.app.auctions.default)}
-          />
-          <NavLink
-            title="Categories"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.category.default)
-            }
-            onClick={() => history.push(routes.app.category.default)}
-          />
-          <NavLink
-            title="Sub Categories"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.subGatogry.default)
-            }
-            onClick={() => history.push(routes.app.subGatogry.default)}
-          />
-          <NavLink
-            title="Brands"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.brands.default)
-            }
-            onClick={() => history.push(routes.app.brands.default)}
-          />
-          <NavLink
-            title="Withdrawal Requests"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.withdrawalRequest.default)
-            }
-            onClick={() => history.push(routes.app.withdrawalRequest.default)}
-          />
-           <NavLink
-            title="Delivery Requests"
-            isActive={pathname.startsWith(routes.app.deliveryRequests.default)}
-            onClick={handleDeliveryRequest}
-            notificationCount={notifications} // Pass notifications as a prop
-          />
-           <NavLink
-            title="Bank Transfer"
-            isActive={pathname.startsWith(routes.app.bankTransfer.default)}
-            onClick={handleBankTransfer}
-            notificationCount={bankTransferNotifications} // Pass notifications as a prop
-          />
-           <NavLink
-            title="Admin Wallet"
-            isActive={pathname.startsWith(routes.app.adminWallet.default)}
-            onClick={() => history.push(routes.app.adminWallet.default)}
-            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
-          />
-            <NavLink
-            title="Send Messages"
-            isActive={pathname.startsWith(routes.app.sendMessages.default)}
-            onClick={() => history.push(routes.app.sendMessages.default)}
-            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
-          />
-            <NavLink
-            title="Users - Not Registered"
-            isActive={pathname.startsWith(routes.app.nonRegisteredUsers.default)}
-            onClick={() => history.push(routes.app.nonRegisteredUsers.default)}
-            // notificationCount={bankTransferNotifications} // Pass notifications as a prop
-          />
-          {/* <NavLink
-            title="System Fields"
-            isActive={
-              pathname.length === 1 ||
-              pathname.startsWith(routes.app.systemField.default)
-            }
-            onClick={() => history.push(routes.app.systemField.default)}
-          /> */}
-        </div>
-        <div
-          onClick={onLogout}
-          className="flex justify-center gap-x-2 mt-12  cursor-pointer"
-        >
-          <img className="w-4 h-4 mt-0.5" src={logOut} alt="logOut" />
-          <p className="text-gray-med text-sm font-normal underline">
-            {selectedContent[localizationKeys.logout]}
-          </p>
-        </div>
-      </div>
-      <div className="block md:hidden">
+      <div className=" ">
         <motion.div
-          className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 ${
-            sid ? "pointer-events-auto" : "pointer-events-none"
-          }`}
+          className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 ${sid ? "pointer-events-auto" : "pointer-events-none"}`}
           variants={overlayVariants}
-          initial="open"
+          initial="closed"
           animate={sid ? "open" : "closed"}
           transition={{ duration: 0.3 }}
           onClick={() => SetSid(false)}
         />
+
         <motion.div
-          className="h-full fixed top-0 z-50 w-[255px] bg-white "
+          className="h-full fixed top-0 z-50 w-[280px] bg-white shadow-xl overflow-hidden"
           variants={sidebarVariants}
           initial={lang === "en" ? "closedEn" : "closedAr"}
           animate={sid ? "open" : lang === "en" ? "closedEn" : "closedAr"}
         >
-          <div className="">
-            {/* content */}
-            <div>
+          <div className="h-full flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <AllatreLogo className="w-32" />
+              <button
+                onClick={() => SetSid(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+              >
+                <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              {/* Copy all NavLinks from desktop version */}
               <NavLink
                 title="Users"
-                isActive={
-                  pathname.length === 1 ||
-                  pathname.startsWith(routes.app.users.default)
-                }
+                isActive={pathname.startsWith(routes.app.users.default)}
                 onClick={() => {
                   history.push(routes.app.users.default);
                   SetSid(false);
                 }}
               />
+              <NavLink
+                title="Auctions"
+                isActive={pathname.startsWith(routes.app.auctions.default)}
+                onClick={() => {
+                  history.push(routes.app.auctions.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Categories"
+                isActive={pathname.startsWith(routes.app.category.default)}
+                onClick={() => {
+                  history.push(routes.app.category.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Sub Categories"
+                isActive={pathname.startsWith(routes.app.subGatogry.default)}
+                onClick={() => {
+                  history.push(routes.app.subGatogry.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Brands"
+                isActive={pathname.startsWith(routes.app.brands.default)}
+                onClick={() => {
+                  history.push(routes.app.brands.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Withdrawal Requests"
+                isActive={pathname.startsWith(routes.app.withdrawalRequest.default)}
+                onClick={() => {
+                  history.push(routes.app.withdrawalRequest.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Delivery Requests"
+                isActive={pathname.startsWith(routes.app.deliveryRequests.default)}
+                onClick={() => {
+                  handleDeliveryRequest();
+                  SetSid(false);
+                }}
+                notificationCount={notifications}
+              />
+              <NavLink
+                title="Bank Transfer"
+                isActive={pathname.startsWith(routes.app.bankTransfer.default)}
+                onClick={() => {
+                  handleBankTransfer();
+                  SetSid(false);
+                }}
+                notificationCount={bankTransferNotifications}
+              />
+              <NavLink
+                title="Admin Wallet"
+                isActive={pathname.startsWith(routes.app.adminWallet.default)}
+                onClick={() => {
+                  history.push(routes.app.adminWallet.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Send Messages"
+                isActive={pathname.startsWith(routes.app.sendMessages.default)}
+                onClick={() => {
+                  history.push(routes.app.sendMessages.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Users - Not Registered"
+                isActive={pathname.startsWith(routes.app.nonRegisteredUsers.default)}
+                onClick={() => {
+                  history.push(routes.app.nonRegisteredUsers.default);
+                  SetSid(false);
+                }}
+              />
             </div>
             <div
-              onClick={onLogout}
-              className="flex justify-center gap-x-2 mt-12  cursor-pointer"
+              onClick={() => {
+                onLogout();
+                SetSid(false);
+              }}
+              className="flex items-center justify-center gap-3 py-4 px-6 text-gray-600 hover:bg-gray-50 transition-colors duration-200 border-t border-gray-100 mt-auto"
             >
-              <img className="w-4 h-4 mt-0.5" src={logOut} alt="logOut" />
-              <p className="text-gray-med text-sm font-normal underline">
+              <img className="w-5 h-5" src={logOut} alt="logOut" />
+              <span className="text-sm font-medium">
                 {selectedContent[localizationKeys.logout]}
-              </p>
+              </span>
             </div>
           </div>
         </motion.div>
@@ -274,28 +266,28 @@ const Sidebar = ({ SetSid, sid }) => {
 export const NavLink = ({ title, onClick, isActive, notificationCount }) => {
   return (
     <div>
-      <p
+      <button
         onClick={onClick}
-        className={`${
+        className={`w-full group transition-all duration-200 ${
           isActive
-            ? "bg-primary-light/10 text-primary mx-0 px-10 font-bold"
-            : "mx-10 px-4 border-b-gray-veryLight border-b-[1px]"
-        } text-base text-gray-dark font-normal py-5 cursor-pointer flex items-center`}
+            ? "bg-primary-light/10 text-primary font-semibold"
+            : "hover:bg-gray-50 text-gray-600"
+        }`}
       >
-        <span
-          className={`${
-            isActive
-              ? "bg-primary font-bold w-2 h-2 rounded-full mt-1.5 mx-4"
-              : ""
-          }`}
-        ></span>
-        <span className={`${isActive ? "font-bold" : ""}`}>{title}</span>
-        {notificationCount > 0 && (
-          <span className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-            {notificationCount}
+        <div className="flex items-center px-6 py-4 space-x-3">
+          {isActive && (
+            <span className="w-1.5 h-8 bg-primary rounded-r-full absolute left-0" />
+          )}
+          <span className={`text-base ${isActive ? "font-semibold" : "font-medium"}`}>
+            {title}
           </span>
-        )}
-      </p>
+          {notificationCount > 0 && (
+            <span className="flex items-center justify-center px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded-full min-w-[20px] h-5">
+              {notificationCount}
+            </span>
+          )}
+        </div>
+      </button>
     </div>
   );
 };

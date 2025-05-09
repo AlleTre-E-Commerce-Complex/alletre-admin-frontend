@@ -106,35 +106,46 @@ const UsersTable = () => {
   };
 
   return (
-    <>
-      <div className="animate-in">
-        <Dimmer
-          className="fixed w-full h-full top-0 bg-white/50"
-          active={isLoading}
-          inverted
-        >
-          <LodingTestAllatre />
-        </Dimmer>
+    <div className="relative">
+      <div className="animate-in relative bg-white rounded-lg shadow-sm">
+        {/* Loading State */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
+            <LodingTestAllatre />
+          </div>
+        )}
 
-        <div className="px-4 sm:px-6 py-6 sm:py-8 bg-gray-50 min-h-screen">
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-4">User Management</h1>
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="w-full sm:w-96">
-                <Input
-                  icon={<Icon name="search" color="grey" />}
-                  placeholder="Search by name, email or phone..."
-                  fluid
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full shadow-sm !bg-white rounded-lg"
-                  size="large"
-                />
-              </div>
+        {/* Empty State */}
+        {!isLoading && (!activeAuctionData || activeAuctionData.length === 0) && (
+          <div className="py-12 px-4 text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-1">No Users Found</h3>
+            <p className="text-sm text-gray-500">There are no users at the moment.</p>
+          </div>
+        )}
+
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="w-full sm:w-96">
+              <Input
+                icon={<Icon name="search" color="grey" />}
+                placeholder="Search by name, email or phone..."
+                fluid
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full shadow-sm !bg-white rounded-lg"
+                size="large"
+              />
             </div>
           </div>
+        </div>
 
-          <div className="overflow-hidden rounded-xl shadow-sm border border-gray-200 bg-white">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <Table className="bg-transparent border-none min-w-full">
               <Table.Header>
                 <Table.Row className="bg-gray-50 border-b border-gray-200">
@@ -271,27 +282,153 @@ const UsersTable = () => {
             </Table>
           </div>
 
-          <div className="flex justify-end mt-6">
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {!isLoading && (searchQuery ? filteredData : activeAuctionData)?.length > 0 && 
+              (searchQuery ? filteredData : activeAuctionData).map((e, index) => (
+              <div 
+                key={e?.id}
+                className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+              >
+                <div className="p-4 space-y-4">
+                  {/* Header with User Info */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100"
+                        src={e?.imageLink || userProfileicon}
+                        alt={e?.userName}
+                      />
+                      <div>
+                        <h3 className="font-medium text-gray-900">{e?.userName || "----"}</h3>
+                        <p className="text-sm text-gray-500">{e?.email || "----"}</p>
+                      </div>
+                    </div>
+                    <span className="text-sm text-gray-500">#{index + 1}</span>
+                  </div>
+
+                  {/* Details */}
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500">Wallet Balance</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-900">{e?.wallet?.[e?.wallet?.length - 1]?.balance || "0"} AED</span>
+                        <Button
+                          className="bg-primary hover:bg-primary-dark transition-colors duration-200 !px-3 !py-1.5 text-xs"
+                          primary
+                          size="tiny"
+                          onClick={() => {
+                            setSelectedUser(e);
+                            setIsWalletModalOpen(true);
+                            setUserId(e?.id);
+                          }}
+                        >
+                          Manage
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500">Phone</span>
+                      <span className="text-gray-900 font-medium">{e?.phone || "----"}</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500">Created</span>
+                      <span className="text-gray-900">
+                        {new Date(e?.createdAt).toLocaleDateString("en-GB")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500">Total Auctions</span>
+                      <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full bg-blue-50 text-blue-600 font-medium">
+                        {e?._count?.auctions}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500">Joined Auctions</span>
+                      <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full bg-purple-50 text-purple-600 font-medium">
+                        {e?._count?.JoinedAuction}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <button
+                    className={`w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg font-medium text-sm transition-all duration-200
+                    ${e?.isBlocked
+                      ? 'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'
+                      : 'bg-red-50 text-red-600 hover:bg-red-600 hover:text-white'
+                    }`}
+                    onClick={() => handleBlockAction(e?.id, e?.isBlocked, e?.userName)}
+                  >
+                    <Icon name={e?.isBlocked ? 'unlock' : 'lock'} className="w-4 h-4" />
+                    {e?.isBlocked ? 'Unblock' : 'Block'}
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* Mobile Shimmer Loading */}
+            {isLoading && (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden animate-pulse">
+                    <div className="p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 rounded-full bg-gray-200" />
+                          <div className="space-y-2">
+                            <div className="h-4 w-24 bg-gray-200 rounded" />
+                            <div className="h-3 w-32 bg-gray-200 rounded" />
+                          </div>
+                        </div>
+                        <div className="h-4 w-8 bg-gray-200 rounded" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between py-2 border-t border-gray-50">
+                          <div className="h-4 w-16 bg-gray-200 rounded" />
+                          <div className="h-4 w-24 bg-gray-200 rounded" />
+                        </div>
+                        <div className="flex justify-between py-2 border-t border-gray-50">
+                          <div className="h-4 w-16 bg-gray-200 rounded" />
+                          <div className="h-4 w-24 bg-gray-200 rounded" />
+                        </div>
+                      </div>
+                      <div className="h-10 w-full bg-gray-200 rounded-lg" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end mt-8 px-4 md:px-6">
             <PaginationApp totalPages={totalPages} perPage={1000} />
           </div>
-          <SuccessModal
-            open={openSuccessModal}
-            setOpen={setOpenSuccessModal}
-            returnUrl={routes.app.users.default}
-            message={SuccessModalMessage}
-          />
-          <ConfirmationModal
-            open={confirmationModal.open}
-            onClose={handleCloseConfirmation}
-            onConfirm={handleConfirmBlock}
-            title={confirmationModal.isBlocked ? "Unblock User" : "Block User"}
-            message={`Are you sure you want to ${confirmationModal.isBlocked ? 'unblock' : 'block'} ${confirmationModal.userName}?`}
-            confirmText={confirmationModal.isBlocked ? "Unblock" : "Block"}
-            cancelText="Cancel"
-          />
         </div>
+        <SuccessModal
+        open={openSuccessModal}
+        setOpen={setOpenSuccessModal}
+        returnUrl={routes.app.users.default}
+        message={SuccessModalMessage}
+      />
+      <ConfirmationModal
+        open={confirmationModal.open}
+        onClose={handleCloseConfirmation}
+        onConfirm={handleConfirmBlock}
+        title={confirmationModal.isBlocked ? "Unblock User" : "Block User"}
+        message={`Are you sure you want to ${confirmationModal.isBlocked ? 'unblock' : 'block'} ${confirmationModal.userName}?`}
+        confirmText={confirmationModal.isBlocked ? "Unblock" : "Block"}
+        cancelText="Cancel"
+      />
+      <WalletManagementModal
+        open={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        userBalance={selectedUser?.wallet?.[selectedUser?.wallet?.length - 1]?.balance || 0}
+        userId={userId}
+      />
       </div>
-    </>
+     
+   
   );
 };
 

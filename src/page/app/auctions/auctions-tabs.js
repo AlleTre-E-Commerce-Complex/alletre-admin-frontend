@@ -24,7 +24,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.active,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <ActiveAuctions />
           </Tab.Pane>
         </div>
@@ -35,7 +35,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.scheduled,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <ScheduledAuctions />
           </Tab.Pane>
         </div>
@@ -46,7 +46,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.drafts,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <DraftsAuctions />
           </Tab.Pane>
         </div>
@@ -57,7 +57,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.sold,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <SoldAuctions />
           </Tab.Pane>
         </div>
@@ -79,7 +79,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.watingForPayment,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <WatingForPaymentAuctions />
           </Tab.Pane>
         </div>
@@ -90,7 +90,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.expired,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <ExpiredAuctions />
           </Tab.Pane>
         </div>
@@ -101,7 +101,7 @@ const AuctionsTabs = () => {
       route: routes.app.auctions.cancelled,
       render: () => (
         <div>
-          <Tab.Pane className="border-none w-full h-full bg-gray-light animate-in">
+          <Tab.Pane className="border-none w-full h-full bg-white p-4 sm:p-6 animate-in">
             <CancelledAuction />
           </Tab.Pane>
         </div>
@@ -113,16 +113,26 @@ const AuctionsTabs = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
   return (
-    <div className="">
-      <h1 className="text-3xl text-black font-medium py-5 mx-5">
-        All Auctions
-      </h1>
-      <div className="h-auto edit-For-my-auctions-tabs animate-in bg-gray-light rounded-2xl p-2 shadow-md">
+    <div className=" mx-auto px-4 sm:px-2 lg:px-4">
+      <div className="flex items-center justify-between py-5">
+        <h1 className="text-2xl md:text-3xl text-gray-900 font-semibold tracking-tight">
+          All Auctions
+        </h1>
+      </div>
+      
+      <div className="bg-white shadow-primary/10 ring-1 ring-primary/5 sm:rounded-xl overflow-hidden">
         <Tab
           menu={{
             secondary: true,
             pointing: true,
-            className: "flex overflow-x-scroll scrollbar-hide",
+            className: `flex overflow-x-auto scrollbar-hide gap-2 p-4 bg-gray-100 border-b
+              [&_.item]:whitespace-nowrap
+              [&_.item]:px-4 [&_.item]:py-2 [&_.item]:rounded-full
+              [&_.item]:text-sm [&_.item]:font-medium
+              [&_.item]:transition-colors
+              [&_.active]:bg-primary [&_.active]:!text-white
+              [&_.item:hover]:bg-primary-dark [&_.item:hover]:!text-white
+            `,
           }}
           activeIndex={activeIndex}
           onTabChange={onTabChange}
