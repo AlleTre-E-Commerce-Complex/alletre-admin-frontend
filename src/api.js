@@ -72,7 +72,20 @@ const   api = {
       sendAcutionToAllNonExistingUsers:`/whatsapp/send-auction-bulk-ToNonExistingUser`,
       commonMessageAllToNonExistingUser:`/whatsapp/send-commentMessage-ToNonExistingUser`,
       sendAuctionToalluserByEmail:'/emails/send-auction-bulk-email',
-    }
+    },
+    productListing: {
+      listNewProduct: `auctions/product-listing`,
+      productAnalytics: "auctions/user/product/analytics",
+      getAllListedProducts: `auctions/listedProducts/getAllListed-products`,
+      getOtherUserProducts: (userId) => `/auctions/listedProducts/userProductdetails/?userId=${userId}`,
+      listedProduct: (productId) =>
+        `auctions/listedProducts/${productId}/details`,
+      SimilarProduct: (productId) =>
+        `auctions/product/similar?productId=${productId}`,
+      getAllMyProduts: "auctions/user/get-all-myProducts",
+      updateProductStatus: (productId) =>
+        `auctions/products/updateProductStatus?productId=${productId}`,
+    },
   },
 };
 
