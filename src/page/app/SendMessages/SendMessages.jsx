@@ -149,6 +149,15 @@ const AdminMessageSender = () => {
     )
   }
 
+    const handleSendListedProductEmail = (ListedId) => {
+    sendAuctionToAll(
+      authAxios.post(`${api.app.sendMessage.sendProductToalluserByEmail}`,{ListedId})
+      .then((res)=>{
+          toast.success('successfully send message')
+      })
+    )
+  }
+
   return (
     <div className="admin-message-sender p-6">
       <Dimmer active={isLoading || liveAuctionLoading ||sendAuctionToAllLoading} inverted>
@@ -361,7 +370,7 @@ const AdminMessageSender = () => {
 
         {/* Pagination */}
         <div className="flex justify-end mt-7">
-          <PaginationApp totalPages={totalPages} perPage={5} />
+          <PaginationApp totalPages={totalPages} perPage={10} />
         </div>
       </div>
 
@@ -387,17 +396,17 @@ const AdminMessageSender = () => {
 
               {/* Share Button */}
            <div className="flex flex-col gap-2"> 
-           <button 
+           {/* <button 
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
               onClick={()=>handleSendAuctionToAll(data.id)}
               >
-                Send auction WhatsApp
-              </button>
+                Send Product WhatsApp
+              </button> */}
               <button 
               className="bg-secondary-light text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
-              onClick={()=>handleSendAuctionEmail(data.id)}
+              onClick={()=>handleSendListedProductEmail(data.id)}
               >
-                 Send auction Email
+                 Send Product Email
               </button>
            </div>
             </div>
@@ -406,7 +415,7 @@ const AdminMessageSender = () => {
 
         {/* Pagination */}
         <div className="flex justify-end mt-7">
-          <PaginationApp totalPages={listedTotalCount} perPage={5} />
+          <PaginationApp totalPages={listedTotalCount} perPage={10} />
         </div>
       </div>
     </div>
