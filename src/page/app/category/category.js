@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useGetGatogry from "../../../hooks/use-get-category";
-import PenIcon from "../../../../src/assets/icons/pen-icon.png";
+// import PenIcon from "../../../../src/assets/icons/pen-icon.png";
 import CategoryCard from "../../../components/category-components/category-card";
-import { Button, Dimmer } from "semantic-ui-react";
+import {  Dimmer } from "semantic-ui-react";
 import LodingTestAllatre from "../../../components/shared/lotties-file/loding-test-allatre";
 import AddCategoryModal from "./addCategoryModal";
 
