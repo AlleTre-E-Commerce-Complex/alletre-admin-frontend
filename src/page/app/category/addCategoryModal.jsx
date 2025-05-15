@@ -13,14 +13,7 @@ const [categoryData, setCategoryData] = useState({
     nameEn: '',
     bidderDepositFixedAmount: 100,
     sellerDepositFixedAmount: 100,
-    subCategories: [
-        { 
-            id: 0,
-            nameAr: '', 
-            nameEn: '', 
-            customFields: [{ id:0, key: '', resKey: '', type: '', labelAr: '', labelEn: '' }] 
-        }
-    ]
+    subCategories: []
 });
 useEffect(() => {
     
@@ -82,7 +75,7 @@ useEffect(() => {
     const addSubCategory = () => {
         setCategoryData({
             ...categoryData,
-            subCategories: [...categoryData.subCategories, { nameAr: '', nameEn: '', customFields: [{ key: '', resKey: '', type: '', labelAr: '', labelEn: '' }] }]
+            subCategories: [...categoryData.subCategories, { nameAr: '', nameEn: '', customFields: [] }]
         });
     };
 
@@ -127,46 +120,58 @@ useEffect(() => {
     if (!showModal) return null;
 
     return (
-        <div className="fixed inset-0 flex items-top  justify-center bg-black bg-opacity-50 z-40">
-            <div className="bg-white p-6 mt-5 rounded-2xl shadow-lg w-1/2 z-40 max-h-[630px] overflow-y-auto">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add New Category</h2>
+        <div className="fixed inset-0 flex items-top  justify-center bg-black bg-opacity-50 z-40 h-[85vh]">
+            <div className=" rounded-2xl shadow-2xl w-full max-w-3xl h-[85vh] overflow-y-auto flex flex-col z-50 p-4 bg-gray-200">
+              {/* Modal Header */}
+                <div className="sticky top-0 bg-white z-50 border-b p-4 flex justify-between items-center">
+                    <h2 className="text-2xl font-semibold text-gray-800">Add New Category</h2>
+                    <button onClick={() => { setShowModal(false); setCategoryId(null); }} className="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                </div>
+
                 
-                <input type="text" name="nameAr" placeholder="Category Name (Arabic)" value={categoryData.nameAr} onChange={handleCategoryChange} className="w-full p-2 border rounded-lg mb-2" />
-                <input type="text" name="nameEn" placeholder="Category Name (English)" value={categoryData.nameEn} onChange={handleCategoryChange} className="w-full p-2 border rounded-lg mb-2" />
-                <input type="number" name="bidderDepositFixedAmount" placeholder="Bidder Deposit Fixed Amount" value={categoryData.bidderDepositFixedAmount} onChange={handleCategoryChange} className="w-full p-2 border rounded-lg mb-2" />
-                <input type="number" name="sellerDepositFixedAmount" placeholder="Seller Deposit Fixed Amount" value={categoryData.sellerDepositFixedAmount} onChange={handleCategoryChange} className="w-full p-2 border rounded-lg mb-4" />
-                
-                <h3 className="text-lg font-medium mt-4 mb-2">Subcategories</h3>
-                {categoryData.subCategories.map((subCategory, subIndex) => (
-                    <div key={subIndex} className="border p-4 rounded-lg mb-4 border  bg-secondary-light">
-                        <input type="text" name="id" hidden value={subCategory.id}  className="w-full p-2 border rounded-lg mb-2" />
-                        <input type="text" name="nameAr" placeholder="Subcategory Name (Arabic)" value={subCategory.nameAr} onChange={(e) => handleSubCategoryChange(subIndex, e)} className="w-full p-2 border rounded-lg mb-2" />
-                        <input type="text" name="nameEn" placeholder="Subcategory Name (English)" value={subCategory.nameEn} onChange={(e) => handleSubCategoryChange(subIndex, e)} className="w-full p-2 border rounded-lg mb-2" />
-                        
-                        <h4 className="text-md font-medium mb-2">Custom Fields</h4>
-                        {subCategory.customFields.map((field, fieldIndex) => (
-                            <div key={fieldIndex} className="p-2 border rounded-lg mb-2">
-                                <input type="text" name="id" hidden value={field.id}  className="w-full p-2 border rounded-lg mb-2" />
-                                <input type="text" name="key" placeholder="Key" value={field.key} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border rounded-lg mb-1" />
-                                <input type="text" name="resKey" placeholder="Res Key" value={field.resKey} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border rounded-lg mb-1" />
-                                <input type="text" name="type" placeholder="Type" value={field.type} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border rounded-lg mb-1" />
-                                <input type="text" name="labelAr" placeholder="Label (Arabic)" value={field.labelAr} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border rounded-lg mb-1" />
-                                <input type="text" name="labelEn" placeholder="Label (English)" value={field.labelEn} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border rounded-lg" />
-                            </div>
-                        ))}
-                        <button onClick={() => addCustomField(subIndex)} className="px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary transition mt-2">Add Custom Field</button>
-                    </div>
-                ))}
+                <input type="text" name="nameAr" placeholder="Category Name (Arabic)" value={categoryData.nameAr} onChange={handleCategoryChange} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input type="text" name="nameEn" placeholder="Category Name (English)" value={categoryData.nameEn} onChange={handleCategoryChange} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input type="number" name="bidderDepositFixedAmount" placeholder="Bidder Deposit Fixed Amount" value={categoryData.bidderDepositFixedAmount} onChange={handleCategoryChange} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input type="number" name="sellerDepositFixedAmount" placeholder="Seller Deposit Fixed Amount" value={categoryData.sellerDepositFixedAmount} onChange={handleCategoryChange} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary"/>
+
+                        {categoryData.subCategories.length > 0 && (
+                            <>
+                                <h3 className="text-lg font-medium mt-4 mb-2">Subcategories</h3>
+                                {categoryData.subCategories.map((subCategory, subIndex) => (
+                                    <div key={subIndex} className="border border-black p-4 rounded-lg mb-4 bg-gray-200">
+                                        <input type="text" name="id" hidden value={subCategory.id || 0} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                        <input type="text" name="nameAr" placeholder="Subcategory Name (Arabic)" value={subCategory.nameAr} onChange={(e) => handleSubCategoryChange(subIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                        <input type="text" name="nameEn" placeholder="Subcategory Name (English)" value={subCategory.nameEn} onChange={(e) => handleSubCategoryChange(subIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+
+                                        {subCategory.customFields.length > 0 && (
+                                            <>
+                                                <h4 className="text-md font-medium mb-2">Custom Fields</h4>
+                                                {subCategory.customFields.map((field, fieldIndex) => (
+                                                    <div key={fieldIndex} className="p-2 border border-primary rounded-lg mb-2 bg-gray-300">
+                                                        <input type="text" name="id" hidden value={field.id || 0} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                        <input type="text" name="key" placeholder="Key" value={field.key} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                        <input type="text" name="resKey" placeholder="Res Key" value={field.resKey} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                        <input type="text" name="type" placeholder="Type" value={field.type} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                        <input type="text" name="labelAr" placeholder="Label (Arabic)" value={field.labelAr} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                        <input type="text" name="labelEn" placeholder="Label (English)" value={field.labelEn} onChange={(e) => handleCustomFieldChange(subIndex, fieldIndex, e)} className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                                    </div>
+                                                ))}
+                                            </>
+                                        )}
+                                        <button onClick={() => addCustomField(subIndex)} className="px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary transition mt-2">Add Custom Field</button>
+                                    </div>
+                                ))}
+                            </>
+                        )}
+
                 <button onClick={addSubCategory} className="px-4 py-2 bg-secondary-light text-white rounded-lg hover:bg-green-600 transition mb-4">Add Subcategory</button>
                 
-                <div className="flex justify-end space-x-3 mt-6">
-                    <button onClick={() => {
-                        setShowModal(false)
-                        setCategoryId(null)
-                        }}
-                         className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</button>
+                {/* Modal Footer */}
+                <div className="sticky bottom-0 bg-white z-50 border-t p-4 flex justify-end space-x-3">
+                    <button onClick={() => { setShowModal(false); setCategoryId(null); }} className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</button>
                     <button onClick={handleSubmit} className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">Submit</button>
                 </div>
+
             </div>
         </div>
     );
