@@ -13,6 +13,7 @@ import { Dimmer, Icon, Button } from "semantic-ui-react";
 import WalletManagementModal from "../../../components/users-components/WalletManagementModal";
 import LodingTestAllatre from "../../../components/shared/lotties-file/loding-test-allatre";
 import localizationKeys from "../../../localization/localization-keys";
+import ProfitModal from "../../../components/shared/modal/ProfitModal";
 const AdminWallet = () => {
 
   const [lang] = useLanguage("");
@@ -25,6 +26,8 @@ const AdminWallet = () => {
   const [withdrawalOpen, setWithdrawalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false)
+  const [isProfitModalOpen, setIsProfitModal] = useState(false)
+  const [adminProfit, setAdminProfit] = useState(0)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -33,10 +36,11 @@ const AdminWallet = () => {
   useEffect(() => {
     const fetchWalletData = async () => {
       try {
-        const [historyResponse, balanceResponse, accountResponse] = await Promise.all([
+        const [historyResponse, balanceResponse, accountResponse, adminProfitRes] = await Promise.all([
           runWallet(authAxios.get(`${api.app.adminWallet.getAdminWalletDetails}`)),
           runWallet(authAxios.get(`${api.app.adminWallet.getAdminWalletBalance}`)),
           runWallet(authAxios.get(`${api.app.adminWallet.getBankAccountBalance}`)),
+          runWallet(authAxios.get(`${api.app.adminWallet.getAdminProfit}`)),
         ]);
 
         setWalletHistory(historyResponse?.data);
@@ -44,6 +48,7 @@ const AdminWallet = () => {
         setWalletBalance(balanceResponse?.data);
         setAccountBalanceWithWelcomBonus(accountResponse?.data?.accountBalanceWithWelcomeBonus)
         setAccountBalanceWithOutWelcomBonus(accountResponse?.data?.accountBalanceWithOutWelcomeBonus)
+        setAdminProfit(adminProfitRes?.data?.adminProfit)
       } catch (error) {
         console.error('Error fetching wallet data:', error);
       }
@@ -95,7 +100,8 @@ const AdminWallet = () => {
                 Add Transaction
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Total Balance Card */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 relative overflow-hidden group">
                 <div className="absolute right-0 top-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-blue-400/10 group-hover:scale-110 transition-transform duration-200"></div>
@@ -144,6 +150,23 @@ const AdminWallet = () => {
                 <div className="flex items-baseline gap-1 relative">
                   <span className="text-xl font-semibold text-purple-900/75">AED</span>
                   <span className="text-3xl font-bold text-purple-900">{(Number(accountBalanceWithOutWelcomBonus) || 0).toFixed(2)}</span>
+                </div>
+              </div>
+
+              {/* profit */}
+              <div onClick={()=>setIsProfitModal(true)} className="bg-gradient-to-br cursor-pointer from-red-50 to-red-100/50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 relative overflow-hidden group">
+                <div className="absolute right-0 top-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-blue-400/10 group-hover:scale-110 transition-transform duration-200"></div>
+                <div className="flex items-center gap-3 mb-3 relative">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Icon name="money bill alternate outline" className="text-blue-600 text-xl" />
+                  </div>
+                  <h2 className="text-sm font-semibold text-blue-900/90 uppercase tracking-wider">
+                    Profit
+                  </h2>
+                </div>
+                <div className="flex items-baseline gap-1 relative">
+                  <span className="text-xl font-semibold text-blue-900/75">AED</span>
+                  <span className="text-3xl font-bold text-blue-900">{(Number(adminProfit) || 0).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -263,6 +286,10 @@ const AdminWallet = () => {
           onClose={() => setIsWalletModalOpen(false)}
           userBalance={walletBalance || 0}
           isAdmin
+        />
+        <ProfitModal
+          onClose={()=>setIsProfitModal(false)}
+          open={isProfitModalOpen}
         />
       </div>
     </div>
