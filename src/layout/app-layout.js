@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import api from "../api";
+import { Route, Switch } from "react-router-dom";
 import Sidebar from "../components/shared/side-bare/side-bare";
 import Header from "../components/shared/header/header";
 import routes from "../routes";
@@ -17,9 +18,24 @@ import BankTransferRequests from "../page/app/bankTransfer/BankTransferRequests"
 import AdminWallet from "../page/app/AdminWallet/AdminWallet";
 import AdminMessageSender from "../page/app/SendMessages/SendMessages";
 import NonRegisteredUsers from "../page/app/unRegisteredUsers/NonRegisteredUsers";
+import Dashboard from "../page/app/dashboard/dashboard";
+import { authAxios } from "../config/axios-config";
 const AppLayouts = () => {
-  console.log('app layout')
   const [sid, SetSid] = useState(false);
+  const [dashboardStats, setDashboardStats] = useState(null);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await authAxios.get(api.app.dashboard.getStats);
+      setDashboardStats(response.data);
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
   return (
     <div className=" p-0 m-0 border-none border-0 scrollbar-hide  ">
         <SocketProvider>
@@ -29,6 +45,10 @@ const AppLayouts = () => {
       </div>
       <div className="p-0 m-0 border-none  px-4 md:px-8 mt-20 md:mt-32">
         <Switch>
+          <Route
+            path={routes.app.dashboard.default}
+            render={(props) => <Dashboard {...props} stats={dashboardStats} />}
+          />
           <Route
             path={routes.app.systemField.default}
             component={SystemFields}

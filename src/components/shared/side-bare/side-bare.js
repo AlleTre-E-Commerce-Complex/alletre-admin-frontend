@@ -154,6 +154,14 @@ const Sidebar = ({ SetSid, sid }) => {
             <div className="flex-1 overflow-y-auto">
               {/* Copy all NavLinks from desktop version */}
               <NavLink
+                title="Dashboard"
+                isActive={pathname.startsWith(routes.app.dashboard.default)}
+                onClick={() => {
+                  history.push(routes.app.dashboard.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
                 title="Users"
                 isActive={pathname.startsWith(routes.app.users.default)}
                 onClick={() => {
