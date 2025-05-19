@@ -12,6 +12,9 @@ const routes = {
   },
   app: {
     default: `/allatre-admin`,
+    dashboard: {
+      default: `/allatre-admin/dashboard`,
+    },
     users: {
       default: `/allatre-admin/users`,
     },

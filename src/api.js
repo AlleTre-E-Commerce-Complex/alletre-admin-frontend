@@ -60,6 +60,9 @@ const   api = {
       getRequests: "/auctions/admin/get-bankTransfer-request",
       updateStatus: (requestId) => `/auctions/admin/update-bankTransfer-request?requestId=${requestId}`,
     },
+     dashboard: {
+      getStats: "/dashboard/admin/stats",
+    },
     adminWallet:{
       getAdminWalletDetails:"/wallet/get-admin-wallet-details",
       getAdminWalletBalance:"/wallet/get-admin-wallet-balance",

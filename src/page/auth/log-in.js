@@ -41,7 +41,7 @@ const LogIn = ({ currentPAth, isAuthModel }) => {
           newAccessToken: accessToken,
           newRefreshToken: refreshToken,
         });
-        history.push(routes.app.users.default);
+        history.push(routes.app.dashboard.default);
         window.location.reload();
       })
       .catch((err) => {
