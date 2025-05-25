@@ -9,7 +9,7 @@ const WithdrawalRequestModal = ({
   setRefresh,
 }) => {
   if (!isOpen) return null;
-
+  console.log('banck account:',auctionDetails.bankAccount)
   const handleOnApprove = async () => {
     onClose();
     setRefresh((prev) => !prev);
@@ -63,8 +63,20 @@ const WithdrawalRequestModal = ({
             {auctionDetails.amount}
           </p>
           <p>
-            <span className="font-medium text-gray-700">Bank Account:</span>{" "}
+            <span className="font-medium text-gray-700">Account Holder Name:</span>{" "}
+            {auctionDetails.bankAccount.accountHolderName}
+          </p>
+          <p>
+            <span className="font-medium text-gray-700">Bank Name:</span>{" "}
+            {auctionDetails.bankAccount.bankName}
+          </p>
+          <p>
+            <span className="font-medium text-gray-700">Bank Account Number:</span>{" "}
             {auctionDetails.bankAccount.accountNumber}
+          </p>
+          <p>
+            <span className="font-medium text-gray-700">IBAN Number:</span>{" "}
+            {auctionDetails.bankAccount.routingNumber}
           </p>
           <p>
             <span className="font-medium text-gray-700">Status:</span>{" "}
