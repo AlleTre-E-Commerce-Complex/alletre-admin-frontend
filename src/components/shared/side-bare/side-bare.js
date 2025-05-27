@@ -169,6 +169,14 @@ const Sidebar = ({ SetSid, sid }) => {
                   SetSid(false);
                 }}
               />
+                <NavLink
+                title="Users - Complaints"
+                isActive={pathname.startsWith(routes.app.users.complaints)}
+                onClick={() => {
+                  history.push(routes.app.users.complaints);
+                  SetSid(false);
+                }}
+              />
               <NavLink
                 title="Auctions"
                 isActive={pathname.startsWith(routes.app.auctions.default)}
