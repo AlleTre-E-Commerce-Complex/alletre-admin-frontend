@@ -20,6 +20,7 @@ import AdminMessageSender from "../page/app/SendMessages/SendMessages";
 import NonRegisteredUsers from "../page/app/unRegisteredUsers/NonRegisteredUsers";
 import Dashboard from "../page/app/dashboard/dashboard";
 import { authAxios } from "../config/axios-config";
+import UsersComplaints from "../page/app/usersComplaints/usersComplaints";
 const AppLayouts = () => {
   const [sid, SetSid] = useState(false);
   const [dashboardStats, setDashboardStats] = useState(null);
@@ -65,6 +66,7 @@ const AppLayouts = () => {
             />
           <Route path={routes.app.auctions.default} component={AuctionsTabs} />
           <Route path={routes.app.users.default} component={Users} />
+          <Route path={routes.app.users.complaints} component={UsersComplaints} />
           <Route
             path={routes.app.withdrawalRequest.default}
             component={WithdrawalRequest}

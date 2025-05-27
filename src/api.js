@@ -5,6 +5,8 @@ const   api = {
   },
   app: {
     allUser: "/users/admin/all",
+    getUserComplaints: "/users/admin/get-user-complaints",
+    updateUserComplaintStatus: (complaintId) => `/users/admin/update-complait-status?complaintId=${complaintId}`,
     nonRegisteredUsers:'/users/non-registered-users/upload-excel',
     getAllNonRegisteredUsers:'/users/non-registered-users/get',
     updateUserBlockStatus :(userId, currentStatus) => 
