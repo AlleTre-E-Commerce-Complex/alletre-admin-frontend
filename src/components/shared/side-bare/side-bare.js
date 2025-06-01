@@ -201,14 +201,14 @@ const Sidebar = ({ SetSid, sid }) => {
                   SetSid(false);
                 }}
               />
-              <NavLink
+              {/* <NavLink
                 title="Brands"
                 isActive={pathname.startsWith(routes.app.brands.default)}
                 onClick={() => {
                   history.push(routes.app.brands.default);
                   SetSid(false);
                 }}
-              />
+              /> */}
               <NavLink
                 title="Withdrawal Requests"
                 isActive={pathname.startsWith(routes.app.withdrawalRequest.default)}
