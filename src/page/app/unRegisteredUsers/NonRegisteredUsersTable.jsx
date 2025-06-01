@@ -112,9 +112,9 @@ const NonRegisteredUsersTable = () => {
                 <Table.HeaderCell className="py-4 px-6 font-semibold text-sm text-gray-700 text-left hidden sm:table-cell">
                   Created At
                 </Table.HeaderCell>
-                <Table.HeaderCell className="rounded-r-xl py-4 px-6 font-semibold text-sm text-gray-700 text-left">
+                {/* <Table.HeaderCell className="rounded-r-xl py-4 px-6 font-semibold text-sm text-gray-700 text-left">
                   Action
-                </Table.HeaderCell>
+                </Table.HeaderCell> */}
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -149,7 +149,7 @@ const NonRegisteredUsersTable = () => {
                   <Table.Cell className="py-4 px-6 text-sm text-gray-600 border-t hidden sm:table-cell">
                     {new Date(e?.createdAt).toLocaleDateString("en-GB")}
                   </Table.Cell>
-                  <Table.Cell className="py-4 px-6 text-sm border-t">
+                  {/* <Table.Cell className="py-4 px-6 text-sm border-t">
                     <button
                       className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200 shadow-sm"
                       onClick={() =>
@@ -162,7 +162,7 @@ const NonRegisteredUsersTable = () => {
                     >
                       Send Message
                     </button>
-                  </Table.Cell>
+                  </Table.Cell> */}
                 </Table.Row>
               ))}
             </Table.Body>
