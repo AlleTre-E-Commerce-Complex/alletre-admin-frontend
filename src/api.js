@@ -26,7 +26,8 @@ const   api = {
     },
     //
     category: {
-      default: "/categories/all",
+      default: "/categories/admin/all",
+      editStatus: (categoryId) => `/categories/admin/editCategoryStatus/${categoryId}`,
       getCategory: (categoryId)=> `/categories/getOne/${categoryId}`,
       uploadImages: (categoryId) => `/categories/${categoryId}/upload-images`,
       createNewCategory:'/categories/createNewCategory',

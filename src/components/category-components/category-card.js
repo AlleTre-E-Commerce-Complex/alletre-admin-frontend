@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import CategoryUplodImgModel from "./category-uplod-img-model";
 import addimage from "../../../src/assets/icons/add-image-icon.png";
-
+import { authAxios } from "../../config/axios-config";
+import api from "../../api";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const CategoryCard = ({ GatogryOptions, onReload, setCategoryId, setShowModal }) => {
-  console.log("====================================");
-  console.log({ GatogryOptions });
-  console.log("====================================");
+  const [loadingObj, setLoadingObj] = useState({});
+
+  const toggleCategoryStatus = async (categoryId, currentStatus) => {
+    try {
+      setLoadingObj((prev) => ({ ...prev, [categoryId]: true }));
+      const newStatus = !currentStatus;
+      await authAxios.patch(api.app.category.editStatus(categoryId), { status: newStatus });
+      toast.success(newStatus ? "Category enabled successfully" : "Category disabled successfully");
+      onReload();
+    } catch (error) {
+      toast.error("Failed to update category status");
+    } finally {
+      setLoadingObj((prev) => ({ ...prev, [categoryId]: false }));
+    }
+  };
+
   return (
     <div className="flex gap-10 flex-wrap py-4 ">
-      {GatogryOptions?.map((e) => (
-        <div className="relative  ">
+      {GatogryOptions?.map((e, index) => (
+        <div key={e?.key || index} className="relative  ">
           <div className="group hover:border-primary border-transparent border-[1px] shadow w-[300px] h-[240px] rounded-xl  bg-white mx-auto cursor-pointer overflow-hidden ">
             <div
-              className="group w-[300px] h-[240px]  rounded-xl
-                hover:bg-gradient-to-t hover:from-[#25252562] absolute z-20 "
+              className={`group w-[300px] h-[240px]  rounded-xl
+                hover:bg-gradient-to-t hover:from-[#25252562] absolute z-20 ${e?.status === false ? "bg-gray-400/50" : ""}`}
             >
               <CategoryUplodImgModel
                 bannerLink={e?.bannerLink || addimage}
@@ -40,15 +56,25 @@ const CategoryCard = ({ GatogryOptions, onReload, setCategoryId, setShowModal })
               </h1>
             </div>
           </div>
-          <button
-       className="bg-primary text-white mb-2 mt-4 px-4 py-2 w-full rounded-md hover:bg-primary-dark"
-       onClick={()=>{
-        setShowModal(true)
-        setCategoryId(e?.key)
-       }}
-      >
-        Edit category
-      </button>
+          <div className="flex gap-2">
+            <button
+              className="bg-primary text-white mb-2 mt-4 px-4 py-2 flex-grow rounded-md hover:bg-primary-dark"
+              onClick={()=>{
+               setShowModal(true)
+               setCategoryId(e?.key)
+              }}
+            >
+              Edit category
+            </button>
+            <button
+              disabled={loadingObj[e?.key]}
+              title={e?.status ? "Disable Category" : "Enable Category"}
+              className={`${e?.status ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} flex items-center justify-center text-white mb-2 mt-4 px-4 py-2 w-[50px] rounded-md disabled:opacity-50`}
+              onClick={() => toggleCategoryStatus(e?.key, e?.status)}
+            >
+              {loadingObj[e?.key] ? "..." : (e?.status ? <FaEyeSlash size={18} /> : <FaEye size={18} />)}
+            </button>
+          </div>
         </div>
       ))}
     </div>

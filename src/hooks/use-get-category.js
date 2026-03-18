@@ -1,4 +1,4 @@
-import axios from "axios";
+import { authAxios } from "../config/axios-config";
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useLanguage } from "../context/language-context";
@@ -12,7 +12,7 @@ const useGetGatogry = () => {
   const { run, isLoading, error, isError } = useAxios();
 
   useEffect(() => {
-    run(axios.get(api.app.category.default)).then(({ data }) => {
+    run(authAxios.get(api.app.category.default)).then(({ data }) => {
       const GatogryOptions = data.data;
       const options = [];
 
@@ -26,6 +26,7 @@ const useGetGatogry = () => {
           sliderLinkAr: d?.sliderLinkAr,
           bannerLinkAr: d?.bannerLinkAr,
           hasUsageCondition: d?.hasUsageCondition,
+          status: d?.status,
         })
       );
 
