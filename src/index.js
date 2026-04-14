@@ -14,15 +14,18 @@ import "./index.css";
 
 import { LanguageProvider } from "./context/language-context";
 import { AuthProvider } from "./context/auth-context";
+import { SocketProvider } from "./context/socket-context";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <LanguageProvider>
         <Provider store={store}>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+          <AuthProvider>
+            <SocketProvider>
+              <App />
+            </SocketProvider>
+          </AuthProvider>
         </Provider>
       </LanguageProvider>
     </BrowserRouter>

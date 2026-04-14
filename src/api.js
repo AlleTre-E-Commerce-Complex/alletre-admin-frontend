@@ -11,6 +11,10 @@ const   api = {
     getAllNonRegisteredUsers:'/users/non-registered-users/get',
     updateUserBlockStatus :(userId, currentStatus) => 
       `users/admin/updateUserBlockStatus?userId=${userId}&currentStatus=${currentStatus}`,
+    getBugReports: "/bug-report/admin/all",
+    updateBugReportStatus: (id) => `/bug-report/admin/${id}/status`,
+    getBugReportDetails: (id) => `/bug-report/${id}`,
+    addBugReportMessage: (id) => `/bug-report/${id}/message`,
     auctions: "/auctions/admin/all",
     cancell_auction: (auctionId,adminMessage) =>
       `/auctions/admin/${auctionId}/cancel-auction?adminMessage=${adminMessage}`,

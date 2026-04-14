@@ -19,6 +19,12 @@ const routes = {
       default: `/allatre-admin/users`,
       complaints:`/allatre-admin/complaints`
     },
+    bugReports: {
+      default: `/allatre-admin/bug-reports`,
+    },
+    bugMessages: {
+      default: `/allatre-admin/bug-messages`,
+    },
     auctions: {
       default: `/allatre-admin/all-auctions`,
       active: `/allatre-admin/all-auctions/active`,

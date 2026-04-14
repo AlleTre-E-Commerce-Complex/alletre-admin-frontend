@@ -293,7 +293,7 @@ const ar = {
   [localizationKeys.thisAuctionAddToWatchListBeenSuccessfully]:
     "تم إضافة هذا المزاد إلى قائمة المراقبة بنجاح",
   [localizationKeys.thePasswordHasBeenEditSuccessfully]:
-    "تم تعديل كلمة المرور بنجاح",
+    "تم تحديث كلمة المرور بنجاح",
   [localizationKeys.hasBeenDeleteSuccessfully]: "تم حذفه بنجاح",
   [localizationKeys.hasBeenMakeDefaultSuccessfully]: "تم جعله افتراضيًا بنجاح",
   [localizationKeys.uploadImageHasbeenSuccessfully]: "تم تحميل الصورة بنجاح",
