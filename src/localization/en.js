@@ -300,7 +300,7 @@ const en = {
   [localizationKeys.thisAuctionAddToWatchListBeenSuccessfully]:
     "This auction add to WatchList been successfully",
   [localizationKeys.thePasswordHasBeenEditSuccessfully]:
-    "he Password Has Been Edit Successfully",
+    "Password updated successfully",
   [localizationKeys.hasBeenDeleteSuccessfully]: "has been delete successfully",
   [localizationKeys.hasBeenMakeDefaultSuccessfully]:
     "has been Make Default successfully",

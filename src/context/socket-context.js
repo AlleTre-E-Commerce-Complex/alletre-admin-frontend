@@ -16,23 +16,23 @@ export function SocketProvider({ children }) {
   const [socket, setSocket] = React.useState();
   const { user, logout } = useAuthState();
   useEffect(() => {
+    if (!user) return;
+
     auth.getToken().then((accessToken) => {
-      const URL =  `${process.env.REACT_APP_DEV_WEB_SOCKET_URL}/admin`  
-      console.log('URL',URL)
+      const URL = process.env.REACT_APP_DEV_WEB_SOCKET_URL;
       const newSocket = io(URL, {
-        // query: { auctionId: auctionID || auctionId },
         extraHeaders: {
           Authorization: "Bearer " + accessToken,
         },
         path: "/socket.io",
       });
       setSocket(newSocket);
+      
       return () => {
         newSocket.close();
-        logout();
       };
     });
-  }, []);
+  }, [user]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

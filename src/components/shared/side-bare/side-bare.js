@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { ReactComponent as AllatreLogo } from "../../../../src/assets/img/allatre-logo-color.svg";
@@ -35,44 +36,50 @@ const Sidebar = ({ SetSid, sid }) => {
   const dispatch = useDispatch()
   const [notifications, setNotifications] = useState(0);
   const [bankTransferNotifications, setBankTransferNotifications] = useState(0);
-  // useEffect(() => {
-  //   setNotifications(deliveryRequestsCount)
-  // }, [deliveryRequestsCount]);
+  const [bugReportNotifications, setBugReportNotifications] = useState(0);
+
   useEffect(() => {
     if (!socket) return;
 
-    // Listen for new notifications via socket
-    socket.on('delivery:newNotification', (newNotification) => {
-      console.log('delivery:newNotification',newNotification);
-      setNotifications(prev => prev + 1)
-      // Add the new notification to the existing requests
-      
-      // Dispatch the updated requests and the new count to the Redux store
-      dispatch(setDeliveryRequests({ deliveryRequests: (prevRequests) => {
-          const updatedRequests = [...prevRequests, newNotification];
-          dispatch(setDeliveryRequests({ deliveryRequestsCount: updatedRequests.length }));
-          return updatedRequests;
-        } }));
+    socket.emit("room:join", "admins");
 
-    });
-
-    // Cleanup the socket listener on component unmount
-    return () => {
-      socket.off('delivery:newNotification');
+    const handleNewBugEvent = (data) => {
+      setBugReportNotifications(prev => prev + 1);
+      toast.success(
+        data.message 
+          ? `New message on Bug Report #${data.bugReportId}` 
+          : `New Bug Report from ${data.user?.userName || 'Guest'}`,
+        { icon: '🐛' }
+      );
     };
-  }, [socket, dispatch]);
+
+    socket.on('new_bug_report', handleNewBugEvent);
+    socket.on('new_bug_report_message_global', handleNewBugEvent);
+
+    return () => {
+      socket.emit("room:leave", "admins");
+      socket.off('new_bug_report', handleNewBugEvent);
+      socket.off('new_bug_report_message_global', handleNewBugEvent);
+    };
+  }, [socket]);
 
   useEffect(() => {
+    // Initial fetch for bug report notifications
+    authAxios.get(api.app.getBugReports)
+      .then(res => {
+        const pendingCount = (res.data.data || []).filter(r => r.status === 'PENDING').length;
+        setBugReportNotifications(pendingCount);
+      })
+      .catch(err => console.error("Error fetching initial bug counts", err));
+
     run(
       authAxios
         .get(api.app.deliveryRequests.getRequests('DELIVERY'))
         .then((res) => {
           const requests = res.data.data;
-          console.log('delivery requests****>>>', requests);
           const newDeliveryReq = requests.filter(req => req.auction.deliveryRequestsStatus !== 'DELIVERY_SUCCESS')
           setNotifications(newDeliveryReq.length);
           
-          // Dispatch once with both values
           dispatch(setDeliveryRequests({
             deliveryRequests: requests,
             deliveryRequestsCount: requests.length
@@ -176,6 +183,24 @@ const Sidebar = ({ SetSid, sid }) => {
                   history.push(routes.app.users.complaints);
                   SetSid(false);
                 }}
+              />
+              <NavLink
+                title="Bug Reports"
+                isActive={pathname.startsWith(routes.app.bugReports.default)}
+                onClick={() => {
+                  history.push(routes.app.bugReports.default);
+                  SetSid(false);
+                }}
+              />
+              <NavLink
+                title="Bug Messages"
+                isActive={pathname.startsWith(routes.app.bugMessages.default)}
+                onClick={() => {
+                  setBugReportNotifications(0);
+                  history.push(routes.app.bugMessages.default);
+                  SetSid(false);
+                }}
+                notificationCount={bugReportNotifications}
               />
               <NavLink
                 title="Auctions"
