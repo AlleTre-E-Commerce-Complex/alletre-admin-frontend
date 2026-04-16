@@ -99,6 +99,11 @@ const   api = {
       updateProductStatus: (productId) =>
         `auctions/products/updateProductStatus?productId=${productId}`,
     },
+    admin: {
+      searchProducts: (query) => `/admin/products/search?query=${query}`,
+      getComments: (productId) => `/comments/${productId}`,
+      deleteComment: (commentId) => `/admin/comments/${commentId}`,
+    },
   },
 };
 
