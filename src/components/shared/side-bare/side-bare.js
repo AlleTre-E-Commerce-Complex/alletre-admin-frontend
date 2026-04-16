@@ -284,6 +284,14 @@ const Sidebar = ({ SetSid, sid }) => {
                   SetSid(false);
                 }}
               />
+              <NavLink
+                title="Comments Management"
+                isActive={pathname.startsWith(routes.app.comments.default)}
+                onClick={() => {
+                  history.push(routes.app.comments.default);
+                  SetSid(false);
+                }}
+              />
             </div>
             <div
               onClick={() => {

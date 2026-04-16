@@ -70,6 +70,9 @@ const routes = {
     nonRegisteredUsers: {
       default: "/allatre-admin/non-registered-users",
     },
+    comments: {
+      default: "/allatre-admin/comments",
+    },
   },
 };
 
