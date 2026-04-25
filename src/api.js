@@ -101,6 +101,7 @@ const   api = {
     },
     admin: {
       searchProducts: (query) => `/admin/products/search?query=${query}`,
+      updateProductLocation: (productId) => `/admin/products/${productId}/location`,
       getComments: (productId) => `/comments/${productId}`,
       deleteComment: (commentId) => `/admin/comments/${commentId}`,
     },

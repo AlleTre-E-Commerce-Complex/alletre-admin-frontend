@@ -73,6 +73,9 @@ const routes = {
     comments: {
       default: "/allatre-admin/comments",
     },
+    products: {
+      default: "/allatre-admin/products",
+    },
   },
 };
 
