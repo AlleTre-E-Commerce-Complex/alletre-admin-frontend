@@ -292,6 +292,14 @@ const Sidebar = ({ SetSid, sid }) => {
                   SetSid(false);
                 }}
               />
+              <NavLink
+                title="Product Management"
+                isActive={pathname.startsWith(routes.app.products.default)}
+                onClick={() => {
+                  history.push(routes.app.products.default);
+                  SetSid(false);
+                }}
+              />
             </div>
             <div
               onClick={() => {
