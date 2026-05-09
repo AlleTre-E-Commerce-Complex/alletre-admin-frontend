@@ -300,6 +300,14 @@ const Sidebar = ({ SetSid, sid }) => {
                   SetSid(false);
                 }}
               />
+              <NavLink
+                title="Objections Management"
+                isActive={pathname.startsWith(routes.app.objections.default)}
+                onClick={() => {
+                  history.push(routes.app.objections.default);
+                  SetSid(false);
+                }}
+              />
             </div>
             <div
               onClick={() => {

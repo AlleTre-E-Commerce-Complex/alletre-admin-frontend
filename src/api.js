@@ -104,6 +104,8 @@ const   api = {
       updateProductLocation: (productId) => `/admin/products/${productId}/location`,
       getComments: (productId) => `/comments/${productId}`,
       deleteComment: (commentId) => `/admin/comments/${commentId}`,
+      getObjections: "/admin/objections",
+      updateObjectionStatus: (id) => `/admin/objections/${id}/status`,
     },
   },
 };

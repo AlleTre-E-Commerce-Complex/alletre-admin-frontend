@@ -25,6 +25,7 @@ import BugReports from "../page/app/bugReports/bugReports";
 import BugMessages from "../page/app/bugReports/BugMessages";
 import CommentsManagement from "../page/app/comments/CommentsManagement";
 import ProductManagement from "../page/app/products/ProductManagement";
+import AdminObjections from "../page/app/objections/AdminObjections";
 const AppLayouts = () => {
   const [sid, SetSid] = useState(false);
   const [dashboardStats, setDashboardStats] = useState(null);
@@ -81,6 +82,7 @@ const AppLayouts = () => {
           <Route path={routes.app.nonRegisteredUsers.default} component={NonRegisteredUsers} />
           <Route path={routes.app.comments.default} component={CommentsManagement} />
           <Route path={routes.app.products.default} component={ProductManagement} />
+          <Route path={routes.app.objections.default} component={AdminObjections} />
 
         </Switch>
       </div>
