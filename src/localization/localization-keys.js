@@ -230,7 +230,7 @@ const localizationKeys = {
   totalPending: "totalPending",
   opsPending: "opsPending",
   totalExpired: "totalExpired",
-  totalCancelled:'totalCancelled',
+  totalCancelled: "totalCancelled",
   opsExpired: "opsExpired",
   //  details
   reviews: "reviews",
@@ -292,18 +292,42 @@ const localizationKeys = {
   yourAuctionIsCreatedSuccess: "yourAuctionIsCreatedSuccess",
   makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne:
     "makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne",
-    //messages
+  //messages
   YouSuccessfullyCancelledTheAuction: "YouSuccessfullyCancelledTheAuction",
   //wallet
   WalletBalance: "WalletBalance",
-  AccountBalance:"AccountBalance",
+  AccountBalance: "AccountBalance",
   Withdraw: "Withdraw",
   Date: "Date",
   Withdrawals: "Withdrawals",
   Deposits: "Deposits",
   Balance: "Balance",
   Description: "Description",
-
+  adminObjections: "adminObjections",
+  product: "product",
+  noResultsFound: "noResultsFound",
+  objectionBy: "objectionBy",
+  reason: "reason",
+  documents: "documents",
+  status: "status",
+  date: "date",
+  actions: "actions",
+  noFiles: "noFiles",
+  inProgress: "inProgress",
+  solved: "solved",
+  userComplaints: "userComplaints",
+  complainingUser: "complainingUser",
+  seller: "seller",
+  complaint: "complaint",
+  complaintStatus: "complaintStatus",
+  actionStatus: "actionStatus",
+  complaintDetails: "complaintDetails",
+  sellerDetails: "sellerDetails",
+  winnerDetails: "winnerDetails",
+  mediaGalleryOfComplaints: "mediaGalleryOfComplaints",
+  noMediaAvailable: "noMediaAvailable",
+  close: "close",
+  reply: "reply",
 };
 
 export default localizationKeys;

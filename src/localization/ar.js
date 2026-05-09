@@ -302,17 +302,42 @@ const ar = {
   [localizationKeys.yourAuctionIsCreatedSuccess]: "تم إنشاء مزادك بنجاح",
   [localizationKeys.makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne]:
     "تأكد من اختيار موقع المزاد أو إنشاء موقع آخر",
-    //messages
-    [localizationKeys.YouSuccessfullyCancelledTheAuction]:
+  //messages
+  [localizationKeys.YouSuccessfullyCancelledTheAuction]:
     "تم إلغاء المزاد بنجاح..!",
-        //wallet
-    [localizationKeys.WalletBalance]: "رصيد المحفظة",
-    [localizationKeys.AccountBalance]: "رصيد الحساب",
-    [localizationKeys.Withdraw]: "ينسحب",
-    [localizationKeys.Date]: "تاريخ",
-    [localizationKeys.Withdrawals]: "السحوبات",
-    [localizationKeys.Balance]: "توازن",
-    [localizationKeys.Description]: "وصف",
+  //wallet
+  [localizationKeys.WalletBalance]: "رصيد المحفظة",
+  [localizationKeys.AccountBalance]: "رصيد الحساب",
+  [localizationKeys.Withdraw]: "ينسحب",
+  [localizationKeys.Date]: "تاريخ",
+  [localizationKeys.Withdrawals]: "السحوبات",
+  [localizationKeys.Balance]: "توازن",
+  [localizationKeys.Description]: "وصف",
+  [localizationKeys.adminObjections]: "إدارة الاعتراضات",
+  [localizationKeys.product]: "المنتج",
+  [localizationKeys.noResultsFound]: "لم يتم العثور على نتائج",
+  [localizationKeys.objectionBy]: "تم الاعتراض بواسطة",
+  [localizationKeys.reason]: "السبب",
+  [localizationKeys.documents]: "المستندات",
+  [localizationKeys.status]: "الحالة",
+  [localizationKeys.date]: "التاريخ",
+  [localizationKeys.actions]: "الإجراءات",
+  [localizationKeys.noFiles]: "لا توجد ملفات",
+  [localizationKeys.inProgress]: "قيد التنفيذ",
+  [localizationKeys.solved]: "تم الحل",
+  [localizationKeys.userComplaints]: "شكاوى المستخدمين",
+  [localizationKeys.complainingUser]: "المستخدم المشتكي",
+  [localizationKeys.seller]: "البائع",
+  [localizationKeys.complaint]: "الشكوى",
+  [localizationKeys.complaintStatus]: "حالة الشكوى",
+  [localizationKeys.actionStatus]: "حالة الإجراء",
+  [localizationKeys.complaintDetails]: "تفاصيل الشكوى",
+  [localizationKeys.sellerDetails]: "تفاصيل البائع",
+  [localizationKeys.winnerDetails]: "تفاصيل الفائز",
+  [localizationKeys.mediaGalleryOfComplaints]: "معرض وسائط الشكاوى",
+  [localizationKeys.noMediaAvailable]: "لا توجد وسائط متاحة",
+  [localizationKeys.close]: "إغلاق",
+  [localizationKeys.reply]: "الرد",
 };
 
 export default ar;

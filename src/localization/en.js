@@ -314,19 +314,43 @@ const en = {
     "your Auction is Created success",
   [localizationKeys.makeSureThatYouChooseTheAuctionLocationOrCreateAnotherOne]:
     "Make sure that you choose the auction location or create another one",
-    //messages
-    [localizationKeys.YouSuccessfullyCancelledTheAuction]:
+  //messages
+  [localizationKeys.YouSuccessfullyCancelledTheAuction]:
     "Succefully cancelled the auction..!",
-    //wallet
-    [localizationKeys.WalletBalance]: "Wallet Balance",
-    [localizationKeys.AccountBalance]: "Account Balance",
-    [localizationKeys.Withdraw]: "Withdraw",
-    [localizationKeys.Date]: "Date",
-    [localizationKeys.Withdrawals]: "Withdrawals",
-    [localizationKeys.Deposits]: "Deposite",
-    [localizationKeys.Balance]: "Balance",
-    [localizationKeys.Description]: "Description",
-
+  //wallet
+  [localizationKeys.WalletBalance]: "Wallet Balance",
+  [localizationKeys.AccountBalance]: "Account Balance",
+  [localizationKeys.Withdraw]: "Withdraw",
+  [localizationKeys.Date]: "Date",
+  [localizationKeys.Withdrawals]: "Withdrawals",
+  [localizationKeys.Deposits]: "Deposite",
+  [localizationKeys.Balance]: "Balance",
+  [localizationKeys.Description]: "Description",
+  [localizationKeys.adminObjections]: "Objections Management",
+  [localizationKeys.product]: "Product",
+  [localizationKeys.noResultsFound]: "No results found",
+  [localizationKeys.objectionBy]: "Objection By",
+  [localizationKeys.reason]: "Reason",
+  [localizationKeys.documents]: "Documents",
+  [localizationKeys.status]: "Status",
+  [localizationKeys.date]: "Date",
+  [localizationKeys.actions]: "Actions",
+  [localizationKeys.noFiles]: "No files",
+  [localizationKeys.inProgress]: "IN PROGRESS",
+  [localizationKeys.solved]: "SOLVED",
+  [localizationKeys.userComplaints]: "User Complaints",
+  [localizationKeys.complainingUser]: "The Complaining User",
+  [localizationKeys.seller]: "Seller",
+  [localizationKeys.complaint]: "Complaint",
+  [localizationKeys.complaintStatus]: "Complaint Status",
+  [localizationKeys.actionStatus]: "Action Status",
+  [localizationKeys.complaintDetails]: "Complaint Details",
+  [localizationKeys.sellerDetails]: "Seller Details",
+  [localizationKeys.winnerDetails]: "Winner Details",
+  [localizationKeys.mediaGalleryOfComplaints]: "Media Gallery of Complaints",
+  [localizationKeys.noMediaAvailable]: "No media available.",
+  [localizationKeys.close]: "Close",
+  [localizationKeys.reply]: "Reply",
 };
 
 export default en;

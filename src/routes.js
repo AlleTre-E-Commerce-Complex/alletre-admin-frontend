@@ -76,6 +76,9 @@ const routes = {
     products: {
       default: "/allatre-admin/products",
     },
+    objections: {
+      default: "/allatre-admin/objections",
+    },
   },
 };
 
