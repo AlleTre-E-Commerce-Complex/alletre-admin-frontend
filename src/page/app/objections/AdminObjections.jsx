@@ -11,6 +11,7 @@ import LoadingTestAllatre from "../../../components/shared/lotties-file/loding-t
 import localizationKeys from "../../../localization/localization-keys";
 import { formatCurrency } from "../../../utils/format-currency";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 const AdminObjections = () => {
   const language = useLanguage();
@@ -23,6 +24,10 @@ const AdminObjections = () => {
   const [selectedObjection, setSelectedObjection] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("active"); // "active" or "solved"
+
+  const [finalDecisionText, setFinalDecisionText] = useState("");
+  const [finalDecisionFiles, setFinalDecisionFiles] = useState([]);
+  const [isSubmittingFinalDecision, setIsSubmittingFinalDecision] = useState(false);
 
   useEffect(() => {
     if (api?.app?.admin?.getObjections) {
@@ -54,7 +59,138 @@ const AdminObjections = () => {
 
   const openModal = (objection) => {
     setSelectedObjection(objection);
+    setFinalDecisionText(objection?.finalDecision || "");
+    setFinalDecisionFiles([]);
     setIsModalOpen(true);
+  };
+
+  const handleFinalDecisionFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setFinalDecisionFiles((prev) => [...prev, ...selectedFiles]);
+  };
+
+  const removeFinalDecisionFile = (index) => {
+    setFinalDecisionFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteFinalDecisionDocument = async (docId) => {
+    try {
+      await authAxios.delete(api.app.admin.deleteFinalDecisionDocument(docId));
+
+      toast?.success?.("Document deleted successfully");
+
+      setSelectedObjection((prev) => ({
+        ...prev,
+        finalDecisionDocuments: prev.finalDecisionDocuments.filter((d) => d.id !== docId),
+      }));
+
+      setObjections((prev) =>
+        prev.map((item) =>
+          item.id === selectedObjection.id
+            ? { ...item, finalDecisionDocuments: item.finalDecisionDocuments.filter((d) => d.id !== docId) }
+            : item
+        )
+      );
+    } catch (err) {
+      console.error("Error deleting document:", err);
+      toast?.error?.("Failed to delete document");
+    }
+  };
+
+  const handleDeleteFinalDecision = async () => {
+    if (!selectedObjection?.finalDecision) return;
+    if (!window.confirm("Are you sure you want to delete the entire final decision? This cannot be undone.")) return;
+
+    try {
+      await authAxios.delete(api.app.admin.deleteFinalDecision(selectedObjection.id));
+
+      toast?.success?.("Final decision deleted successfully");
+
+      setSelectedObjection((prev) => ({
+        ...prev,
+        finalDecision: null,
+        finalDecisionAt: null,
+        finalDecisionDocuments: [],
+        status: prev.repliedAt ? "IN_PROGRESS" : "PENDING",
+      }));
+
+      setObjections((prev) =>
+        prev.map((item) =>
+          item.id === selectedObjection.id
+            ? {
+                ...item,
+                finalDecision: null,
+                finalDecisionAt: null,
+                finalDecisionDocuments: [],
+                status: item.repliedAt ? "IN_PROGRESS" : "PENDING",
+              }
+            : item
+        )
+      );
+
+      setFinalDecisionText("");
+      setFinalDecisionFiles([]);
+    } catch (err) {
+      console.error("Error deleting final decision:", err);
+      toast?.error?.("Failed to delete final decision");
+    }
+  };
+
+  const handleSubmitFinalDecision = async () => {
+    if (!finalDecisionText.trim()) return;
+    setIsSubmittingFinalDecision(true);
+
+    const formData = new FormData();
+    formData.append("finalDecision", finalDecisionText.trim());
+    finalDecisionFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const response = await authAxios.patch(
+        api.app.admin.submitFinalDecision(selectedObjection.id),
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const updatedData = response?.data?.data;
+      const newDocs = updatedData?.finalDecisionDocuments || [];
+
+      toast?.success?.(selectedContent[localizationKeys.finalDecisionSubmitted] || "Final decision submitted successfully");
+
+      setSelectedObjection((prev) => ({
+        ...prev,
+        finalDecision: finalDecisionText.trim(),
+        finalDecisionAt: new Date().toISOString(),
+        status: "SOLVED",
+        finalDecisionDocuments: newDocs.length > 0 ? newDocs : prev.finalDecisionDocuments,
+      }));
+
+      setObjections((prev) =>
+        prev.map((item) =>
+          item.id === selectedObjection.id
+            ? {
+                ...item,
+                finalDecision: finalDecisionText.trim(),
+                finalDecisionAt: new Date().toISOString(),
+                status: "SOLVED",
+                finalDecisionDocuments: newDocs.length > 0 ? newDocs : item.finalDecisionDocuments,
+              }
+            : item
+        )
+      );
+
+      setFinalDecisionFiles([]);
+    } catch (err) {
+      console.error("Error submitting final decision:", err);
+      toast?.error?.(selectedContent[localizationKeys.somethingWentWrong] || "Something went wrong");
+    } finally {
+      setIsSubmittingFinalDecision(false);
+    }
   };
 
   const filteredObjections = objections.filter((item) => {
@@ -358,7 +494,7 @@ const AdminObjections = () => {
                 </h2>
                 <p className="text-xs md:text-sm text-gray-500 mt-1">ID: #{selectedObjection.id} • {moment(selectedObjection.createdAt).format("MMM DD, YYYY")}</p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors"
               >
@@ -369,19 +505,19 @@ const AdminObjections = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {/* Left Side: Product & Status */}
-                <div className="space-y-6">
+                <div className="space-y-5 md:space-y-6">
                   <div className="bg-gray-50 dark:bg-black/20 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 flex gap-4">
-                    <img 
-                      src={selectedObjection.product?.images?.[0]?.imageLink} 
-                      className="w-24 h-24 rounded-xl object-cover shadow-sm"
+                    <img
+                      src={selectedObjection.product?.images?.[0]?.imageLink}
+                      className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover shadow-sm flex-shrink-0"
                       alt=""
                     />
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1">{selectedObjection.product?.title}</h3>
-                      <p className="text-sm text-gray-500 mb-3">Product ID: {selectedObjection.productId}</p>
-                      <button 
+                    <div className="min-w-0">
+                      <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 truncate">{selectedObjection.product?.title}</h3>
+                      <p className="text-xs md:text-sm text-gray-500 mb-3">Product ID: {selectedObjection.productId}</p>
+                      <button
                         onClick={() => window.open(`https://www.3arbon.com/my-product/${selectedObjection.productId}/details`, '_blank')}
                         className="text-xs font-black text-primary hover:underline"
                       >
@@ -390,13 +526,13 @@ const AdminObjections = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">{selectedContent[localizationKeys.status]}</h4>
                     <select
                       value={selectedObjection.status}
                       onChange={(e) => handleStatusChange(selectedObjection.id, e.target.value)}
-                      className={`w-full p-4 rounded-2xl font-bold uppercase border-2 transition-all cursor-pointer outline-none focus:ring-0 ${
-                        selectedObjection.status === "PENDING" ? "bg-yellow-50 border-yellow-200 text-yellow-700" : 
+                      className={`w-full p-3 md:p-4 rounded-2xl font-bold uppercase border-2 transition-all cursor-pointer outline-none focus:ring-0 text-sm md:text-base ${
+                        selectedObjection.status === "PENDING" ? "bg-yellow-50 border-yellow-200 text-yellow-700" :
                         selectedObjection.status === "IN_PROGRESS" ? "bg-blue-50 border-blue-200 text-blue-700" :
                         "bg-green-50 border-green-200 text-green-700"
                       }`}
@@ -409,48 +545,71 @@ const AdminObjections = () => {
 
                   <div className="space-y-3">
                     <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">RAISED BY</h4>
-                    <div className="p-4 bg-gray-50 dark:bg-black/20 rounded-2xl border border-gray-100 dark:border-gray-800">
-                      <p className="text-base font-bold text-gray-900 dark:text-white">{selectedObjection.user?.userName}</p>
-                      <p className="text-sm text-gray-500">{selectedObjection.user?.email}</p>
-                      <p className="text-sm text-gray-500">{selectedObjection.user?.phone}</p>
+                    <div className="p-3 md:p-4 bg-gray-50 dark:bg-black/20 rounded-2xl border border-gray-100 dark:border-gray-800">
+                      <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white">{selectedObjection.user?.userName}</p>
+                      <p className="text-xs md:text-sm text-gray-500">{selectedObjection.user?.email}</p>
+                      <p className="text-xs md:text-sm text-gray-500">{selectedObjection.user?.phone}</p>
                     </div>
                   </div>
+
+                  {selectedObjection.repliedBy && (
+                    <div className="space-y-3">
+                      <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">{selectedContent[localizationKeys.repliedBy]?.toUpperCase() || "REPLIED BY"}</h4>
+                      <div className="p-3 md:p-4 bg-green-50 dark:bg-green-500/5 rounded-2xl border border-green-100 dark:border-green-900/20">
+                        <div className="flex items-center gap-3 mb-2">
+                          {selectedObjection.repliedBy?.imageLink && (
+                            <img
+                              src={selectedObjection.repliedBy.imageLink}
+                              alt=""
+                              className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover border border-gray-200 flex-shrink-0"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white truncate">{selectedObjection.repliedBy?.userName}</p>
+                            <p className="text-xs md:text-sm text-gray-500">{selectedObjection.repliedBy?.email}</p>
+                          </div>
+                        </div>
+                        <p className="text-xs md:text-sm text-gray-500">{selectedObjection.repliedBy?.phone}</p>
+                        <p className="text-[10px] text-gray-400 mt-1">{selectedContent[localizationKeys.repliedOn] || "Replied On"}: {moment(selectedObjection.repliedAt).format("MMM DD, YYYY HH:mm")}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Right Side: Objection & Reply */}
-                <div className="space-y-8">
+                <div className="space-y-6 md:space-y-8">
                   {/* The Objection */}
-                  <div className="relative pl-6 border-l-2 border-red-200 dark:border-red-900/50">
+                  <div className="relative pl-5 md:pl-6 border-l-2 border-red-200 dark:border-red-900/50">
                     <div className="absolute -left-1.5 top-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-[#151A23]"></div>
-                    <h4 className="text-sm font-black text-red-600 uppercase tracking-widest mb-3">ORIGINAL OBJECTION</h4>
+                    <h4 className="text-xs md:text-sm font-black text-red-600 uppercase tracking-widest mb-3">ORIGINAL OBJECTION</h4>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-base font-bold text-gray-900 dark:text-white mb-1">{selectedObjection.reason}</p>
+                        <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white mb-1">{selectedObjection.reason}</p>
                         <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{selectedObjection.description}</p>
                         <p className="text-xs text-gray-400 mt-2 italic">Registered on: {moment(selectedObjection.createdAt).format("MMM DD, YYYY HH:mm")}</p>
                       </div>
-                      
+
                       {selectedObjection.documents?.length > 0 && (
                         <div className="flex flex-wrap gap-2 pt-2">
                           {selectedObjection.documents.map((doc) => {
                             const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
                             return (
-                              <div 
+                              <div
                                 key={doc.id}
-                                className="relative w-14 h-14 group cursor-pointer"
+                                className="relative w-12 h-12 md:w-14 md:h-14 group cursor-pointer"
                                 onClick={() => window.open(doc.imageLink, '_blank')}
                               >
                                 {isPdf ? (
                                   <div className="w-full h-full rounded-xl bg-red-50 border border-red-100 flex flex-col items-center justify-center shadow-sm">
-                                    <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg className="w-5 h-5 md:w-6 md:h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                       <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                                     </svg>
                                     <span className="text-[7px] font-bold text-red-600 mt-0.5">PDF</span>
                                   </div>
                                 ) : (
-                                  <img 
-                                    src={doc.imageLink} 
-                                    alt="" 
+                                  <img
+                                    src={doc.imageLink}
+                                    alt=""
                                     className="w-full h-full rounded-xl object-cover border border-gray-100 shadow-sm"
                                   />
                                 )}
@@ -463,13 +622,31 @@ const AdminObjections = () => {
                   </div>
 
                   {/* The Reply */}
-                  <div className="relative pl-6 border-l-2 border-green-200 dark:border-green-900/50">
+                  <div className="relative pl-5 md:pl-6 border-l-2 border-green-200 dark:border-green-900/50">
                     <div className="absolute -left-1.5 top-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-[#151A23]"></div>
-                    <h4 className="text-sm font-black text-green-600 uppercase tracking-widest mb-3">BUYER'S REPLY</h4>
+                    <h4 className="text-xs md:text-sm font-black text-green-600 uppercase tracking-widest mb-3">BUYER'S REPLY</h4>
                     {selectedObjection.repliedAt ? (
                       <div className="space-y-4">
+                        {selectedObjection.repliedBy && (
+                          <div className="p-3 bg-green-50/50 dark:bg-green-500/5 rounded-xl border border-green-100 dark:border-green-900/20">
+                            <p className="text-xs font-bold text-gray-500 uppercase mb-1">{selectedContent[localizationKeys.repliedBy]}</p>
+                            <div className="flex items-center gap-3">
+                              {selectedObjection.repliedBy?.imageLink && (
+                                <img
+                                  src={selectedObjection.repliedBy.imageLink}
+                                  alt=""
+                                  className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover border border-gray-200 flex-shrink-0"
+                                />
+                              )}
+                              <div className="min-w-0">
+                                <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{selectedObjection.repliedBy?.userName}</p>
+                                <p className="text-xs text-gray-500">{selectedObjection.repliedBy?.email}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                         <div>
-                          <p className="text-base font-bold text-gray-900 dark:text-white mb-1">{selectedObjection.replyReason}</p>
+                          <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white mb-1">{selectedObjection.replyReason}</p>
                           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{selectedObjection.replyDescription}</p>
                           <div className="flex items-center gap-2 mt-2">
                             <p className="text-xs text-gray-400 italic">Replied on: {moment(selectedObjection.repliedAt).format("MMM DD, YYYY HH:mm")}</p>
@@ -480,28 +657,28 @@ const AdminObjections = () => {
                             )}
                           </div>
                         </div>
-                        
+
                         {selectedObjection.replyDocuments?.length > 0 && (
                           <div className="flex flex-wrap gap-2 pt-2">
                             {selectedObjection.replyDocuments.map((doc) => {
                               const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
                               return (
-                                <div 
+                                <div
                                   key={doc.id}
-                                  className="relative w-14 h-14 group cursor-pointer"
+                                  className="relative w-12 h-12 md:w-14 md:h-14 group cursor-pointer"
                                   onClick={() => window.open(doc.imageLink, '_blank')}
                                 >
                                   {isPdf ? (
                                     <div className="w-full h-full rounded-xl bg-red-50 border border-red-100 flex flex-col items-center justify-center shadow-sm">
-                                      <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <svg className="w-5 h-5 md:w-6 md:h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                                       </svg>
                                       <span className="text-[7px] font-bold text-red-600 mt-0.5">PDF</span>
                                     </div>
                                   ) : (
-                                    <img 
-                                      src={doc.imageLink} 
-                                      alt="" 
+                                    <img
+                                      src={doc.imageLink}
+                                      alt=""
                                       className="w-full h-full rounded-xl object-cover border border-gray-100 shadow-sm"
                                     />
                                   )}
@@ -518,16 +695,176 @@ const AdminObjections = () => {
                     )}
                   </div>
                 </div>
+
+                {/* Admin Final Decision Section � Full Width */}
+                <div className="col-span-1 md:col-span-2 mt-4 md:mt-0">
+                  <div className="pt-6 border-t border-gray-100 dark:border-gray-800">
+                    <div className="bg-gradient-to-br from-primary/5 to-primary/[0.02] dark:from-primary/10 dark:to-primary/5 rounded-2xl p-5 md:p-6 border border-primary/10 dark:border-primary/20">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 md:w-11 md:h-11 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <svg className="w-5 h-5 md:w-6 md:h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h4 className="text-sm md:text-base font-black text-primary uppercase tracking-widest">
+                            {selectedContent[localizationKeys.adminFinalDecision] || "Admin Final Decision"}
+                          </h4>
+                          <p className="text-[10px] md:text-xs text-gray-400 mt-0.5">This will be visible to both buyer and seller</p>
+                        </div>
+                      </div>
+
+                      {/* Display existing final decision */}
+                      {selectedObjection.finalDecision && (
+                        <div className="mb-5 p-4 bg-white dark:bg-[#0F172A] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="px-2 py-0.5 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 text-[10px] font-black uppercase tracking-wider rounded-md">
+                              Submitted
+                            </span>
+                            <p className="text-[10px] md:text-xs text-gray-400">
+                              {moment(selectedObjection.finalDecisionAt).format("MMM DD, YYYY � HH:mm")}
+                            </p>
+                          </div>
+                          <p className="text-sm md:text-base text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
+                            {selectedObjection.finalDecision}
+                          </p>
+                          {selectedObjection.finalDecisionDocuments?.length > 0 && (
+                            <div className="flex flex-wrap gap-3 mt-4">
+                              {selectedObjection.finalDecisionDocuments.map((doc) => {
+                                const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
+                                return (
+                                  <div
+                                    key={doc.id}
+                                    className="relative w-16 h-16 md:w-20 md:h-20 group"
+                                  >
+                                    <div
+                                      className="w-full h-full cursor-pointer"
+                                      onClick={() => window.open(doc.imageLink, '_blank')}
+                                    >
+                                      {isPdf ? (
+                                        <div className="w-full h-full rounded-xl bg-red-50 border border-red-100 flex flex-col items-center justify-center shadow-sm group-hover:bg-red-100 transition-colors">
+                                          <svg className="w-6 h-6 md:w-7 md:h-7 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
+                                          </svg>
+                                          <span className="text-[8px] md:text-[9px] font-bold text-red-600 mt-0.5">PDF</span>
+                                        </div>
+                                      ) : (
+                                        <img
+                                          src={doc.imageLink}
+                                          alt=""
+                                          className="w-full h-full rounded-xl object-cover border border-gray-100 shadow-sm"
+                                        />
+                                      )}
+                                    </div>
+                                    {/* Delete button - always visible on mobile, hover on desktop */}
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteFinalDecisionDocument(doc.id);
+                                      }}
+                                      className="absolute -top-1 -right-1 md:-top-2 md:-right-2 p-1 md:p-1.5 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white rounded-full shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10 min-w-[22px] min-h-[22px] md:min-w-[28px] md:min-h-[28px] flex items-center justify-center"
+                                      title="Delete document"
+                                    >
+                                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Form to submit/update final decision */}
+                      <div className="space-y-4">
+                        <textarea
+                          value={finalDecisionText}
+                          onChange={(e) => setFinalDecisionText(e.target.value)}
+                          rows={4}
+                          placeholder="Write the final decision here..."
+                          className="w-full p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F172A] text-gray-900 dark:text-white focus:border-primary focus:ring-0 outline-none transition-all placeholder:text-gray-400 resize-none text-sm md:text-base"
+                        />
+
+                        <div>
+                          <input
+                            type="file"
+                            multiple
+                            id="final-decision-files"
+                            onChange={handleFinalDecisionFileChange}
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor="final-decision-files"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#0F172A] border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-primary dark:hover:border-primary rounded-xl cursor-pointer transition-colors text-sm font-bold text-gray-600 dark:text-gray-300"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                            </svg>
+                            {selectedContent[localizationKeys.finalDecisionFiles] || "Attach Documents"}
+                          </label>
+
+                          {finalDecisionFiles.length > 0 && (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-4">
+                              {finalDecisionFiles.map((file, idx) => (
+                                <div key={idx} className="relative group">
+                                  <div className="px-3 py-2.5 bg-white dark:bg-[#0F172A] rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2 shadow-sm">
+                                    <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                    </svg>
+                                    <span className="truncate">{file.name}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => removeFinalDecisionFile(idx)}
+                                      className="ml-auto p-1.5 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 active:bg-red-200 text-red-500 rounded-lg transition-colors flex-shrink-0"
+                                      title="Remove file"
+                                    >
+                                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                         <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                           <button
+                             onClick={handleSubmitFinalDecision}
+                             disabled={!finalDecisionText.trim() || isSubmittingFinalDecision}
+                             className="flex-1 sm:flex-none px-6 py-3 bg-primary text-white font-black text-sm uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
+                           >
+                             {isSubmittingFinalDecision
+                               ? "Submitting..."
+                               : (selectedContent[localizationKeys.submitFinalDecision] || "Submit Final Decision")}
+                           </button>
+                           {selectedObjection.finalDecision && (
+                             <button
+                               onClick={handleDeleteFinalDecision}
+                               className="px-6 py-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors border border-red-200 dark:border-red-900/30"
+                             >
+                               Delete Final Decision
+                             </button>
+                           )}
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="px-4 md:px-8 py-4 md:py-6 bg-gray-50/50 dark:bg-black/10 border-t border-gray-100 dark:border-gray-800 flex justify-end">
-              <button 
+            <div className="px-4 md:px-8 py-3 md:py-4 bg-gray-50/50 dark:bg-black/10 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+              <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-full md:w-auto px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-black font-black text-sm uppercase tracking-widest rounded-xl hover:opacity-80 transition-opacity"
+                className="px-6 py-2 bg-gray-200 dark:bg-white/5 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-lg hover:bg-gray-300 dark:hover:bg-white/10 transition-colors"
               >
-                {selectedContent[localizationKeys.close]}
+                Close
               </button>
             </div>
           </div>

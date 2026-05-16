@@ -317,6 +317,8 @@ const ar = {
   [localizationKeys.product]: "المنتج",
   [localizationKeys.noResultsFound]: "لم يتم العثور على نتائج",
   [localizationKeys.objectionBy]: "تم الاعتراض بواسطة",
+  [localizationKeys.repliedBy]: "تم الرد بواسطة",
+  [localizationKeys.repliedOn]: "تم الرد في",
   [localizationKeys.reason]: "السبب",
   [localizationKeys.documents]: "المستندات",
   [localizationKeys.status]: "الحالة",
@@ -338,6 +340,12 @@ const ar = {
   [localizationKeys.noMediaAvailable]: "لا توجد وسائط متاحة",
   [localizationKeys.close]: "إغلاق",
   [localizationKeys.reply]: "الرد",
+  [localizationKeys.finalDecision]: "القرار النهائي",
+  [localizationKeys.submitFinalDecision]: "تقديم القرار النهائي",
+  [localizationKeys.adminFinalDecision]: "القرار النهائي للإدارة",
+  [localizationKeys.finalDecisionFiles]: "مستندات القرار النهائي",
+  [localizationKeys.noFinalDecision]: "لم يتم تقديم قرار نهائي بعد.",
+  [localizationKeys.finalDecisionSubmitted]: "تم تقديم القرار النهائي بنجاح.",
 };
 
 export default ar;

@@ -45,7 +45,7 @@ const LogIn = ({ currentPAth, isAuthModel }) => {
         window.location.reload();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         if (err?.message?.en === "Verify your account") {
           toast.error(
             <p className="text-gray-dark text-sm py-2">
@@ -55,13 +55,13 @@ const LogIn = ({ currentPAth, isAuthModel }) => {
                     .theEmailAddressForThisAccountHasNotYetBeenVerified
                 ]
               }
-            </p>
+            </p>,
           );
         } else
           toast.error(
             lang === "en"
               ? err?.message?.en || err?.message
-              : err?.message?.ar || err?.message
+              : err?.message?.ar || err?.message,
           );
       });
   };
