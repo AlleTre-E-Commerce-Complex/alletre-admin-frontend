@@ -106,6 +106,9 @@ const   api = {
       deleteComment: (commentId) => `/admin/comments/${commentId}`,
       getObjections: "/admin/objections",
       updateObjectionStatus: (id) => `/admin/objections/${id}/status`,
+      submitFinalDecision: (id) => `/admin/objections/${id}/final-decision`,
+      deleteFinalDecision: (id) => `/admin/objections/${id}/final-decision`,
+      deleteFinalDecisionDocument: (docId) => `/admin/objections/final-decision-documents/${docId}`,
     },
   },
 };

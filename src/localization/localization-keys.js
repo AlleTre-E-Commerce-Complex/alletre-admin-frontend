@@ -307,6 +307,8 @@ const localizationKeys = {
   product: "product",
   noResultsFound: "noResultsFound",
   objectionBy: "objectionBy",
+  repliedBy: "repliedBy",
+  repliedOn: "repliedOn",
   reason: "reason",
   documents: "documents",
   status: "status",
@@ -328,6 +330,12 @@ const localizationKeys = {
   noMediaAvailable: "noMediaAvailable",
   close: "close",
   reply: "reply",
+  finalDecision: "finalDecision",
+  submitFinalDecision: "submitFinalDecision",
+  adminFinalDecision: "adminFinalDecision",
+  finalDecisionFiles: "finalDecisionFiles",
+  noFinalDecision: "noFinalDecision",
+  finalDecisionSubmitted: "finalDecisionSubmitted",
 };
 
 export default localizationKeys;

@@ -330,6 +330,8 @@ const en = {
   [localizationKeys.product]: "Product",
   [localizationKeys.noResultsFound]: "No results found",
   [localizationKeys.objectionBy]: "Objection By",
+  [localizationKeys.repliedBy]: "Replied By",
+  [localizationKeys.repliedOn]: "Replied On",
   [localizationKeys.reason]: "Reason",
   [localizationKeys.documents]: "Documents",
   [localizationKeys.status]: "Status",
@@ -351,6 +353,12 @@ const en = {
   [localizationKeys.noMediaAvailable]: "No media available.",
   [localizationKeys.close]: "Close",
   [localizationKeys.reply]: "Reply",
+  [localizationKeys.finalDecision]: "Final Decision",
+  [localizationKeys.submitFinalDecision]: "Submit Final Decision",
+  [localizationKeys.adminFinalDecision]: "Admin Final Decision",
+  [localizationKeys.finalDecisionFiles]: "Final Decision Documents",
+  [localizationKeys.noFinalDecision]: "No final decision submitted yet.",
+  [localizationKeys.finalDecisionSubmitted]: "Final decision submitted successfully.",
 };
 
 export default en;
