@@ -28,6 +28,7 @@ const AdminObjections = () => {
   const [finalDecisionText, setFinalDecisionText] = useState("");
   const [finalDecisionFiles, setFinalDecisionFiles] = useState([]);
   const [isSubmittingFinalDecision, setIsSubmittingFinalDecision] = useState(false);
+  const [payoutTo, setPayoutTo] = useState("BUYER");
 
   useEffect(() => {
     if (api?.app?.admin?.getObjections) {
@@ -142,6 +143,7 @@ const AdminObjections = () => {
 
     const formData = new FormData();
     formData.append("finalDecision", finalDecisionText.trim());
+    formData.append("payoutTo", payoutTo);
     finalDecisionFiles.forEach((file) => {
       formData.append("files", file);
     });
@@ -593,6 +595,7 @@ const AdminObjections = () => {
                         <div className="flex flex-wrap gap-2 pt-2">
                           {selectedObjection.documents.map((doc) => {
                             const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
+                            const isVideo = doc.imageLink?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) || doc.imagePath?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/);
                             return (
                               <div
                                 key={doc.id}
@@ -605,6 +608,15 @@ const AdminObjections = () => {
                                       <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                                     </svg>
                                     <span className="text-[7px] font-bold text-red-600 mt-0.5">PDF</span>
+                                  </div>
+                                ) : isVideo ? (
+                                  <div className="w-full h-full relative overflow-hidden rounded-xl">
+                                    <video src={doc.imageLink} className="w-full h-full object-cover" muted playsInline />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                      <svg className="w-4 h-4 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                      </svg>
+                                    </div>
                                   </div>
                                 ) : (
                                   <img
@@ -662,6 +674,7 @@ const AdminObjections = () => {
                           <div className="flex flex-wrap gap-2 pt-2">
                             {selectedObjection.replyDocuments.map((doc) => {
                               const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
+                              const isVideo = doc.imageLink?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) || doc.imagePath?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/);
                               return (
                                 <div
                                   key={doc.id}
@@ -674,6 +687,15 @@ const AdminObjections = () => {
                                         <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                                       </svg>
                                       <span className="text-[7px] font-bold text-red-600 mt-0.5">PDF</span>
+                                    </div>
+                                  ) : isVideo ? (
+                                    <div className="w-full h-full relative overflow-hidden rounded-xl">
+                                      <video src={doc.imageLink} className="w-full h-full object-cover" muted playsInline />
+                                      <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                        <svg className="w-4 h-4 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                          <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                      </div>
                                     </div>
                                   ) : (
                                     <img
@@ -732,6 +754,7 @@ const AdminObjections = () => {
                             <div className="flex flex-wrap gap-3 mt-4">
                               {selectedObjection.finalDecisionDocuments.map((doc) => {
                                 const isPdf = doc.imageLink?.toLowerCase().endsWith(".pdf") || doc.imagePath?.toLowerCase().endsWith(".pdf");
+                                const isVideo = doc.imageLink?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) || doc.imagePath?.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/);
                                 return (
                                   <div
                                     key={doc.id}
@@ -747,6 +770,15 @@ const AdminObjections = () => {
                                             <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                                           </svg>
                                           <span className="text-[8px] md:text-[9px] font-bold text-red-600 mt-0.5">PDF</span>
+                                        </div>
+                                      ) : isVideo ? (
+                                        <div className="w-full h-full relative overflow-hidden rounded-xl">
+                                          <video src={doc.imageLink} className="w-full h-full object-cover" muted playsInline />
+                                          <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                            <svg className="w-5 h-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                              <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                          </div>
                                         </div>
                                       ) : (
                                         <img
@@ -787,6 +819,24 @@ const AdminObjections = () => {
                           placeholder="Write the final decision here..."
                           className="w-full p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F172A] text-gray-900 dark:text-white focus:border-primary focus:ring-0 outline-none transition-all placeholder:text-gray-400 resize-none text-sm md:text-base"
                         />
+
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-black text-gray-400 uppercase tracking-widest">
+                            Resolution Payout
+                          </label>
+                          <select
+                            value={payoutTo}
+                            onChange={(e) => setPayoutTo(e.target.value)}
+                            className="w-full p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F172A] text-gray-900 dark:text-white focus:border-primary focus:ring-0 outline-none transition-all font-bold text-sm"
+                          >
+                            <option value="BUYER">Pay to Buyer's Wallet (Internal Transfer)</option>
+                            <option value="SELLER">Pay to Seller's Wallet (Internal Transfer)</option>
+                            <option value="COMPANY">Keep in Company Account</option>
+                          </select>
+                          <p className="text-[10px] text-gray-400 mt-1">
+                            Funds are currently held in the Company Account. Selecting an internal transfer avoids Stripe fees.
+                          </p>
+                        </div>
 
                         <div>
                           <input
