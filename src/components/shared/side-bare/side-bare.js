@@ -37,6 +37,8 @@ const Sidebar = ({ SetSid, sid }) => {
   const [notifications, setNotifications] = useState(0);
   const [bankTransferNotifications, setBankTransferNotifications] = useState(0);
   const [bugReportNotifications, setBugReportNotifications] = useState(0);
+  const [withdrawalNotifications, setWithdrawalNotifications] = useState(0);
+  const [objectionNotifications, setObjectionNotifications] = useState(0);
 
   useEffect(() => {
     if (!socket) return;
@@ -86,6 +88,25 @@ const Sidebar = ({ SetSid, sid }) => {
           }));
         })
     );
+
+    // Fetch withdrawal requests count
+    authAxios.get(api.app.withdrawalsRequests.get)
+      .then(res => {
+        const requests = Array.isArray(res.data) ? res.data : [];
+        const inProgressCount = requests.filter(r => r.withdrawalStatus === 'IN_PROGRESS' || r.withdrawalStatus === 'PENDING').length;
+        setWithdrawalNotifications(inProgressCount);
+      })
+      .catch(err => console.error("Error fetching withdrawal requests counts", err));
+
+    // Fetch objection requests count
+    authAxios.get(api.app.admin.getObjections)
+      .then(res => {
+        const requests = Array.isArray(res.data?.data) ? res.data.data : [];
+        const activeCount = requests.filter(r => r.status === 'IN_PROGRESS' || r.status === 'PENDING').length;
+        setObjectionNotifications(activeCount);
+      })
+      .catch(err => console.error("Error fetching objection requests counts", err));
+
   }, [run, dispatch, socket]);
   
 
@@ -241,6 +262,7 @@ const Sidebar = ({ SetSid, sid }) => {
                   history.push(routes.app.withdrawalRequest.default);
                   SetSid(false);
                 }}
+                notificationCount={withdrawalNotifications}
               />
               <NavLink
                 title="Delivery Requests"
@@ -307,6 +329,7 @@ const Sidebar = ({ SetSid, sid }) => {
                   history.push(routes.app.objections.default);
                   SetSid(false);
                 }}
+                notificationCount={objectionNotifications}
               />
             </div>
             <div
